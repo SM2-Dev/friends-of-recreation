@@ -13,6 +13,9 @@ type ButtonProps = {
   onClick?: () => void
   ariaExpanded?: boolean
   ariaControls?: string
+  ariaDescribedBy?: string
+  disabled?: boolean
+  busy?: boolean
 }
 
 export function Button({
@@ -25,6 +28,9 @@ export function Button({
   onClick,
   ariaExpanded,
   ariaControls,
+  ariaDescribedBy,
+  disabled,
+  busy,
 }: ButtonProps) {
   const classes = cn('button', `button-${variant}`, className)
 
@@ -47,9 +53,12 @@ export function Button({
 
   return (
     <button
+      aria-busy={busy || undefined}
       aria-controls={ariaControls}
+      aria-describedby={ariaDescribedBy}
       aria-expanded={ariaExpanded}
       className={classes}
+      disabled={disabled}
       onClick={onClick}
       type={type}
     >

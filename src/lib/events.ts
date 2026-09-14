@@ -42,3 +42,52 @@ export function splitEvents<T extends EventDateFields>(
     past: sortPastEvents(past),
   }
 }
+
+const DATE_ZONE = 'America/New_York'
+
+function dateParts(iso: string): { year: number; month: number; day: number } | null {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return null
+
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: DATE_ZONE,
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }).formatToParts(date)
+
+  const year = Number(parts.find((part) => part.type === 'year')?.value)
+  const month = Number(parts.find((part) => part.type === 'month')?.value)
+  const day = Number(parts.find((part) => part.type === 'day')?.value)
+  if (!year || !month || !day) return null
+  return { year, month, day }
+}
+
+function formatDay(iso: string, options: Intl.DateTimeFormatOptions): string {
+  return new Intl.DateTimeFormat('en-US', { timeZone: DATE_ZONE, ...options }).format(new Date(iso))
+}
+
+export function formatEventDate(event: EventDateFields): string {
+  const start = dateParts(event.startDate)
+  if (!start) return ''
+
+  const end = event.endDate ? dateParts(event.endDate) : null
+  const sameDay = !end || (end.year === start.year && end.month === start.month && end.day === start.day)
+
+  if (sameDay) {
+    return formatDay(event.startDate, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+  }
+
+  const startLabel = formatDay(event.startDate, { month: 'short', day: 'numeric' })
+  const endLabel = formatDay(event.endDate as string, { month: 'short', day: 'numeric', year: 'numeric' })
+  return `${startLabel}–${endLabel}`
+}
+
+export function formatEventDay(iso: string): string {
+  return formatDay(iso, { day: 'numeric' })
+}
+
+export function formatEventMonth(iso: string): string {
+  return formatDay(iso, { month: 'short' })
+}
+

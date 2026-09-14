@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { Button } from '@/components/Button'
+import { DonateControl } from '@/components/DonateControl'
 import { Container } from '@/components/Container'
 import { primaryNav } from '@/components/navItems'
 import { getSiteSettings } from '@/lib/cms'
@@ -31,13 +31,7 @@ export async function Footer() {
         </nav>
 
         <div className="site-footer-actions">
-          {donateUrl ? (
-            <Button external href={donateUrl} variant="secondary">
-              {settings.donationLabel || 'Donate'}
-            </Button>
-          ) : (
-            <p className="donate-pending">Donation link pending board confirmation.</p>
-          )}
+          <DonateControl describedById="donate-pending-footer" label={settings.donationLabel || 'Donate'} url={donateUrl} />
           {facebookUrl ? (
             <a href={facebookUrl} rel="noopener noreferrer" target="_blank">
               Facebook

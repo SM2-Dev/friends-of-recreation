@@ -14,7 +14,7 @@ export const ContactSubmissions: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'email',
-    defaultColumns: ['name', 'email', 'status', 'createdAt'],
+    defaultColumns: ['name', 'email', 'subject', 'status', 'createdAt'],
     description: 'Questions from the public contact form. Status and internal notes never appear on the website.',
     group: 'Submissions',
   },
@@ -38,6 +38,18 @@ export const ContactSubmissions: CollectionConfig = {
     {
       name: 'email',
       type: 'email',
+      required: true,
+    },
+    {
+      name: 'phone',
+      type: 'text',
+      admin: {
+        description: 'Optional. Public visitors may leave this blank.',
+      },
+    },
+    {
+      name: 'subject',
+      type: 'text',
       required: true,
     },
     {

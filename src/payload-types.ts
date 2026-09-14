@@ -376,6 +376,11 @@ export interface ContactSubmission {
   id: number;
   name: string;
   email: string;
+  /**
+   * Optional. Public visitors may leave this blank.
+   */
+  phone?: string | null;
+  subject: string;
   message: string;
   /**
    * Internal workflow only. Never shown publicly.
@@ -679,6 +684,8 @@ export interface OrganizationsSelect<T extends boolean = true> {
 export interface ContactSubmissionsSelect<T extends boolean = true> {
   name?: T;
   email?: T;
+  phone?: T;
+  subject?: T;
   message?: T;
   status?: T;
   internalNotes?: T;
@@ -788,7 +795,7 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * Homepage mission, featured projects, and contact intro. Editors can update this content.
+ * Homepage mission, impact, featured projects, donation copy, and contact intro. Editors can update this content.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page".
@@ -811,14 +818,41 @@ export interface HomePage {
    * CSS object-position, such as center or 30% 40%, so faces stay in crop.
    */
   heroImagePosition?: string | null;
+  impactHeading?: string | null;
   /**
-   * Three to four featured projects. Leave empty rather than adding unconfirmed examples.
+   * Optional. Keep this to how Friends of Recreation helps, not invented outcomes.
    */
-  featuredProjects?: (number | Project)[] | null;
+  impactIntro?: string | null;
+  /**
+   * Up to three impact stories. They are typeset on one field at unequal scale, not as three matching cards. Leave empty rather than inventing results.
+   */
+  impactStories?:
+    | {
+        heading: string;
+        body: string;
+        /**
+         * Optional inscribed proof, such as a year, amount, or recipient. Leave blank if unconfirmed.
+         */
+        proofLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  organizationsHeading?: string | null;
   /**
    * Supported programs and facilities to highlight on the homepage.
    */
   featuredOrganizations?: (number | Organization)[] | null;
+  projectsHeading?: string | null;
+  /**
+   * Three to four featured projects. Leave empty rather than adding unconfirmed examples.
+   */
+  featuredProjects?: (number | Project)[] | null;
+  donationHeading?: string | null;
+  /**
+   * Short donation reprise. Do not invent a payment processor or URL.
+   */
+  donationBody?: string | null;
+  contactHeading?: string | null;
   /**
    * Short intro above the homepage contact form.
    */
@@ -892,8 +926,23 @@ export interface HomePageSelect<T extends boolean = true> {
   missionBody?: T;
   heroImage?: T;
   heroImagePosition?: T;
-  featuredProjects?: T;
+  impactHeading?: T;
+  impactIntro?: T;
+  impactStories?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        proofLabel?: T;
+        id?: T;
+      };
+  organizationsHeading?: T;
   featuredOrganizations?: T;
+  projectsHeading?: T;
+  featuredProjects?: T;
+  donationHeading?: T;
+  donationBody?: T;
+  contactHeading?: T;
   contactIntro?: T;
   _status?: T;
   updatedAt?: T;
