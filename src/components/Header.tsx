@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { Button } from '@/components/Button'
+import { DonateControl } from '@/components/DonateControl'
 import { MobileNav } from '@/components/MobileNav'
 import { primaryNav } from '@/components/navItems'
 import { getSiteSettings } from '@/lib/cms'
@@ -35,13 +35,7 @@ export async function Header() {
         </nav>
 
         <div className="site-header-actions">
-          {donateUrl ? (
-            <Button className="donate-button" external href={donateUrl} variant="primary">
-              {donateLabel}
-            </Button>
-          ) : (
-            <p className="donate-pending">Donation link pending board confirmation.</p>
-          )}
+          <DonateControl describedById="donate-pending-header" label={donateLabel} url={donateUrl} />
           <MobileNav items={primaryNav} />
         </div>
       </div>

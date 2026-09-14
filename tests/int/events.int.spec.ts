@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { isUpcomingEvent, sortPastEvents, sortUpcomingEvents, splitEvents } from '@/lib/events'
+import { isUpcomingEvent, formatEventDate, sortPastEvents, sortUpcomingEvents, splitEvents } from '@/lib/events'
 
 describe('event date logic', () => {
   const now = new Date('2026-09-14T12:00:00.000Z')
@@ -32,5 +32,15 @@ describe('event date logic', () => {
 
     expect(sortUpcomingEvents(upcoming).map((event) => event.title)).toEqual(['Soon', 'Later'])
     expect(sortPastEvents(past).map((event) => event.title)).toEqual(['Old', 'Older'])
+  })
+
+  it('formats a single day and a date range', () => {
+    expect(formatEventDate({ startDate: '2026-09-20T16:00:00.000Z' })).toMatch(/Sep/)
+    expect(
+      formatEventDate({
+        startDate: '2026-09-20T16:00:00.000Z',
+        endDate: '2026-09-21T16:00:00.000Z',
+      }),
+    ).toMatch(/–/)
   })
 })

@@ -22,9 +22,30 @@ export async function seedDevelopmentContent(payload: Payload): Promise<void> {
     data: {
       missionHeading: 'Building More Opportunities to Play in Saratoga Springs.',
       missionBody: `${DEVELOPMENT_NOTICE} Friends of Recreation raises funds for local recreation programs, playgrounds, facilities, equipment, camps, and scholarships. This sentence is starter copy until the board approves final language.`,
-      contactIntro: `${DEVELOPMENT_NOTICE} Use this form to ask a question. A public form will be connected in a later pass.`,
-      featuredProjects: [],
+      impactHeading: 'What the funds make possible',
+      impactIntro: `${DEVELOPMENT_NOTICE} These lines describe the kinds of support Friends of Recreation exists to provide. They are not published results.`,
+      impactStories: [
+        {
+          heading: 'Programs that stay in motion',
+          body: `${DEVELOPMENT_NOTICE} Rec leagues, camps, and everyday programs need equipment and operating help so more kids can show up and play.`,
+        },
+        {
+          heading: 'Places to gather',
+          body: `${DEVELOPMENT_NOTICE} Playgrounds, fields, and indoor facilities wear out. Funding keeps the physical places usable.`,
+        },
+        {
+          heading: 'Room for every family',
+          body: `${DEVELOPMENT_NOTICE} Scholarships and community projects help participation stay open when cost would otherwise close the gate.`,
+        },
+      ],
+      organizationsHeading: 'Supported programs and facilities',
       featuredOrganizations: [],
+      projectsHeading: 'Featured projects and grants',
+      featuredProjects: [],
+      donationHeading: 'Help more kids play here',
+      donationBody: `${DEVELOPMENT_NOTICE} Donations are processed on an external page once the board confirms the URL. The site will not invent a payment link.`,
+      contactHeading: 'Ask a question',
+      contactIntro: `${DEVELOPMENT_NOTICE} Send a question to the board. Messages are stored for staff. Email delivery and spam protection are not connected until those credentials exist.`,
     },
   })
 
@@ -39,7 +60,7 @@ export async function seedDevelopmentContent(payload: Payload): Promise<void> {
         emptyMessage: 'Board member listings will appear here once they are confirmed.',
       },
       events: {
-        heading: 'Events',
+        heading: 'Upcoming events',
         intro: `${DEVELOPMENT_NOTICE} Upcoming and past events will be listed from Payload once dates are published.`,
         emptyUpcomingMessage:
           'No upcoming events are listed right now. Check the Friends of Recreation Facebook page for the latest gatherings.',
