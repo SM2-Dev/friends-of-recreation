@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     root: path.resolve(dirname),
+    resolveAlias: {
+      '@tailwindcss/postcss': path.resolve(dirname, 'node_modules/@tailwindcss/postcss'),
+    },
   },
   agentRules: false,
 }

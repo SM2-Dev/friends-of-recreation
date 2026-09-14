@@ -5,8 +5,18 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from './collections/Users'
+import { BoardMembers } from './collections/BoardMembers'
+import { ContactSubmissions } from './collections/ContactSubmissions'
+import { Events } from './collections/Events'
+import { GrantRequests } from './collections/GrantRequests'
 import { Media } from './collections/Media'
+import { Organizations } from './collections/Organizations'
+import { Projects } from './collections/Projects'
+import { Users } from './collections/Users'
+import { HomePage } from './globals/HomePage'
+import { PageContent } from './globals/PageContent'
+import { SiteSettings } from './globals/SiteSettings'
+import { seedDevelopmentContent } from './seed/development'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -17,8 +27,21 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: ' · Friends of Recreation',
+    },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    BoardMembers,
+    Events,
+    Projects,
+    Organizations,
+    ContactSubmissions,
+    GrantRequests,
+  ],
+  globals: [SiteSettings, HomePage, PageContent],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -31,4 +54,14 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
+  onInit: async (payload) => {
+    const home = await payload.findGlobal({
+      slug: 'home-page',
+      overrideAccess: true,
+    })
+
+    if (!home?.missionBody) {
+      await seedDevelopmentContent(payload)
+    }
+  },
 })
