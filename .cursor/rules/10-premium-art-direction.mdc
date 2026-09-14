@@ -1,0 +1,58 @@
+---
+description: Brand-specific visual direction that prevents generic AI, SaaS, government, and nonprofit-template design
+globs: "**/*.{tsx,jsx,css,scss}"
+alwaysApply: true
+---
+
+# Premium community art direction
+
+The site should feel active, warm, local, confident, playful, and carefully art-directed. It should feel like a talented regional design studio made it specifically for Saratoga Springs Friends of Recreation.
+
+The balance is:
+
+- playful, not juvenile
+- premium, not luxury-corporate
+- local, not rustic
+- energetic, not chaotic
+- community-driven, not institutional
+- friendly, not cute
+- modern, not SaaS
+
+## Design from an idea
+
+Before implementing a new page or major section, name:
+
+1. The page's dominant visual idea.
+2. Its primary hierarchy.
+3. The role of photography.
+4. Two to four signature visual devices shared with the rest of the site.
+
+Use fewer, stronger decisions. Good candidates include oversized local photography, expressive heading wraps, a recurring crop or frame treatment, bold impact figures, a recognizable section transition, or an intentionally offset grid.
+
+## Avoid AI-template defaults
+
+Do not default to:
+
+- centered eyebrow, giant headline, paragraph, and two-button hero
+- three equal feature cards
+- a page made from repeated card grids
+- cards nested inside cards
+- pill badges and pill buttons everywhere
+- icon-in-rounded-square features
+- glassmorphism, glow, blurred blobs, or decorative grids
+- purple-to-blue gradients or gradient text
+- a beige editorial palette chosen by reflex
+- excessive rounded rectangles or shadows
+- identical max-width containers in every section
+- repetitive image-left/text-right alternation
+- arbitrary sports icons, confetti, squiggles, waves, or blobs
+- stock imagery used as decoration
+- animation added only to signal "premium"
+- default shadcn examples used as the visual identity
+
+Do not solve an empty composition by adding more components. Improve scale, cropping, alignment, rhythm, color fields, and negative space first.
+
+## Recognition test
+
+If the logo disappeared, the page should still feel like an energetic Saratoga community recreation organization. If the design could belong unchanged to a SaaS startup, foundation, school, or unrelated nonprofit, refine it.
+

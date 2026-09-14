@@ -1,0 +1,42 @@
+---
+description: Editorial composition, page rhythm, image scale, hierarchy, and section relationship rules
+globs: "**/*.{tsx,jsx,css,scss}"
+alwaysApply: true
+---
+
+# Composition and layout
+
+Compose the page before extracting reusable sections. Reuse behavior and data patterns, but do not force every story into the same visual shell.
+
+## Page rhythm
+
+- Establish a clear visual climax in the first two viewport heights.
+- Alternate dense and quiet moments deliberately.
+- Vary section widths when the content calls for it.
+- Use occasional full-bleed or near-full-bleed photography.
+- Let headings, images, numbers, and backgrounds create relationships across section boundaries.
+- Use asymmetry, overlap, or offset alignment only when it strengthens hierarchy.
+- Give impact stories more visual weight than organization logos or supporting metadata.
+- Preserve useful white space without stretching every section into a large empty band.
+
+## Homepage hierarchy
+
+The homepage should move naturally through:
+
+1. Mission and primary action.
+2. Evidence of community impact.
+3. Supported programs and organizations.
+4. Featured projects and grants.
+5. The next events.
+6. Donation and contact actions.
+
+This is a narrative priority, not a requirement that every item become an isolated rectangular component.
+
+## Projects and grants
+
+Treat `/projects-grants` as the strongest proof page. Make year, amount or funding detail, recipient, photography, and benefit easy to scan. Avoid reducing meaningful projects to a uniform ecommerce-style card grid. Use editorial grouping, a timeline, varied feature scale, or another coherent system when it better communicates accumulated impact.
+
+## Components
+
+Before creating a component, search for an existing equivalent. Use semantic HTML where a design-system component adds no value. Abstract after a repeatable pattern is demonstrated. A shared data shape does not require an identical visual presentation on every page.
+

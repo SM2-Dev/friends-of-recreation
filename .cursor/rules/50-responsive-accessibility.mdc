@@ -1,0 +1,36 @@
+---
+description: Mobile-first composition and WCAG 2.2 AA interaction requirements
+globs: "**/*.{tsx,jsx,css,scss}"
+alwaysApply: true
+---
+
+# Responsive and accessible design
+
+Mobile is a distinct composition, not desktop columns stacked mechanically.
+
+At each breakpoint review hierarchy, content order, text measure, heading wraps, image crops, tap targets, spacing, forms, and decorative complexity. Preserve the core visual idea while simplifying anything that becomes noisy or fragile.
+
+## Mobile priorities
+
+- Make mission and Donate easy to understand and reach.
+- Surface the next event and recent impact early.
+- Keep grant and contact actions obvious.
+- Use full-width cards where cards are justified.
+- Do not use an intrusive sticky donation banner.
+
+## Accessibility baseline
+
+- Use semantic landmarks and a skip-navigation link.
+- Preserve a logical heading hierarchy.
+- Ensure all interactive elements work by keyboard.
+- Provide visible, high-contrast focus states.
+- Meet WCAG 2.2 AA color contrast.
+- Use accessible names for controls and external-link indicators with clear context.
+- Announce validation errors and success states; never rely on color alone.
+- Associate every input with a label and helpful error text.
+- Keep touch targets comfortably sized.
+- Respect reduced-motion preferences.
+- Test zoom, text enlargement, long content, empty states, and error states.
+
+Accessibility corrections take priority over decorative intent. When a composition conflicts with usability, preserve the idea through a safer implementation rather than removing access.
+

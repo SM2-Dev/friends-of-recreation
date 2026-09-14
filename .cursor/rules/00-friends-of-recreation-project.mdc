@@ -1,0 +1,40 @@
+---
+description: Project goals, audience, scope, content priorities, and non-negotiable constraints for the Friends of Recreation website
+alwaysApply: true
+---
+
+# Friends of Recreation project
+
+Build a polished, community-focused website for Saratoga Springs Friends of Recreation. The organization is volunteer-led and raises funds for recreation programs, facilities, equipment, camps, scholarships, and community projects in Saratoga Springs, New York.
+
+## Product goals
+
+- Explain the mission within the first homepage screen.
+- Make community impact tangible through real projects, dates, recipients, amounts, and photography.
+- Keep upcoming events easy to find and archive past events by date.
+- Make Donate prominent while keeping payment processing external.
+- Let non-technical board members maintain changing content in Payload CMS.
+- Store contact and grant-request submissions in Payload and send notifications.
+- Launch a small, fast, accessible site that can grow without rebuilding the content model.
+
+## Public routes
+
+- `/` - Home
+- `/board-members` - Board Members
+- `/events` - Upcoming and Past Events
+- `/projects-grants` - Projects, Grants, and Grant Request Form
+
+Use fixed, purpose-built page templates. Do not introduce a generic Pages collection, drag-and-drop page builder, blog, site search, public accounts, custom payment processing, event registration, grant portal, or analytics dashboard unless the user explicitly expands scope.
+
+## Audience and priority
+
+Design for local families, residents, donors, volunteers, community partners, and grant applicants. Many visits will arrive on mobile from Facebook or event links. On small screens prioritize mission, Donate, the next event, recent impact, and grant/contact actions.
+
+## Voice
+
+Write in a warm, direct, civic voice. Be optimistic and concrete. Prefer plain language about what was funded and who benefited. Avoid institutional jargon, startup language, vague impact claims, childish copy, and generic nonprofit slogans.
+
+## Content truth
+
+Do not invent board members, project outcomes, testimonials, partners, dates, dollar amounts, or local facts. Clearly label development placeholders. Historical project details in the project brief remain provisional until the board confirms them.
+

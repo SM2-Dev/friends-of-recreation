@@ -1,0 +1,48 @@
+---
+description: Required visual review, Impeccable refinement, and completion gate for UI work
+globs: "**/*.{tsx,jsx,css,scss}"
+alwaysApply: true
+---
+
+# Design review and Impeccable
+
+Do not call substantial UI work finished after code compiles. Review the rendered page at small mobile, large mobile, tablet, desktop, and large desktop widths.
+
+## Impeccable's role
+
+When Impeccable is installed, use it after the first coherent implementation as a tactical critique and refinement layer. Follow the installed Impeccable instructions and use the relevant commands, typically:
+
+- `/critique` for brand fit, hierarchy, cognitive load, and AI-pattern review
+- `/audit` for accessibility, responsiveness, performance, theming, and technical issues
+- `/typeset`, `/layout`, or `/adapt` for focused corrections
+- `/polish` for the final alignment, spacing, consistency, and detail pass
+
+If commands are namespaced in the installed version, use their Impeccable-prefixed equivalents.
+
+Do not let a refinement suggestion override the approved project brief, brand assets, accessibility, or intentional composition. Impeccable improves execution; it does not redefine the brand. Reject or adapt advice that would flatten the page into a generic component-library layout.
+
+## Review order
+
+1. Confirm the page communicates its purpose and primary action.
+2. Fix accessibility and functional defects.
+3. Fix hierarchy, typography, image crops, spacing, and responsive behavior.
+4. Remove generic AI patterns and redundant UI.
+5. Run the brand-specific recognition test.
+
+## Completion gate
+
+Ask:
+
+- Is the mission clear in the first homepage screen?
+- Does the page show evidence rather than vague claims?
+- Could this layout belong unchanged to almost any nonprofit or startup?
+- Does it resemble a Tailwind or shadcn demo?
+- Are too many elements cards, pills, or equally weighted?
+- Is photography large and purposeful enough?
+- Is Projects & Grants treated as major storytelling rather than a database dump?
+- Does each breakpoint feel composed rather than merely rearranged?
+- Are loading, empty, error, long-copy, and missing-image states sound?
+- Is there at least one memorable visual idea, supported by a consistent system?
+
+Continue refining if the answer exposes a meaningful weakness. Summarize important review findings and the changes made.
+

@@ -1,0 +1,53 @@
+---
+description: Next.js App Router, Payload CMS, forms, content modeling, SEO, and performance conventions
+globs: "**/*.{ts,tsx,js,jsx}"
+alwaysApply: true
+---
+
+# Next.js and Payload implementation
+
+Use the existing repository as the source of truth. Before editing, inspect its package manager, versions, routes, generated Payload types, Tailwind setup, global styles, components, and established conventions. Do not replace working architecture merely to match this guide.
+
+## Rendering and data
+
+- Prefer React Server Components and server-side Payload Local API reads.
+- Add client components only for interactions that require browser state.
+- Use generated Payload TypeScript types; do not duplicate CMS types manually.
+- Use Payload relationships instead of duplicating media, organization, project, or event data.
+- Use `next/image` with intentional responsive sizes and crops.
+- Keep public queries from returning admin-only status notes or submission data.
+- Revalidate public routes after relevant CMS writes using the project's chosen strategy.
+
+## Content architecture
+
+Use collections for repeating records: Users, Media, BoardMembers, Events, Projects, Organizations, ContactSubmissions, and GrantRequests.
+
+Use globals for singleton content: SiteSettings, HomePage, and PageContent.
+
+Keep the four public routes purpose-built. Avoid arbitrary layout-block schemas in v1.
+
+## Events
+
+- Determine upcoming versus past primarily from `endDate`, falling back to `startDate`.
+- Sort upcoming ascending and past descending.
+- Support cancelled and draft handling.
+- Use a CMS-controlled empty state when no upcoming events exist.
+- No event-detail pages are required for v1.
+
+## Forms and security
+
+- Validate on the server.
+- Apply Turnstile or the project's equivalent spam protection.
+- Persist submissions in Payload before or alongside notification handling.
+- Keep internal status and notes private.
+- Provide accessible pending, success, and error states.
+- Treat uploads as untrusted; the grant attachment is optional PDF only unless scope changes.
+- Keep secrets in environment variables.
+
+## Production
+
+- Use permanent object storage for production media.
+- Commit and deploy database migrations through the established workflow.
+- Optimize server rendering, images, bundles, and cache invalidation for predictable editorial updates.
+- Add unique metadata, Open Graph defaults, sitemap, robots, canonicals, and Organization structured data.
+

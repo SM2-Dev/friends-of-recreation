@@ -1,0 +1,40 @@
+---
+description: Typography, brand color, token, shape, and design-system discipline for frontend work
+globs: "**/*.{tsx,jsx,css,scss}"
+alwaysApply: true
+---
+
+# Typography and color
+
+Typography should carry much of the visual identity. Use scale, weight, line length, and wrapping to create energy before adding decoration.
+
+## Typography
+
+- Inspect existing fonts and brand assets before choosing type.
+- Do not select Inter or Geist merely because they are available.
+- Use a readable body face and a distinctive display strategy appropriate to a local recreation organization.
+- A second family is optional; first use size, weight, width, spacing, and case well.
+- Keep body copy at a comfortable measure.
+- Use intentional heading wraps; avoid accidental orphan words.
+- Do not automatically center headings.
+- Avoid tiny uppercase labels, repeated eyebrow text, oversized italic-serif shortcuts, and display headlines so large that they crowd the mission or CTA off the first screen.
+- Maintain a logical semantic heading order independent of visual size.
+
+## Color
+
+- Derive the final palette from the approved Friends of Recreation logo and existing brand assets.
+- Do not invent final brand colors when the logo or approved palette is unavailable.
+- Once approved, define semantic CSS variables and use them instead of arbitrary component values.
+- Give colors roles such as canvas, ink, brand, action, supporting field, and border.
+- Use one dominant field and restrained supporting accents rather than every brand color at once.
+- Verify WCAG 2.2 AA contrast in actual states and backgrounds.
+
+## Shape and effects
+
+- Establish a small radius scale from the brand's geometry.
+- Do not reach automatically for `rounded-xl`, `rounded-2xl`, `shadow-lg`, or hairline-border-plus-wide-shadow cards.
+- Use borders, radius, and shadows only when they explain grouping, elevation, or interaction.
+- Prefer semantic design tokens over arbitrary values. Exact one-off values are acceptable when faithfully implementing a deliberate approved composition.
+
+Treat shadcn/ui as behavior and accessibility infrastructure, not as the site's visual language. Restyle primitives to fit the project and do not wrap ordinary content in `Card` by default.
+

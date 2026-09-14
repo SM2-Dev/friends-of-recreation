@@ -1,0 +1,32 @@
+---
+description: Authentic photography, image treatment, motion, and visual-detail requirements
+globs: "**/*.{tsx,jsx,css,scss}"
+alwaysApply: true
+---
+
+# Photography and motion
+
+## Photography
+
+Authentic Saratoga Springs recreation photography is the primary visual material. Favor programs, facilities, volunteers, families, events, and funded improvements over generic stock photos.
+
+- Choose crops that show activity, relationship, and place.
+- Use large images when they are strong enough to carry the composition.
+- Preserve meaningful subjects across responsive crops with intentional `object-position` values when needed.
+- Use `next/image`, meaningful `sizes`, appropriate priority, and stable aspect ratios.
+- Require descriptive alt text for meaningful CMS images; use empty alt text for truly decorative images.
+- Never invent a rough mascot, hand-coded illustration, or collage to compensate for missing photography.
+- Do not place essential text inside images.
+
+Logo grids should remain secondary proof, not the primary visual moment.
+
+## Motion
+
+Motion should clarify state, sequence, or spatial relationship, or add one restrained moment of delight.
+
+- Prefer a few coherent motion patterns over animation on every card.
+- Avoid bouncing CTAs, perpetual icon motion, scroll-jacking, cursor effects, and decorative parallax.
+- Keep interactions responsive and reversible.
+- Respect `prefers-reduced-motion` and preserve all meaning without animation.
+- Validate performance on mobile before keeping scroll-driven effects.
+
