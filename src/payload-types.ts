@@ -787,7 +787,7 @@ export interface ContactSubmission {
   /**
    * Internal workflow only. Never shown publicly.
    */
-  status: 'new' | 'reviewing' | 'follow-up' | 'approved' | 'declined' | 'closed';
+  status: 'new' | 'in-progress' | 'closed';
   /**
    * Staff notes. Never returned to the public site or confirmation screens.
    */
@@ -806,7 +806,7 @@ export interface GrantRequest {
   organizationName: string;
   contactName: string;
   email: string;
-  phone: string;
+  phone?: string | null;
   /**
    * Optional public website for the requesting group.
    */
@@ -830,7 +830,7 @@ export interface GrantRequest {
   /**
    * Internal workflow only. Never shown publicly.
    */
-  status: 'new' | 'reviewing' | 'follow-up' | 'approved' | 'declined' | 'closed';
+  status: 'new' | 'in-review' | 'awarded' | 'declined' | 'closed';
   /**
    * Staff notes. Never returned to the public site or confirmation screens.
    */
