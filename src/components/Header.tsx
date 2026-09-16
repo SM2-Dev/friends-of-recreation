@@ -3,12 +3,11 @@ import Link from 'next/link'
 import { DonateControl } from '@/components/DonateControl'
 import { MobileNav } from '@/components/MobileNav'
 import { NavLinks } from '@/components/NavLinks'
-import { primaryNav } from '@/components/navItems'
-import { getSiteSettings } from '@/lib/cms'
+import { getNavItems, getSiteSettings } from '@/lib/cms'
 import { isMedia } from '@/lib/utils'
 
 export async function Header() {
-  const settings = await getSiteSettings()
+  const [settings, nav] = await Promise.all([getSiteSettings(), getNavItems()])
   const logo = isMedia(settings.logo) ? settings.logo : null
   const donateUrl = 'donationUrl' in settings ? settings.donationUrl : null
   const donateLabel = settings.donationLabel || 'Donate'
@@ -27,7 +26,7 @@ export async function Header() {
           <span className="visually-hidden">{settings.siteName}</span>
         </Link>
 
-        <NavLinks items={primaryNav} />
+        <NavLinks items={nav} />
 
         <div className="site-header-actions">
           <DonateControl
@@ -36,7 +35,7 @@ export async function Header() {
             pendingLabel="Support us"
             url={donateUrl}
           />
-          <MobileNav items={primaryNav} />
+          <MobileNav items={nav} />
         </div>
       </div>
     </header>

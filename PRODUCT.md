@@ -38,9 +38,11 @@ portal, not a formal foundation, not a generic nonprofit template, not a SaaS ma
 ## Content model
 
 Collections: `users`, `media`, `board-members`, `events`, `projects`, `organizations`,
-`contact-submissions`, `grant-requests`. Globals: `site-settings`, `home-page`, `page-content`.
+`pages`, `contact-submissions`, `grant-requests`. Globals: `site-settings`.
 
-Fixed, purpose-built page templates. No drag-and-drop page builder.
+Pages are composed in Payload from the site's designed section blocks. Editors can create
+a page and drag those sections into order. Do not flatten the site into a generic card-grid
+page builder.
 
 ## Capabilities
 

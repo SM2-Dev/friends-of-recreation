@@ -11,10 +11,9 @@ import { Events } from './collections/Events'
 import { GrantRequests } from './collections/GrantRequests'
 import { Media } from './collections/Media'
 import { Organizations } from './collections/Organizations'
+import { Pages } from './collections/Pages'
 import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
-import { HomePage } from './globals/HomePage'
-import { PageContent } from './globals/PageContent'
 import { SiteSettings } from './globals/SiteSettings'
 import { seedDevelopmentContent } from './seed/development'
 
@@ -38,10 +37,11 @@ export default buildConfig({
     Events,
     Projects,
     Organizations,
+    Pages,
     ContactSubmissions,
     GrantRequests,
   ],
-  globals: [SiteSettings, HomePage, PageContent],
+  globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -55,12 +55,14 @@ export default buildConfig({
   sharp,
   plugins: [],
   onInit: async (payload) => {
-    const home = await payload.findGlobal({
-      slug: 'home-page',
+    const pages = await payload.find({
+      collection: 'pages',
+      limit: 1,
       overrideAccess: true,
+      pagination: false,
     })
 
-    if (!home?.missionBody) {
+    if (pages.docs.length === 0) {
       await seedDevelopmentContent(payload)
     }
   },

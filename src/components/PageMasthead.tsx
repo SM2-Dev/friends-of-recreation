@@ -1,11 +1,13 @@
 import { SiteImage } from '@/components/SiteImage'
 import { stagger } from '@/lib/motion'
+import { cn } from '@/lib/utils'
 import type { Media } from '@/payload-types'
 
 type PageMastheadProps = {
   heading: string
   lede?: string | null
   photo?: Media | null
+  className?: string
 }
 
 /**
@@ -13,9 +15,9 @@ type PageMastheadProps = {
  * The plate sits beside the type from 52rem so the page's actual records
  * (board, events, ledger) can begin in the first viewport.
  */
-export function PageMasthead({ heading, lede, photo }: PageMastheadProps) {
+export function PageMasthead({ heading, lede, photo, className }: PageMastheadProps) {
   return (
-    <section className="masthead">
+    <section className={cn('masthead', className)}>
       <div className="masthead-inner">
         <div className="masthead-copy">
           <h1 className="enter">{heading}</h1>

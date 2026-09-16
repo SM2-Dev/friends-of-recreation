@@ -5,15 +5,17 @@ import config from '@payload-config'
 import type {
   BoardMember,
   Event,
-  HomePage,
   Media,
   Organization,
-  PageContent,
+  Page,
   Project,
   SiteSetting,
 } from '@/payload-types'
 import { splitEvents } from '@/lib/events'
 import { isEventDoc } from '@/lib/relations'
+import type { NavItem } from '@/components/navItems'
+import { primaryNav } from '@/components/navItems'
+import { pageHref } from '@/lib/slug'
 
 export const getPayloadClient = cache(async () => {
   return getPayload({ config })
@@ -30,28 +32,6 @@ const fallbackSite = {
   logo: null,
 } as const
 
-const fallbackHome = {
-  missionHeading: 'Building More Opportunities to Play in Saratoga Springs.',
-  missionBody:
-    'Saratoga Springs Friends of Recreation brings our community together to support the programs, facilities and opportunities that keep Saratoga active.',
-  heroPhotos: [],
-  heroImage: null,
-  heroImagePosition: 'center',
-  impactHeading: 'What your support pays for',
-  impactIntro: null,
-  impactStories: [],
-  organizationsHeading: 'Supported programs and facilities',
-  featuredOrganizations: [],
-  photoSliderHeading: 'Recreation around town',
-  photoSlider: [],
-  projectsHeading: 'Featured projects and grants',
-  featuredProjects: [],
-  donationHeading: 'Help more kids play here',
-  donationBody: null,
-  contactHeading: 'Ask a question',
-  contactIntro: null,
-} as const
-
 export async function getSiteSettings(): Promise<SiteSetting | typeof fallbackSite> {
   try {
     const payload = await getPayloadClient()
@@ -61,21 +41,69 @@ export async function getSiteSettings(): Promise<SiteSetting | typeof fallbackSi
   }
 }
 
-export async function getHomePage(): Promise<HomePage | typeof fallbackHome> {
+export async function getPageBySlug(slug: string): Promise<Page | null> {
   try {
     const payload = await getPayloadClient()
-    return await payload.findGlobal({ slug: 'home-page', depth: 2, draft: false })
+    const result = await payload.find({
+      collection: 'pages',
+      depth: 2,
+      draft: false,
+      limit: 1,
+      pagination: false,
+      where: {
+        slug: { equals: slug },
+      },
+    })
+    return result.docs[0] ?? null
   } catch {
-    return fallbackHome
+    return null
   }
 }
 
-export async function getPageContent(): Promise<PageContent | null> {
+export async function getHomePage(): Promise<Page | null> {
+  return getPageBySlug('home')
+}
+
+export async function getPublishedPages(): Promise<Page[]> {
   try {
     const payload = await getPayloadClient()
-    return await payload.findGlobal({ slug: 'page-content', depth: 1, draft: false })
+    const result = await payload.find({
+      collection: 'pages',
+      depth: 0,
+      draft: false,
+      limit: 100,
+      pagination: false,
+      sort: 'navOrder',
+    })
+    return result.docs
   } catch {
-    return null
+    return []
+  }
+}
+
+export async function getNavItems(): Promise<NavItem[]> {
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'pages',
+      depth: 0,
+      draft: false,
+      limit: 50,
+      pagination: false,
+      sort: 'navOrder',
+      where: {
+        showInNav: { equals: true },
+      },
+    })
+
+    const items = result.docs.map((page) => ({
+      href: pageHref(page.slug),
+      label: page.navLabel || page.title,
+    }))
+
+    return items.length > 0 ? items : primaryNav
+  } catch {
+    return primaryNav
   }
 }
 
@@ -96,7 +124,7 @@ export async function getProjects(): Promise<Project[]> {
   }
 }
 
-/** Homepage featured grants: the collection checkbox, newest first, at most four. */
+/** Featured grants: the collection checkbox, newest first, at most four. */
 export async function getFeaturedProjects(limit = 4): Promise<Project[]> {
   try {
     const payload = await getPayloadClient()

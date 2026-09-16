@@ -1,4 +1,9 @@
 import type { Media, Project } from '@/payload-types'
+import {
+  publicGroupForCategory,
+  publicGroupLabel,
+  type PublicProjectGroup,
+} from '@/lib/projectCategories'
 import { isMedia } from '@/lib/utils'
 
 export type HomePhoto = {
@@ -17,13 +22,13 @@ function slotPosition(value: unknown, fallback = 'center'): string {
   return typeof value.position === 'string' && value.position.trim() ? value.position : fallback
 }
 
-/** Hero plates from the Home page global: 1–3 CMS photographs, with the old single image as fallback. */
-export function homeHeroPhotos(home: {
-  heroPhotos?: unknown
-  heroImage?: unknown
-  heroImagePosition?: string | null
+/** Hero plates: 1–3 CMS photographs, with a single fallback image if the list is empty. */
+export function heroPhotosFrom(block: {
+  photos?: unknown
+  fallbackImage?: unknown
+  fallbackImagePosition?: string | null
 }): HomePhoto[] {
-  const slots = Array.isArray(home.heroPhotos) ? home.heroPhotos : []
+  const slots = Array.isArray(block.photos) ? block.photos : []
   const photos: HomePhoto[] = []
 
   for (const slot of slots) {
@@ -35,17 +40,17 @@ export function homeHeroPhotos(home: {
 
   if (photos.length > 0) return photos
 
-  if (isMedia(home.heroImage) && home.heroImage.url) {
-    return [{ media: home.heroImage, position: home.heroImagePosition || 'center' }]
+  if (isMedia(block.fallbackImage) && block.fallbackImage.url) {
+    return [{ media: block.fallbackImage, position: block.fallbackImagePosition || 'center' }]
   }
 
   return []
 }
 
-/** Homepage slider photographs. Empty until editors add them — never a dump of the media library. */
-export function homeSliderPhotos(home: { photoSlider?: unknown }): Media[] {
-  if (!Array.isArray(home.photoSlider)) return []
-  return home.photoSlider.map(slotImage).filter((photo): photo is Media => Boolean(photo))
+/** Photo-rail slides. Empty until editors add them — never a dump of the media library. */
+export function sliderPhotosFrom(block: { slides?: unknown }): Media[] {
+  if (!Array.isArray(block.slides)) return []
+  return block.slides.map(slotImage).filter((photo): photo is Media => Boolean(photo))
 }
 
 /** A bare dollar figure can carry display weight. A sentence cannot. */
@@ -102,18 +107,31 @@ export function projectSpan(projects: Project[]): { first: number; latest: numbe
   }
 }
 
-export const projectCategoryLabels: Record<string, string> = {
-  playground: 'Playground',
-  facility: 'Facility',
-  equipment: 'Equipment',
-  camp: 'Camp',
-  scholarship: 'Scholarship',
-  other: 'Community project',
+export function categoryLabel(category?: string | null): string | null {
+  const group = publicGroupForCategory(category)
+  return group ? publicGroupLabel(group) : null
 }
 
-export function categoryLabel(category?: string | null): string | null {
-  if (!category) return null
-  return projectCategoryLabels[category] ?? null
+export function groupProjectsByYear(projects: Project[]): Array<{ year: number; projects: Project[] }> {
+  const groups: Array<{ year: number; projects: Project[] }> = []
+
+  for (const project of projects) {
+    const last = groups[groups.length - 1]
+    if (last && last.year === project.year) {
+      last.projects.push(project)
+    } else {
+      groups.push({ year: project.year, projects: [project] })
+    }
+  }
+
+  return groups
+}
+
+export function latestProjectInCategory(
+  projects: Project[],
+  group: PublicProjectGroup,
+): Project | null {
+  return projects.find((project) => publicGroupForCategory(project.category) === group) ?? null
 }
 
 /** Split an inscribed proof line on middots so named places can stack and scan. */
