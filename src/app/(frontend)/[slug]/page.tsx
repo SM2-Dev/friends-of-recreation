@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 
 import { PageLayout } from '@/components/PageLayout'
-import { getPageBySlug, getPublishedPages } from '@/lib/cms'
-import { pageHref } from '@/lib/slug'
+import { getPageBySlug, getPublishedPages, getSiteSettings } from '@/lib/cms'
+import { pageMetadata } from '@/lib/seo'
 
 type PageParams = {
   params: Promise<{ slug: string }>
@@ -20,14 +20,8 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   const { slug } = await params
   if (slug === 'home') return {}
 
-  const page = await getPageBySlug(slug)
-  if (!page) return { title: 'Page not found' }
-
-  return {
-    title: page.metaTitle || page.title,
-    description: page.metaDescription || undefined,
-    alternates: { canonical: pageHref(page.slug) },
-  }
+  const [page, settings] = await Promise.all([getPageBySlug(slug), getSiteSettings()])
+  return pageMetadata({ page, settings })
 }
 
 export default async function CmsPage({ params }: PageParams) {

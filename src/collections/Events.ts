@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { publishedOrStaff, staffOnly } from '@/access'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidatePublic'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -23,6 +24,10 @@ export const Events: CollectionConfig = {
     update: staffOnly,
     delete: staffOnly,
     read: publishedOrStaff,
+  },
+  hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
   },
   fields: [
     {

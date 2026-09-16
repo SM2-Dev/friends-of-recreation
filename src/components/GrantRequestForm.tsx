@@ -1,14 +1,16 @@
 'use client'
 
-import { useActionState, useId } from 'react'
+import { useActionState, useEffect, useId, useRef } from 'react'
 
 import { Button } from '@/components/Button'
+import { TurnstileField } from '@/components/TurnstileField'
 import { submitGrantRequest } from '@/app/(frontend)/actions/submitGrant'
 import type { GrantField } from '@/lib/grant'
 import { initialGrantState } from '@/lib/grantState'
 
 type GrantRequestFormProps = {
   heading: string
+  headingId?: string
   intro?: string | null
 }
 
@@ -24,19 +26,38 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   )
 }
 
-export function GrantRequestForm({ heading, intro }: GrantRequestFormProps) {
+export function GrantRequestForm({ heading, headingId, intro }: GrantRequestFormProps) {
   const [state, action, pending] = useActionState(submitGrantRequest, initialGrantState)
-  const formId = useId()
+  const generatedId = useId()
+  const formId = generatedId.replace(/:/g, '')
+  const titleId = headingId || `${formId}-heading`
+  const successRef = useRef<HTMLDivElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
   const fieldErrors = state.fieldErrors ?? {}
   const values = state.values ?? initialGrantState.values
 
-  const errorId = (field: GrantField) => `${formId}-${field}-error`
-  const describedBy = (field: GrantField) => (fieldErrors[field] ? errorId(field) : undefined)
+  useEffect(() => {
+    if (state.status === 'success') {
+      successRef.current?.focus()
+      return
+    }
+
+    if (state.status !== 'error') return
+
+    const invalid = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')
+    invalid?.focus()
+  }, [state])
+
+  const errorId = (field: GrantField | 'attachment') => `${formId}-${field}-error`
+  const describedBy = (field: GrantField | 'attachment', extra?: string) => {
+    const ids = [fieldErrors[field] ? errorId(field) : undefined, extra].filter(Boolean)
+    return ids.length > 0 ? ids.join(' ') : undefined
+  }
 
   if (state.status === 'success') {
     return (
-      <div className="contact-success" role="status">
-        <h2 id="grant-request-heading">{heading}</h2>
+      <div className="contact-success" ref={successRef} role="status" tabIndex={-1}>
+        <h2 id={titleId}>{heading}</h2>
         <p>
           Thank you. Your request was saved for the Friends of Recreation board. A volunteer will
           contact you if more information is needed.
@@ -46,16 +67,25 @@ export function GrantRequestForm({ heading, intro }: GrantRequestFormProps) {
     )
   }
 
+  const attachmentHintId = `${formId}-attachment-hint`
+
   return (
     <form
       action={action}
-      aria-describedby={state.formError ? `${formId}-form-error` : undefined}
+      aria-describedby={
+        [intro ? `${formId}-intro` : undefined, state.formError ? `${formId}-form-error` : undefined]
+          .filter(Boolean)
+          .join(' ') || undefined
+      }
+      aria-labelledby={titleId}
       className="grant-form"
+      encType="multipart/form-data"
       noValidate
+      ref={formRef}
     >
       <header className="grant-form-intro">
-        <h2 id="grant-request-heading">{heading}</h2>
-        {intro ? <p>{intro}</p> : null}
+        <h2 id={titleId}>{heading}</h2>
+        {intro ? <p id={`${formId}-intro`}>{intro}</p> : null}
       </header>
 
       {state.formError ? (
@@ -232,7 +262,27 @@ export function GrantRequestForm({ heading, intro }: GrantRequestFormProps) {
         <FieldError id={errorId('requestedTimeline')} message={fieldErrors.requestedTimeline} />
       </div>
 
+      <div className="form-field">
+        <label htmlFor={`${formId}-attachment`}>
+          Supporting PDF <span className="form-optional">(optional)</span>
+        </label>
+        <input
+          accept="application/pdf,.pdf"
+          aria-describedby={describedBy('attachment', attachmentHintId)}
+          aria-invalid={Boolean(fieldErrors.attachment)}
+          id={`${formId}-attachment`}
+          name="attachment"
+          type="file"
+        />
+        <p className="form-hint" id={attachmentHintId}>
+          PDF only, 8 MB or smaller. The file stays private with the board and is never shown on the website.
+        </p>
+        <FieldError id={errorId('attachment')} message={fieldErrors.attachment} />
+      </div>
+
       <p className="form-disclaimer">{DISCLAIMER}</p>
+
+      <TurnstileField resetSignal={state.status} />
 
       <Button busy={pending} disabled={pending} type="submit">
         {pending ? 'Sending…' : 'Send request'}

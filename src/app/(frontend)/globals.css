@@ -244,6 +244,16 @@ select {
   top: var(--s4);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
+
+#main-content:focus {
+  outline: none;
+}
+
 .container {
   width: 100%;
   margin-inline: auto;
@@ -2899,6 +2909,11 @@ a.next-event-card:focus-visible {
 .form-field textarea {
   min-height: 9rem;
   resize: vertical;
+}
+
+.form-field input[type='file'] {
+  padding: 0.7rem 0.85rem;
+  background: var(--paper-2);
 }
 
 .form-field input:user-invalid,

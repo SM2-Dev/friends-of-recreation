@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, Ref } from 'react'
 import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
@@ -16,6 +16,7 @@ type ButtonProps = {
   ariaDescribedBy?: string
   disabled?: boolean
   busy?: boolean
+  ref?: Ref<HTMLButtonElement>
 }
 
 export function Button({
@@ -31,6 +32,7 @@ export function Button({
   ariaDescribedBy,
   disabled,
   busy,
+  ref,
 }: ButtonProps) {
   const classes = cn('button', `button-${variant}`, className)
 
@@ -60,6 +62,7 @@ export function Button({
       className={classes}
       disabled={disabled}
       onClick={onClick}
+      ref={ref}
       type={type}
     >
       {children}

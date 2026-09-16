@@ -1,14 +1,16 @@
 'use client'
 
-import { useActionState, useId } from 'react'
+import { useActionState, useEffect, useId, useRef } from 'react'
 
 import { Button } from '@/components/Button'
+import { TurnstileField } from '@/components/TurnstileField'
 import { submitContact } from '@/app/(frontend)/actions/submitContact'
 import type { ContactField } from '@/lib/contact'
 import { initialContactState } from '@/lib/contactState'
 
 type ContactFormProps = {
   heading: string
+  headingId?: string
   intro?: string | null
 }
 
@@ -21,11 +23,27 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   )
 }
 
-export function ContactForm({ heading, intro }: ContactFormProps) {
+export function ContactForm({ heading, headingId, intro }: ContactFormProps) {
   const [state, action, pending] = useActionState(submitContact, initialContactState)
-  const formId = useId()
+  const generatedId = useId()
+  const formId = generatedId.replace(/:/g, '')
+  const titleId = headingId || `${formId}-heading`
+  const successRef = useRef<HTMLDivElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
   const fieldErrors = state.fieldErrors ?? {}
   const values = state.values ?? initialContactState.values
+
+  useEffect(() => {
+    if (state.status === 'success') {
+      successRef.current?.focus()
+      return
+    }
+
+    if (state.status !== 'error') return
+
+    const invalid = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')
+    invalid?.focus()
+  }, [state])
 
   const describedBy = (field: ContactField) => {
     const errorId = `${formId}-${field}-error`
@@ -34,18 +52,29 @@ export function ContactForm({ heading, intro }: ContactFormProps) {
 
   if (state.status === 'success') {
     return (
-      <div className="contact-success" role="status">
-        <h2 id="contact-heading">{heading}</h2>
+      <div className="contact-success" ref={successRef} role="status" tabIndex={-1}>
+        <h2 id={titleId}>{heading}</h2>
         <p>Thank you. Your message was saved for the Friends of Recreation board. We will follow up if a reply is needed.</p>
       </div>
     )
   }
 
   return (
-    <form action={action} aria-describedby={state.formError ? `${formId}-form-error` : undefined} className="contact-form" noValidate>
+    <form
+      action={action}
+      aria-describedby={
+        [intro ? `${formId}-intro` : undefined, state.formError ? `${formId}-form-error` : undefined]
+          .filter(Boolean)
+          .join(' ') || undefined
+      }
+      aria-labelledby={titleId}
+      className="contact-form"
+      noValidate
+      ref={formRef}
+    >
       <header className="contact-form-intro">
-        <h2 id="contact-heading">{heading}</h2>
-        {intro ? <p>{intro}</p> : null}
+        <h2 id={titleId}>{heading}</h2>
+        {intro ? <p id={`${formId}-intro`}>{intro}</p> : null}
       </header>
 
       {state.formError ? (
@@ -131,6 +160,8 @@ export function ContactForm({ heading, intro }: ContactFormProps) {
         />
         <FieldError id={`${formId}-message-error`} message={fieldErrors.message} />
       </div>
+
+      <TurnstileField resetSignal={state.status} />
 
       <Button busy={pending} disabled={pending} type="submit">
         {pending ? 'Sending…' : 'Send message'}

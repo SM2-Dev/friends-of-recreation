@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 
 import { Button } from '@/components/Button'
 import type { NavItem } from '@/components/navItems'
@@ -13,19 +13,27 @@ type MobileNavProps = {
 export function MobileNav({ items }: MobileNavProps) {
   const [open, setOpen] = useState(false)
   const panelId = useId()
+  const toggleRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (!open) return undefined
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape') {
+        setOpen(false)
+        toggleRef.current?.focus()
+      }
     }
 
     const firstLink = document.querySelector<HTMLAnchorElement>(`#${CSS.escape(panelId)} a`)
     firstLink?.focus()
+    document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', onKeyDown)
 
-    return () => document.removeEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKeyDown)
+    }
   }, [open, panelId])
 
   return (
@@ -35,15 +43,12 @@ export function MobileNav({ items }: MobileNavProps) {
         ariaExpanded={open}
         className="mobile-nav-toggle"
         onClick={() => setOpen((current) => !current)}
+        ref={toggleRef}
         variant="nav"
       >
-        {open ? 'Close' : 'Menu'}
+        {open ? 'Close menu' : 'Menu'}
       </Button>
-      <div
-        className="mobile-nav-panel"
-        hidden={!open}
-        id={panelId}
-      >
+      <div className="mobile-nav-panel" hidden={!open} id={panelId}>
         <nav aria-label="Primary mobile">
           <ul className="mobile-nav-list">
             {items.map((item) => (
