@@ -30,3 +30,13 @@ export async function notifyStaffOfContact(_input: {
 }): Promise<NotificationResult> {
   return { sent: false, reason: 'not-configured' }
 }
+
+export async function notifyStaffOfGrantRequest(_input: {
+  organizationName: string
+  contactName: string
+  email: string
+  projectTitle: string
+  to?: string | null
+}): Promise<NotificationResult> {
+  return { sent: false, reason: 'not-configured' }
+}

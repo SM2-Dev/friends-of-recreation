@@ -334,7 +334,7 @@ export interface Project {
   summary: string;
   image?: (number | null) | Media;
   /**
-   * Featured projects can be selected on the homepage.
+   * Show this project on the homepage featured strip. Up to four, newest first.
    */
   featured?: boolean | null;
   updatedAt: string;
@@ -405,7 +405,14 @@ export interface GrantRequest {
   contactName: string;
   email: string;
   phone?: string | null;
+  /**
+   * Optional public website for the requesting group.
+   */
+  website?: string | null;
   projectTitle: string;
+  beneficiaries?: string | null;
+  recreationImpact?: string | null;
+  requestedTimeline?: string | null;
   /**
    * What the grant would support, who would benefit, and any confirmed details.
    */
@@ -701,7 +708,11 @@ export interface GrantRequestsSelect<T extends boolean = true> {
   contactName?: T;
   email?: T;
   phone?: T;
+  website?: T;
   projectTitle?: T;
+  beneficiaries?: T;
+  recreationImpact?: T;
+  requestedTimeline?: T;
   description?: T;
   amountRequested?: T;
   attachment?: T;
@@ -811,11 +822,24 @@ export interface HomePage {
    */
   missionBody: string;
   /**
-   * Large authentic recreation photograph. Leave empty until approved photography is available.
+   * Add 1 photograph, or 3 for an offset cluster. Two also works. These plates sit beside the headline — they are not the photo slider.
+   */
+  heroPhotos?:
+    | {
+        image: number | Media;
+        /**
+         * CSS object-position, such as center or 30% 40%, so faces stay in crop.
+         */
+        position?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fallback if Hero photographs is empty. Prefer the photographs list above.
    */
   heroImage?: (number | null) | Media;
   /**
-   * CSS object-position, such as center or 30% 40%, so faces stay in crop.
+   * Used only with the fallback hero image.
    */
   heroImagePosition?: string | null;
   impactHeading?: string | null;
@@ -824,7 +848,7 @@ export interface HomePage {
    */
   impactIntro?: string | null;
   /**
-   * Up to three impact stories. They are typeset on one field at unequal scale, not as three matching cards. Leave empty rather than inventing results.
+   * Up to three impact stories. They are typeset as a manifesto — a loud heading, named-place proof, and a reading column — not as matching cards. Leave empty rather than inventing results.
    */
   impactStories?:
     | {
@@ -842,9 +866,19 @@ export interface HomePage {
    * Supported programs and facilities to highlight on the homepage.
    */
   featuredOrganizations?: (number | Organization)[] | null;
+  photoSliderHeading?: string | null;
+  /**
+   * Homepage photo slider. Add recreation photographs only. Organization logos belong on each Organization record, not here.
+   */
+  photoSlider?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   projectsHeading?: string | null;
   /**
-   * Three to four featured projects. Leave empty rather than adding unconfirmed examples.
+   * The homepage now reads the Featured checkbox on each project (newest first, up to four). This relationship is not used for the public homepage.
    */
   featuredProjects?: (number | Project)[] | null;
   donationHeading?: string | null;
@@ -924,6 +958,13 @@ export interface SiteSettingsSelect<T extends boolean = true> {
 export interface HomePageSelect<T extends boolean = true> {
   missionHeading?: T;
   missionBody?: T;
+  heroPhotos?:
+    | T
+    | {
+        image?: T;
+        position?: T;
+        id?: T;
+      };
   heroImage?: T;
   heroImagePosition?: T;
   impactHeading?: T;
@@ -938,6 +979,13 @@ export interface HomePageSelect<T extends boolean = true> {
       };
   organizationsHeading?: T;
   featuredOrganizations?: T;
+  photoSliderHeading?: T;
+  photoSlider?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   projectsHeading?: T;
   featuredProjects?: T;
   donationHeading?: T;

@@ -108,7 +108,7 @@ export const Projects: CollectionConfig = {
       type: 'checkbox',
       defaultValue: false,
       admin: {
-        description: 'Featured projects can be selected on the homepage.',
+        description: 'Show this project on the homepage featured strip. Up to four, newest first.',
       },
     },
   ],

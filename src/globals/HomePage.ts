@@ -43,11 +43,40 @@ export const HomePage: GlobalConfig = {
           },
         },
         {
+          name: 'heroPhotos',
+          type: 'array',
+          maxRows: 3,
+          labels: {
+            singular: 'Photograph',
+            plural: 'Photographs',
+          },
+          admin: {
+            description:
+              'Add 1 photograph, or 3 for an offset cluster. Two also works. These plates sit beside the headline — they are not the photo slider.',
+          },
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+            {
+              name: 'position',
+              type: 'text',
+              defaultValue: 'center',
+              admin: {
+                description: 'CSS object-position, such as center or 30% 40%, so faces stay in crop.',
+              },
+            },
+          ],
+        },
+        {
           name: 'heroImage',
           type: 'upload',
           relationTo: 'media',
           admin: {
-            description: 'Large authentic recreation photograph. Leave empty until approved photography is available.',
+            description: 'Fallback if Hero photographs is empty. Prefer the photographs list above.',
           },
         },
         {
@@ -55,7 +84,7 @@ export const HomePage: GlobalConfig = {
           type: 'text',
           defaultValue: 'center',
           admin: {
-            description: 'CSS object-position, such as center or 30% 40%, so faces stay in crop.',
+            description: 'Used only with the fallback hero image.',
           },
         },
       ],
@@ -85,7 +114,7 @@ export const HomePage: GlobalConfig = {
           maxRows: 3,
           admin: {
             description:
-              'Up to three impact stories. They are typeset on one field at unequal scale, not as three matching cards. Leave empty rather than inventing results.',
+              'Up to three impact stories. They are typeset as a manifesto — a loud heading, named-place proof, and a reading column — not as matching cards. Leave empty rather than inventing results.',
           },
           fields: [
             {
@@ -128,6 +157,31 @@ export const HomePage: GlobalConfig = {
           },
         },
         {
+          name: 'photoSliderHeading',
+          type: 'text',
+          defaultValue: 'Recreation around town',
+        },
+        {
+          name: 'photoSlider',
+          type: 'array',
+          labels: {
+            singular: 'Slide',
+            plural: 'Slides',
+          },
+          admin: {
+            description:
+              'Homepage photo slider. Add recreation photographs only. Organization logos belong on each Organization record, not here.',
+          },
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+          ],
+        },
+        {
           name: 'projectsHeading',
           type: 'text',
           defaultValue: 'Featured projects and grants',
@@ -139,7 +193,8 @@ export const HomePage: GlobalConfig = {
           hasMany: true,
           maxRows: 4,
           admin: {
-            description: 'Three to four featured projects. Leave empty rather than adding unconfirmed examples.',
+            description:
+              'The homepage now reads the Featured checkbox on each project (newest first, up to four). This relationship is not used for the public homepage.',
           },
         },
       ],

@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest'
 
-import { isUpcomingEvent, formatEventDate, sortPastEvents, sortUpcomingEvents, splitEvents } from '@/lib/events'
+import {
+  eventCtaLabel,
+  formatEventDate,
+  formatEventTimeLabel,
+  isUpcomingEvent,
+  sortPastEvents,
+  sortUpcomingEvents,
+  splitEvents,
+} from '@/lib/events'
 
 describe('event date logic', () => {
   const now = new Date('2026-09-14T12:00:00.000Z')
@@ -18,6 +26,11 @@ describe('event date logic', () => {
   it('falls back to startDate when there is no end date', () => {
     expect(isUpcomingEvent({ startDate: '2026-09-15T12:00:00.000Z' }, now)).toBe(true)
     expect(isUpcomingEvent({ startDate: '2026-09-13T12:00:00.000Z' }, now)).toBe(false)
+  })
+
+  it('keeps an event upcoming when its America/New_York calendar date is today, even after the clock time', () => {
+    const afternoon = new Date('2026-09-14T20:00:00.000Z')
+    expect(isUpcomingEvent({ startDate: '2026-09-14T13:00:00.000Z' }, afternoon)).toBe(true)
   })
 
   it('sorts upcoming ascending and past descending', () => {
@@ -42,5 +55,22 @@ describe('event date logic', () => {
         endDate: '2026-09-21T16:00:00.000Z',
       }),
     ).toMatch(/–/)
+  })
+
+  it('omits a time label at midnight and for multi-day events', () => {
+    expect(formatEventTimeLabel({ startDate: '2026-09-20T04:00:00.000Z' })).toBeNull()
+    expect(
+      formatEventTimeLabel({
+        startDate: '2026-09-20T16:00:00.000Z',
+        endDate: '2026-09-21T16:00:00.000Z',
+      }),
+    ).toBeNull()
+    expect(formatEventTimeLabel({ startDate: '2026-09-20T16:00:00.000Z' })).toMatch(/PM|AM/)
+  })
+
+  it('names Facebook and Eventbrite destinations in the CTA', () => {
+    expect(eventCtaLabel('https://www.facebook.com/example')).toBe('See on Facebook')
+    expect(eventCtaLabel('https://www.eventbrite.com/e/example')).toBe('Get tickets')
+    expect(eventCtaLabel('https://saratoga-springs.org/picnic')).toBe('Event details')
   })
 })

@@ -9,37 +9,45 @@ type SiteImageProps = {
   sizes: string
   priority?: boolean
   objectPosition?: string | null
+  /** Logos need the whole mark. Photographs crop. */
+  fit?: 'cover' | 'contain'
+  /** Decorative slots render nothing rather than an apology when no photo exists. */
+  hideWhenEmpty?: boolean
+  emptyLabel?: string
 }
 
-export function SiteImage({ media, className, sizes, priority, objectPosition }: SiteImageProps) {
-  if (!isMedia(media) || !media.url) {
+const DEFAULT_EMPTY = 'Photography pending. Authentic Saratoga Springs recreation photos appear here.'
+
+export function SiteImage({
+  media,
+  className,
+  sizes,
+  priority,
+  objectPosition,
+  fit = 'cover',
+  hideWhenEmpty,
+  emptyLabel = DEFAULT_EMPTY,
+}: SiteImageProps) {
+  const image = isMedia(media) && media.url ? (media as Media) : null
+
+  if (!image?.url) {
+    if (hideWhenEmpty) return null
     return (
       <div className={cn('site-image-empty', className)}>
-        <p>Photography pending. Authentic Saratoga Springs recreation photos will appear here.</p>
-      </div>
-    )
-  }
-
-  const image = media as Media
-  const src = image.url
-
-  if (!src) {
-    return (
-      <div className={cn('site-image-empty', className)}>
-        <p>Photography pending. Authentic Saratoga Springs recreation photos will appear here.</p>
+        <p>{emptyLabel}</p>
       </div>
     )
   }
 
   return (
-    <div className={cn('site-image-frame', className)}>
+    <div className={cn('site-image-frame', fit === 'contain' && 'site-image-frame-contain', className)}>
       <Image
-        alt={image.alt}
-        className="site-image"
+        alt={image.alt || ''}
+        className={cn('site-image', fit === 'contain' && 'site-image-contain')}
         fill
         priority={priority}
         sizes={sizes}
-        src={src}
+        src={image.url}
         style={objectPosition ? { objectPosition } : undefined}
       />
     </div>

@@ -1,276 +1,283 @@
 import Link from 'next/link'
 
 import { ContactForm } from '@/components/ContactForm'
+import { CtaPlaySketch } from '@/components/CtaPlaySketch'
 import { DonateControl } from '@/components/DonateControl'
+import { EventRow } from '@/components/EventRow'
+import { FeaturedGrants } from '@/components/FeaturedGrants'
+import { NextEventCard } from '@/components/NextEventCard'
+import { OrgMarks } from '@/components/OrgMarks'
+import { PhotoRail } from '@/components/PhotoRail'
 import { SiteImage } from '@/components/SiteImage'
-import { getHomePage, getPageContent, getSiteSettings, getUpcomingEvents } from '@/lib/cms'
-import { formatEventDate, formatEventDay, formatEventMonth } from '@/lib/events'
-import { isOrganization, isProject, relatedDocs } from '@/lib/relations'
-import type { Event, Organization, Project } from '@/payload-types'
+import {
+  getFeaturedProjects,
+  getHomePage,
+  getPageContent,
+  getSiteSettings,
+  getUpcomingEvents,
+} from '@/lib/cms'
+import { homeHeroPhotos, homeSliderPhotos, proofItems, type HomePhoto } from '@/lib/display'
+import { stagger } from '@/lib/motion'
+import { isOrganization, relatedDocs } from '@/lib/relations'
 
 export default async function HomePage() {
-  const [home, settings, pageContent, upcomingEvents] = await Promise.all([
+  const [home, settings, pageContent, upcomingEvents, featuredProjects] = await Promise.all([
     getHomePage(),
     getSiteSettings(),
     getPageContent(),
     getUpcomingEvents(3),
+    getFeaturedProjects(4),
   ])
 
   const donateUrl = 'donationUrl' in settings ? settings.donationUrl : null
-  const donateLabel = settings.donationLabel || 'Donate'
+  // The brief fixes the primary CTA wording; the board can still override it in Site Settings.
+  const donateLabel = settings.donationLabel || 'Support Friends of Recreation'
   const facebookUrl = 'facebookUrl' in settings ? settings.facebookUrl : null
-  const objectPosition = 'heroImagePosition' in home ? home.heroImagePosition : 'center'
-  const organizations = relatedDocs(home.featuredOrganizations, isOrganization)
-  const projects = relatedDocs(home.featuredProjects, isProject)
-  const [featuredProject, ...supportingProjects] = projects
-  const impactStories = 'impactStories' in home ? home.impactStories || [] : []
-  const nextEvent = upcomingEvents[0]
-  const emptyProjects = pageContent?.projects?.emptyMessage
-  const emptyEvents = pageContent?.events?.emptyUpcomingMessage
+
+  const heroPhotos = homeHeroPhotos(home)
+  const sliderPhotos = homeSliderPhotos(home)
+
+  const pillars = 'impactStories' in home ? home.impactStories || [] : []
+  const featuredOrganizations = relatedDocs(home.featuredOrganizations, isOrganization)
+  const [nextEvent, ...moreEvents] = upcomingEvents
 
   return (
     <>
-      <section className="home-hero">
-        <div className="home-hero-copy">
-          <div className="home-hero-copy-inner">
-            <h1>{home.missionHeading}</h1>
-            <DonateControl
-              describedById="donate-pending-hero"
-              label={donateLabel}
-              pendingVisible
-              url={donateUrl}
-            />
-            <p className="home-hero-body">{home.missionBody}</p>
-            {nextEvent ? <NextEventStrip event={nextEvent} /> : null}
-          </div>
-        </div>
-        <SiteImage
-          className="home-hero-photo"
-          media={'heroImage' in home ? home.heroImage : null}
-          objectPosition={objectPosition}
-          priority
-          sizes="(min-width: 960px) 62vw, 100vw"
-        />
-      </section>
-
-      <section aria-labelledby="impact-heading" className={`home-impact${impactStories.length ? '' : ' home-section-empty'}`}>
-        <div className="home-band home-band-wide">
-          <h2 id="impact-heading">{home.impactHeading || 'Community impact'}</h2>
-          {home.impactIntro ? <p className="home-impact-intro">{home.impactIntro}</p> : null}
-          {impactStories.length > 0 ? (
-            <ol className="home-impact-stories">
-              {impactStories.map((story, index) => (
-                <li className={`home-impact-story home-impact-story-${index + 1}`} key={`${story.heading}-${index}`}>
-                  <h3>{story.heading}</h3>
-                  {story.proofLabel ? <p className="proof-chip">{story.proofLabel}</p> : null}
-                  <p>{story.body}</p>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p>Confirmed impact stories will appear here as the board publishes them.</p>
-          )}
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="orgs-heading"
-        className={`home-orgs${organizations.length ? '' : ' home-section-empty'}`}
-      >
-        <div className="home-band home-band-wide">
-          <h2 id="orgs-heading">{home.organizationsHeading || 'Supported programs and facilities'}</h2>
-          {organizations.length > 0 ? (
-            <ul className="home-org-strip">
-              {organizations.map((organization) => (
-                <li className="home-org" key={organization.id}>
-                  <OrganizationName organization={organization} />
-                  {organization.summary ? <p>{organization.summary}</p> : null}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Supported programs and facilities will appear here once they are confirmed.</p>
-          )}
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="projects-heading"
-        className={`home-projects${featuredProject ? '' : ' home-section-empty'}`}
-      >
-        <div className="home-band home-band-wide">
-          <div className="home-projects-heading">
-            <h2 id="projects-heading">{home.projectsHeading || 'Featured projects and grants'}</h2>
-            {featuredProject ? (
-              <Link className="home-inline-link" href="/projects-grants">
-                All projects
-              </Link>
-            ) : null}
-          </div>
-          {featuredProject ? (
-            <div className="home-projects-layout">
-              <FeaturedProject project={featuredProject} />
-              {supportingProjects.length > 0 ? (
-                <ul className="home-project-rows">
-                  {supportingProjects.map((project) => (
-                    <li key={project.id}>
-                      <ProjectRow project={project} />
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
+      {/* -------------------------------------- Opening: hero into mission */}
+      <div className={heroPhotos.length > 0 ? 'opening opening-has-plates' : 'opening'}>
+        <section className="hero">
+          <div className="hero-inner" data-count={String(heroPhotos.length)}>
+            <div className="hero-copy">
+              <h1 className="hero-title">{home.missionHeading}</h1>
+              <div className="hero-actions">
+                <DonateControl
+                  describedById="donate-pending-hero"
+                  label={donateLabel}
+                  pendingLabel={donateLabel}
+                  pendingVisible
+                  url={donateUrl}
+                />
+                <Link className="button button-secondary" href="/projects-grants">
+                  View Our Impact
+                </Link>
+              </div>
             </div>
-          ) : (
-            <p>{emptyProjects || 'Project stories will appear here as the board publishes confirmed grants and improvements.'}</p>
-          )}
-        </div>
-      </section>
 
-      <section
-        aria-labelledby="events-heading"
-        className={`home-events${upcomingEvents.length ? '' : ' home-section-empty'}`}
-      >
-        <div className="home-band home-band-wide">
-          <div className="home-projects-heading">
-            <h2 id="events-heading">{pageContent?.events?.heading || 'Upcoming events'}</h2>
-            {upcomingEvents.length > 0 ? (
-              <Link className="home-inline-link" href="/events">
-                All events
-              </Link>
-            ) : null}
+            <HeroPlates photos={heroPhotos} />
           </div>
-          {upcomingEvents.length > 0 ? (
-            <ol className="home-event-list">
-              {upcomingEvents.map((event) => (
-                <li key={event.id}>
-                  <EventRow event={event} />
-                </li>
-              ))}
+        </section>
+
+        <section aria-labelledby="mission-heading" className="opening-mission">
+          <div className="band-inner mission-inner">
+            <div data-reveal="idle">
+              <h2 className="mission-statement" id="mission-heading">
+                Saratoga Springs Friends of Recreation is a volunteer-led organization dedicated to
+                supporting <span className="mark">recreation throughout our community</span>.
+              </h2>
+            </div>
+            <div className="mission-body" data-reveal="idle" style={stagger(120)}>
+              <p>
+                Working alongside the Saratoga Springs Recreation Department and community partners,
+                Friends of Recreation raises funds for improvements to playgrounds and athletic
+                facilities, equipment for youth programs, camp opportunities, and projects that make
+                recreation more accessible to Saratoga Springs families.
+              </p>
+              <p className="body-note">
+                We are neighbours, parents, coaches, and volunteers. Every grant on this site was paid
+                for by people who live here.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ------------------------------------------------------------- Pillars */}
+      {pillars.length > 0 ? (
+        <section aria-labelledby="impact-heading" className="band band-tint plane-over">
+          <div className="band-inner">
+            <div className="band-head">
+              <div data-reveal="idle">
+                <h2 id="impact-heading">{home.impactHeading || 'What your support pays for'}</h2>
+                {home.impactIntro ? <p className="pillar-lede">{home.impactIntro}</p> : null}
+              </div>
+            </div>
+
+            <ol className="pillars">
+              {pillars.map((pillar, index) => {
+                const proof = proofItems(pillar.proofLabel)
+                return (
+                  <li
+                    className="pillar"
+                    data-reveal="idle"
+                    key={`${pillar.heading}-${index}`}
+                    style={stagger(index * 110)}
+                  >
+                    <div className="pillar-scan">
+                      <h3>{pillar.heading}</h3>
+                      {proof.length > 0 ? (
+                        <ul className="pillar-proof">
+                          {proof.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                    <div className="pillar-copy">
+                      <p>{pillar.body}</p>
+                    </div>
+                  </li>
+                )
+              })}
             </ol>
-          ) : (
-            <p>
-              {emptyEvents}
-              {facebookUrl ? (
-                <>
-                  {' '}
-                  <a href={facebookUrl} rel="noopener noreferrer" target="_blank">
-                    Facebook
-                    <span className="visually-hidden"> (opens in a new tab, leaves this website)</span>
-                  </a>
-                </>
+          </div>
+        </section>
+      ) : null}
+
+      <OrgMarks
+        heading={home.organizationsHeading || 'Supported programs and facilities'}
+        organizations={featuredOrganizations}
+      />
+
+      {/* -------------------------------------------------------------- Featured grants */}
+      <FeaturedGrants
+        emptyMessage={
+          pageContent?.projects?.emptyMessage ||
+          'Project stories will appear here as the board publishes confirmed grants and improvements.'
+        }
+        heading={home.projectsHeading || 'Featured projects and grants'}
+        intro="Every line is a real thing somebody in Saratoga Springs can use: goals, seats, scoreboards, equipment, camp weeks."
+        projects={featuredProjects}
+      />
+
+      {sliderPhotos.length > 0 ? (
+        <section aria-labelledby="photos-heading" className="band band-flush">
+          <h2 className="visually-hidden" id="photos-heading">
+            {home.photoSliderHeading || 'Recreation around town'}
+          </h2>
+          <PhotoRail photos={sliderPhotos} />
+        </section>
+      ) : null}
+
+      {/* -------------------------------------------------------------- Events */}
+      <section aria-labelledby="events-heading" className="band band-tint" data-plate="hold">
+        <div aria-hidden="true" className="plate-fill" />
+        <div className="band-inner">
+          {nextEvent ? (
+            <>
+              <div className="events-lead">
+                <div className="events-lead-copy" data-reveal="idle">
+                  <h2 id="events-heading">Upcoming events</h2>
+                </div>
+                <NextEventCard
+                  event={nextEvent}
+                  photo={sliderPhotos[0]?.media ?? heroPhotos[0]?.media}
+                  revealDelay={80}
+                />
+              </div>
+              {moreEvents.length > 0 ? (
+                <ol className="event-board">
+                  {moreEvents.map((event, index) => (
+                    <EventRow event={event} key={event.id} revealDelay={index * 110} />
+                  ))}
+                </ol>
               ) : null}
-            </p>
+              <div className="ledger-footer" data-reveal="idle">
+                <Link className="arrow-link" href="/events">
+                  All events
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="band-head">
+                <div data-reveal="idle">
+                  <h2 id="events-heading">Upcoming events</h2>
+                </div>
+              </div>
+              <div className="pending" data-reveal="idle">
+                <h3>Nothing on the calendar right now</h3>
+                <p>{pageContent?.events?.emptyUpcomingMessage}</p>
+                {facebookUrl ? (
+                  <div className="pending-actions">
+                    <a className="button button-secondary" href={facebookUrl} rel="noopener noreferrer" target="_blank">
+                      Check Facebook
+                      <span className="visually-hidden"> (opens in a new tab, leaves this website)</span>
+                    </a>
+                  </div>
+                ) : null}
+              </div>
+            </>
           )}
         </div>
       </section>
 
-      <section aria-labelledby="donate-heading" className="home-donate">
-        <div className="home-band home-band-narrow">
-          <h2 id="donate-heading">{home.donationHeading || 'Help more kids play here'}</h2>
-          {home.donationBody ? <p>{home.donationBody}</p> : null}
-          <DonateControl
-            describedById="donate-pending-band"
-            label={donateLabel}
-            pendingVisible
-            url={donateUrl}
-          />
+      {/* ----------------------------------------------------------------- CTA */}
+      <div className="cta-consume">
+      <section aria-labelledby="donate-heading" className="cta">
+        <div className="cta-inner">
+          <div className="cta-heading" data-reveal="idle">
+            <h2 id="donate-heading">{home.donationHeading || 'Help more kids play here'}</h2>
+          </div>
+          <div className="cta-copy" data-reveal="idle" style={stagger(120)}>
+            {home.donationBody ? <p>{home.donationBody}</p> : null}
+            <div className="cta-actions">
+              <DonateControl
+                describedById="donate-pending-cta"
+                label={donateLabel}
+                pendingVisible
+                url={donateUrl}
+              />
+              <Link className="button button-secondary" href="/projects-grants#grant-request">
+                Request grant support
+              </Link>
+            </div>
+          </div>
+          <CtaPlaySketch />
         </div>
       </section>
 
-      <section aria-labelledby="contact-heading" className="home-contact">
-        <div className="home-band home-band-narrow">
-          <ContactForm heading={home.contactHeading || 'Ask a question'} intro={home.contactIntro} />
+      {/* ------------------------------------------------------------- Contact */}
+      <section aria-labelledby="contact-heading" className="band band-paper sheet-over" id="ask">
+        <div className="band-inner">
+          <div className="form-shell form-shell-split">
+            <div data-reveal="idle">
+              <h2 className="mission-statement">
+                Questions, ideas, and offers to help all reach the same volunteers.
+              </h2>
+            </div>
+            <div data-reveal="idle" style={stagger(120)}>
+              <ContactForm heading={home.contactHeading || 'Ask a question'} intro={home.contactIntro} />
+            </div>
+          </div>
         </div>
       </section>
+      </div>
     </>
   )
 }
 
-function NextEventStrip({ event }: { event: Event }) {
+function HeroPlates({ photos }: { photos: HomePhoto[] }) {
+  if (photos.length === 0) return null
+
   return (
-    <p className="home-next-event">
-      <Link className="home-next-event-link" href="/events">
-        <span className="home-next-event-date">{formatEventDate(event)}</span>
-        <span className="home-next-event-title">{event.title}</span>
-      </Link>
-    </p>
-  )
-}
-
-function OrganizationName({ organization }: { organization: Organization }) {
-  if (organization.website) {
-    return (
-      <a className="home-org-name" href={organization.website} rel="noopener noreferrer" target="_blank">
-        {organization.name}
-        <span className="visually-hidden"> (opens in a new tab, leaves this website)</span>
-      </a>
-    )
-  }
-
-  return <p className="home-org-name">{organization.name}</p>
-}
-
-function FeaturedProject({ project }: { project: Project }) {
-  return (
-    <article className="home-project-feature">
-      <SiteImage
-        className="home-project-photo"
-        media={project.image}
-        objectPosition="center"
-        sizes="(min-width: 960px) 48vw, 100vw"
-      />
-      <div className="home-project-feature-copy">
-        <p className="proof-chip">
-          <span>{project.year}</span>
-          {project.amountLabel ? <span>{project.amountLabel}</span> : null}
-          {project.recipient ? <span>{project.recipient}</span> : null}
-        </p>
-        <h3>{project.title}</h3>
-        <p>{project.summary}</p>
-        {project.beneficiaries ? <p className="home-project-benefit">{project.beneficiaries}</p> : null}
-      </div>
-    </article>
-  )
-}
-
-function ProjectRow({ project }: { project: Project }) {
-  return (
-    <article className="home-project-row">
-      <p className="home-project-year">{project.year}</p>
-      <div>
-        <h3>{project.title}</h3>
-        <p>
-          {[project.recipient, project.amountLabel].filter(Boolean).join(' · ')}
-        </p>
-        {project.beneficiaries ? <p className="home-project-benefit">{project.beneficiaries}</p> : null}
-      </div>
-    </article>
-  )
-}
-
-function EventRow({ event }: { event: Event }) {
-  return (
-    <article className={`home-event${event.cancelled ? ' home-event-cancelled' : ''}`}>
-      <time className="home-event-when" dateTime={event.startDate}>
-        <span className="home-event-month">{formatEventMonth(event.startDate)}</span>
-        <span className="home-event-day">{formatEventDay(event.startDate)}</span>
-      </time>
-      <div className="home-event-body">
-        <h3>
-          {event.title}
-          {event.cancelled ? <span className="home-event-flag"> Cancelled</span> : null}
-        </h3>
-        <p className="home-event-meta">
-          <span>{formatEventDate(event)}</span>
-          {event.location ? <span>{event.location}</span> : null}
-        </p>
-        {event.externalUrl ? (
-          <a href={event.externalUrl} rel="noopener noreferrer" target="_blank">
-            Event details
-            <span className="visually-hidden"> (opens in a new tab, leaves this website)</span>
-          </a>
-        ) : null}
-      </div>
-    </article>
+    <div className="hero-plate" data-count={String(photos.length)}>
+      {photos.map((photo, index) => (
+        <SiteImage
+          className={`hero-plate-img hero-plate-img-${index + 1}`}
+          hideWhenEmpty
+          key={`${photo.media.id}-${index}`}
+          media={photo.media}
+          objectPosition={photo.position}
+          priority={index === 0}
+          sizes={
+            photos.length === 1
+              ? '(min-width: 52rem) 28vw, 92vw'
+              : index === 0
+                ? '(min-width: 52rem) 40vw, 70vw'
+                : '(min-width: 52rem) 22vw, 42vw'
+          }
+        />
+      ))}
+    </div>
   )
 }
