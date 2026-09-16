@@ -2,11 +2,10 @@ import Link from 'next/link'
 
 import { Container } from '@/components/Container'
 import { DonateControl } from '@/components/DonateControl'
-import { primaryNav } from '@/components/navItems'
-import { getSiteSettings } from '@/lib/cms'
+import { getNavItems, getSiteSettings } from '@/lib/cms'
 
 export async function Footer() {
-  const settings = await getSiteSettings()
+  const [settings, nav] = await Promise.all([getSiteSettings(), getNavItems()])
   const donateUrl = 'donationUrl' in settings ? settings.donationUrl : null
   const facebookUrl = 'facebookUrl' in settings ? settings.facebookUrl : null
   const contactEmail = 'contactEmail' in settings ? settings.contactEmail : null
@@ -23,7 +22,7 @@ export async function Footer() {
         <nav aria-label="Footer">
           <p className="site-footer-heading">Pages</p>
           <ul className="site-footer-nav">
-            {primaryNav.map((item) => (
+            {nav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href}>{item.label}</Link>
               </li>

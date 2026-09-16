@@ -13,13 +13,24 @@ type FeaturedGrantsProps = {
   intro?: string | null
   projects: Project[]
   emptyMessage: string
+  allHref?: string
+  allLabel?: string
+  className?: string
 }
 
-export function FeaturedGrants({ heading, intro, projects, emptyMessage }: FeaturedGrantsProps) {
+export function FeaturedGrants({
+  heading,
+  intro,
+  projects,
+  emptyMessage,
+  allHref = '/projects-grants',
+  allLabel = 'All projects and grants',
+  className,
+}: FeaturedGrantsProps) {
   const [lead, ...rest] = projects
 
   return (
-    <section aria-labelledby="projects-heading" className="band band-paper">
+    <section aria-labelledby="projects-heading" className={cn('band', className)}>
       <div className="band-inner">
         <div className="band-head">
           <div data-reveal="idle">
@@ -39,8 +50,8 @@ export function FeaturedGrants({ heading, intro, projects, emptyMessage }: Featu
               </ol>
             ) : null}
             <div className="ledger-footer" data-reveal="idle">
-              <Link className="arrow-link" href="/projects-grants">
-                All projects and grants
+              <Link className="arrow-link" href={allHref}>
+                {allLabel}
               </Link>
             </div>
           </>

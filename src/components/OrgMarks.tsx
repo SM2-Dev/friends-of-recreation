@@ -6,13 +6,14 @@ import type { Organization } from '@/payload-types'
 type OrgMarksProps = {
   heading: string
   organizations: Organization[]
+  className?: string
 }
 
-export function OrgMarks({ heading, organizations }: OrgMarksProps) {
+export function OrgMarks({ heading, organizations, className }: OrgMarksProps) {
   if (organizations.length === 0) return null
 
   return (
-    <section aria-labelledby="orgs-heading" className="band band-paper plane-over">
+    <section aria-labelledby="orgs-heading" className={cn('band plane-over', className)}>
       <div className="band-inner">
         <div className="band-head">
           <div data-reveal="idle">

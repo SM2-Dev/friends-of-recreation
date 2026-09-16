@@ -876,6 +876,107 @@ select {
   background: transparent;
 }
 
+/* CMS-chosen section fills. Dark fields remap ink so type and controls stay readable. */
+.surface-paper {
+  --surface: var(--paper);
+  --surface-ink: var(--ink);
+  --surface-ink-2: var(--ink-2);
+  --surface-amount: var(--flare);
+  --surface-year: var(--field);
+  --surface-rule: var(--rule);
+  --plate-fill: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.surface-tint {
+  --surface: var(--paper-2);
+  --surface-ink: var(--ink);
+  --surface-ink-2: var(--ink-2);
+  --surface-amount: var(--flare);
+  --surface-year: var(--field);
+  --surface-rule: var(--rule);
+  --plate-fill: var(--paper-2);
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.surface-teal {
+  --surface: var(--teal);
+  --surface-ink: var(--teal-ink);
+  --surface-ink-2: var(--teal-ink-2);
+  --surface-amount: var(--teal-ink);
+  --surface-year: var(--teal-ink);
+  --surface-rule: color-mix(in srgb, var(--teal-ink) 22%, transparent);
+  --plate-fill: var(--teal);
+  background: var(--teal);
+  color: var(--teal-ink);
+}
+
+.surface-field {
+  --surface: var(--field);
+  --surface-ink: var(--field-ink);
+  --surface-ink-2: var(--field-ink-2);
+  --surface-amount: var(--gold);
+  --surface-year: var(--field-ink);
+  --surface-rule: var(--rule-field);
+  --plate-fill: var(--field);
+  background: var(--field);
+  color: var(--field-ink);
+}
+
+.surface-flare {
+  --surface: var(--flare);
+  --surface-ink: var(--flare-ink);
+  --surface-ink-2: color-mix(in srgb, var(--flare-ink) 82%, transparent);
+  --surface-amount: var(--flare-ink);
+  --surface-year: var(--flare-ink);
+  --surface-rule: color-mix(in srgb, var(--flare-ink) 22%, transparent);
+  --plate-fill: var(--flare);
+  background: var(--flare);
+  color: var(--flare-ink);
+}
+
+.surface-navy {
+  --surface: var(--navy);
+  --surface-ink: var(--snow);
+  --surface-ink-2: color-mix(in srgb, var(--snow) 82%, var(--navy));
+  --surface-amount: var(--gold);
+  --surface-year: var(--snow);
+  --surface-rule: color-mix(in srgb, var(--snow) 22%, transparent);
+  --plate-fill: var(--navy);
+  background: var(--navy);
+  color: var(--snow);
+}
+
+[data-plate].surface-paper,
+[data-plate].surface-tint,
+[data-plate].surface-teal,
+[data-plate].surface-field,
+[data-plate].surface-flare,
+[data-plate].surface-navy {
+  background: transparent;
+}
+
+.surface-dark .arrow-link {
+  color: var(--surface-ink);
+}
+
+.surface-dark .label,
+.surface-dark .body-note,
+.surface-dark .grant-lede,
+.surface-dark .pillar-lede,
+.surface-dark .ledger-note,
+.surface-dark .board-role,
+.surface-dark .board-bio,
+.surface-dark .masthead-lede {
+  color: var(--surface-ink-2);
+}
+
+.surface-dark :focus-visible {
+  outline-color: var(--surface-ink);
+}
+
 .plane-over {
   position: relative;
   z-index: 2;
@@ -1163,8 +1264,6 @@ select {
 
 .opening-mission {
   position: relative;
-  background: var(--teal);
-  color: var(--teal-ink);
   padding-block: var(--section-y);
 }
 
@@ -1190,7 +1289,6 @@ select {
   line-height: 1.08;
   letter-spacing: -0.035em;
   max-width: 22ch;
-  color: var(--teal-ink);
 }
 
 .opening-mission .mark {
@@ -1212,11 +1310,11 @@ select {
 }
 
 .opening-mission .mission-body p {
-  color: var(--teal-ink);
+  color: var(--surface-ink, var(--teal-ink));
 }
 
 .opening-mission .mission-body p.body-note {
-  color: var(--teal-ink-2);
+  color: var(--surface-ink-2, var(--teal-ink-2));
 }
 
 /* ==========================================================================
@@ -1470,11 +1568,13 @@ a.org-mark:focus-visible .org-mark-name {
 .ledger {
   list-style: none;
   display: grid;
-  border-top: 1px solid var(--rule-field);
+  border-top: 1px solid var(--surface-rule, var(--rule-field));
 }
 
 .band-paper .ledger,
-.band-tint .ledger {
+.band-tint .ledger,
+.surface-paper .ledger,
+.surface-tint .ledger {
   border-top-color: var(--rule);
 }
 
@@ -1489,12 +1589,14 @@ a.org-mark:focus-visible .org-mark-name {
   align-items: baseline;
   gap: var(--s3) var(--s5);
   padding-block: clamp(1rem, 2.2vw, 1.6rem);
-  border-bottom: 1px solid var(--rule-field);
+  border-bottom: 1px solid var(--surface-rule, var(--rule-field));
   transition: transform var(--dur-3) var(--ease-out);
 }
 
 .band-paper .ledger-row,
-.band-tint .ledger-row {
+.band-tint .ledger-row,
+.surface-paper .ledger-row,
+.surface-tint .ledger-row {
   border-bottom-color: var(--rule);
 }
 
@@ -1505,13 +1607,8 @@ a.org-mark:focus-visible .org-mark-name {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
-  color: var(--field-ink-2);
+  color: var(--surface-year, var(--field));
   min-width: 3.25rem;
-}
-
-.band-paper .ledger-year,
-.band-tint .ledger-year {
-  color: var(--ink-2);
 }
 
 .ledger-main {
@@ -1530,6 +1627,7 @@ a.org-mark:focus-visible .org-mark-name {
   letter-spacing: -0.03em;
   line-height: 1.04;
   text-wrap: balance;
+  color: var(--surface-ink, var(--ink));
 }
 
 .ledger-meta {
@@ -1540,24 +1638,14 @@ a.org-mark:focus-visible .org-mark-name {
   max-width: 56ch;
   font-size: 1rem;
   line-height: 1.45;
-  color: color-mix(in srgb, var(--field-ink) 88%, transparent);
-}
-
-.band-paper .ledger-meta,
-.band-tint .ledger-meta {
-  color: color-mix(in srgb, var(--ink) 72%, var(--paper));
+  color: var(--surface-ink-2, var(--ink-2));
 }
 
 .ledger-summary {
   margin: 0;
   max-width: 62ch;
   font-size: var(--t-small);
-  color: var(--field-ink-2);
-}
-
-.band-paper .ledger-summary,
-.band-tint .ledger-summary {
-  color: var(--ink-2);
+  color: var(--surface-ink-2, var(--ink-2));
 }
 
 .ledger-amount {
@@ -1571,14 +1659,9 @@ a.org-mark:focus-visible .org-mark-name {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   line-height: 1;
-  color: var(--gold);
+  color: var(--surface-amount, var(--flare));
   white-space: nowrap;
   transition: transform var(--dur-3) var(--ease-out);
-}
-
-.band-paper .ledger-amount,
-.band-tint .ledger-amount {
-  color: var(--teal);
 }
 
 .ledger-amount-quiet {
@@ -1586,15 +1669,10 @@ a.org-mark:focus-visible .org-mark-name {
   font-size: var(--t-small);
   font-weight: 400;
   letter-spacing: 0;
-  color: var(--field-ink-2);
+  color: var(--surface-ink-2, var(--ink-2));
   white-space: normal;
   max-width: 18ch;
   text-align: right;
-}
-
-.band-paper .ledger-amount-quiet,
-.band-tint .ledger-amount-quiet {
-  color: var(--ink-2);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1606,6 +1684,13 @@ a.org-mark:focus-visible .org-mark-name {
   .ledger-row:hover .ledger-amount,
   .ledger-row:focus-within .ledger-amount {
     transform: scale(1.06);
+  }
+
+  .year-ledger .ledger-row:hover,
+  .year-ledger .ledger-row:focus-within,
+  .year-ledger .ledger-row:hover .ledger-amount,
+  .year-ledger .ledger-row:focus-within .ledger-amount {
+    transform: none;
   }
 }
 
@@ -1621,12 +1706,165 @@ a.org-mark:focus-visible .org-mark-name {
   margin: 0;
   max-width: 52ch;
   font-size: var(--t-small);
-  color: var(--field-ink-2);
+  color: var(--surface-ink-2, var(--ink-2));
 }
 
-.band-paper .ledger-note,
-.band-tint .ledger-note {
+.ledger-row-bare {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'main amount';
+}
+
+/* ==========================================================================
+   Projects & Grants — category scan and year-chaptered ledger
+   ========================================================================== */
+
+.fund-scope {
+  list-style: none;
+  display: grid;
+  border-top: 1px solid var(--rule);
+}
+
+.fund-item {
+  display: grid;
+  align-content: start;
+  gap: var(--s3);
+  min-width: 0;
+  padding-block: clamp(1.25rem, 2.8vw, 1.9rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.fund-item h3 {
+  max-width: 12ch;
+  font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+  font-stretch: 92%;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+.fund-item:first-child h3 {
+  font-size: clamp(1.55rem, 3.2vw, 2.05rem);
+  font-stretch: 90%;
+  letter-spacing: -0.035em;
+}
+
+.fund-item p {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0;
+  max-width: 22ch;
+  font-family: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  font-stretch: 100%;
+  letter-spacing: -0.015em;
+  line-height: 1.28;
+  color: var(--flare);
+}
+
+.fund-item p::before {
+  content: '';
+  flex: none;
+  width: 1rem;
+  height: 2.5px;
+  margin-top: 0.55em;
+  border-radius: 2px;
+  background: var(--gold);
+}
+
+.fund-item .fund-empty {
+  font-family: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--t-small);
+  font-weight: 400;
+  letter-spacing: 0;
   color: var(--ink-2);
+}
+
+.fund-item .fund-empty::before {
+  display: none;
+}
+
+.year-ledger {
+  display: grid;
+  border-top: 1px solid var(--surface-rule, var(--rule));
+}
+
+.year-feature,
+.year-chapter {
+  min-width: 0;
+  padding-block: clamp(1.35rem, 3vw, 2.35rem);
+  border-bottom: 1px solid var(--surface-rule, var(--rule));
+}
+
+.year-feature {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'year amount'
+    'main main';
+  align-items: baseline;
+  gap: var(--s3) var(--s5);
+}
+
+.year-feature-year,
+.year-chapter-year {
+  margin: 0;
+  font-family: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.1rem, 5.4vw, 3.6rem);
+  font-weight: 700;
+  font-stretch: 88%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.05em;
+  line-height: 0.8;
+  color: var(--surface-year, var(--field));
+}
+
+.year-feature-year {
+  grid-area: year;
+}
+
+.year-feature-main {
+  grid-area: main;
+  display: grid;
+  gap: var(--s3);
+  min-width: 0;
+}
+
+.year-feature-title {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(1.45rem, 3.2vw, 2.4rem);
+  font-stretch: 90%;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  text-wrap: balance;
+  color: var(--surface-ink, var(--ink));
+}
+
+.year-feature .ledger-amount {
+  grid-area: amount;
+}
+
+.year-chapter {
+  display: grid;
+  gap: var(--s5);
+}
+
+.year-chapter .ledger {
+  border-top: 0;
+}
+
+.year-chapter .ledger-row:first-child {
+  padding-top: 0;
+}
+
+.year-chapter .ledger-row:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.year-ledger .ledger-row {
+  transition: none;
 }
 
 /* ==========================================================================
@@ -1673,7 +1911,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.05em;
   line-height: 0.8;
-  color: var(--field);
+  color: var(--surface-year, var(--field));
 }
 
 .grant-feature-title {
@@ -1685,6 +1923,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-stretch: 90%;
   letter-spacing: -0.04em;
   line-height: 0.96;
+  color: var(--surface-ink, var(--ink));
 }
 
 .grant-feature-amount {
@@ -1696,7 +1935,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   line-height: 1;
-  color: var(--teal);
+  color: var(--surface-amount, var(--flare));
   transition: transform var(--dur-3) var(--ease-out);
 }
 
@@ -1706,7 +1945,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-weight: 400;
   letter-spacing: 0;
   line-height: 1.4;
-  color: var(--ink-2);
+  color: var(--surface-ink-2, var(--ink-2));
   max-width: 28ch;
 }
 
@@ -1718,7 +1957,7 @@ a.org-mark:focus-visible .org-mark-name {
   max-width: 42ch;
   font-size: 1rem;
   line-height: 1.45;
-  color: color-mix(in srgb, var(--ink) 72%, var(--paper));
+  color: var(--surface-ink-2, var(--ink-2));
 }
 
 .grant-feature-summary {
@@ -2242,8 +2481,8 @@ a.next-event-card:focus-visible {
   position: relative;
   z-index: 1;
   overflow: visible;
-  background: var(--flare);
-  color: var(--flare-ink);
+  background: var(--surface, var(--flare));
+  color: var(--surface-ink, var(--flare-ink));
   padding-top: clamp(4rem, 8vw, 6.5rem);
   padding-bottom: clamp(4.25rem, 8vw, 6.75rem);
 }
@@ -2283,7 +2522,7 @@ a.next-event-card:focus-visible {
 
 .cta-draw {
   display: none;
-  color: var(--flare-ink);
+  color: var(--surface-ink, var(--flare-ink));
   pointer-events: none;
 }
 
@@ -2367,40 +2606,40 @@ a.next-event-card:focus-visible {
 
 .cta p {
   max-width: 42ch;
-  color: color-mix(in srgb, var(--flare-ink) 90%, transparent);
+  color: color-mix(in srgb, var(--surface-ink, var(--flare-ink)) 90%, transparent);
 }
 
-/* Donate reverses to paper so it stays the loudest thing on a loud field. */
-.cta .donate-button {
+/* Donate reverses to paper so it stays the loudest thing on a dark field. */
+.cta.surface-dark .donate-button {
   background: var(--paper);
   color: var(--ink);
 }
 
-.cta .donate-button:hover {
+.cta.surface-dark .donate-button:hover {
   background: var(--gold);
 }
 
-.cta .button:disabled {
-  background: color-mix(in srgb, var(--flare-ink) 28%, transparent);
-  color: var(--flare-ink);
+.cta.surface-dark .button:disabled {
+  background: color-mix(in srgb, var(--surface-ink) 28%, transparent);
+  color: var(--surface-ink);
 }
 
-.cta .donate-pending {
-  color: color-mix(in srgb, var(--flare-ink) 82%, transparent);
+.cta.surface-dark .donate-pending {
+  color: color-mix(in srgb, var(--surface-ink) 82%, transparent);
 }
 
-.cta .button-secondary {
-  color: var(--flare-ink);
-  border-color: color-mix(in srgb, var(--flare-ink) 45%, transparent);
+.cta.surface-dark .button-secondary {
+  color: var(--surface-ink);
+  border-color: color-mix(in srgb, var(--surface-ink) 45%, transparent);
 }
 
-.cta .button-secondary:hover {
-  border-color: var(--flare-ink);
-  background: color-mix(in srgb, var(--flare-ink) 12%, transparent);
+.cta.surface-dark .button-secondary:hover {
+  border-color: var(--surface-ink);
+  background: color-mix(in srgb, var(--surface-ink) 12%, transparent);
 }
 
-.cta :focus-visible {
-  outline-color: var(--flare-ink);
+.cta.surface-dark :focus-visible {
+  outline-color: var(--surface-ink);
 }
 
 .cta-actions {
@@ -2862,6 +3101,11 @@ a.next-event-card:focus-visible {
     grid-column: 1 / -1;
   }
 
+  .fund-scope {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--s6);
+  }
+
   .event-row {
     gap: var(--s5);
   }
@@ -3112,6 +3356,58 @@ a.next-event-card:focus-visible {
     gap: var(--s6);
   }
 
+  .ledger-row-bare {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'main amount';
+  }
+
+  .year-feature {
+    grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+    grid-template-areas: 'year main amount';
+    gap: var(--s6);
+    align-items: start;
+  }
+
+  .year-feature-year {
+    padding-top: 0.12em;
+  }
+
+  .year-chapter {
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    column-gap: var(--s6);
+    align-items: start;
+  }
+
+  .year-chapter-year {
+    padding-top: 0.2em;
+  }
+
+  .fund-scope {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .fund-item {
+    padding-block: clamp(1.7rem, 3.2vw, 2.5rem);
+    padding-inline: clamp(1rem, 1.8vw, 1.6rem);
+    border-bottom: none;
+  }
+
+  .fund-item + .fund-item {
+    box-shadow: inset 1px 0 0 var(--rule);
+  }
+
+  .fund-item:first-child,
+  .fund-item:nth-child(4) {
+    padding-left: 0;
+    box-shadow: none;
+  }
+
+  .fund-item:nth-child(3),
+  .fund-item:last-child {
+    padding-right: 0;
+  }
+
   .event-row {
     column-gap: var(--s6);
   }
@@ -3205,5 +3501,18 @@ a.next-event-card:focus-visible {
 
   .board-grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .fund-scope {
+    grid-template-columns: 1.18fr 1fr 0.92fr 1.12fr 1fr;
+  }
+
+  .fund-item {
+    padding-inline: clamp(1.1rem, 1.6vw, 1.7rem);
+  }
+
+  .fund-item:nth-child(4) {
+    padding-left: clamp(1.1rem, 1.6vw, 1.7rem);
+    box-shadow: inset 1px 0 0 var(--rule);
   }
 }

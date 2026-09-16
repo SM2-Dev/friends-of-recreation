@@ -1,15 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 import { publishedOrStaff, staffOnly } from '@/access'
+import { projectCategories } from '@/lib/projectCategories'
 
-export const projectCategories = [
-  { label: 'Playground', value: 'playground' },
-  { label: 'Facility', value: 'facility' },
-  { label: 'Equipment', value: 'equipment' },
-  { label: 'Camp', value: 'camp' },
-  { label: 'Scholarship', value: 'scholarship' },
-  { label: 'Other community project', value: 'other' },
-] as const
+export { projectCategories } from '@/lib/projectCategories'
 
 export const Projects: CollectionConfig = {
   slug: 'projects',
@@ -58,7 +52,8 @@ export const Projects: CollectionConfig = {
       required: true,
       options: [...projectCategories],
       admin: {
-        description: 'Used to group projects without forcing every story into the same card layout.',
+        description:
+          'Stored as playground, facility, equipment, camp, scholarship, or other. The public Projects & Grants page groups these into the five client categories.',
       },
     },
     {
@@ -108,7 +103,7 @@ export const Projects: CollectionConfig = {
       type: 'checkbox',
       defaultValue: false,
       admin: {
-        description: 'Show this project on the homepage featured strip. Up to four, newest first.',
+        description: 'Show this project in Featured projects sections. Up to four, newest first.',
       },
     },
   ],

@@ -73,6 +73,7 @@ export interface Config {
     events: Event;
     projects: Project;
     organizations: Organization;
+    pages: Page;
     'contact-submissions': ContactSubmission;
     'grant-requests': GrantRequest;
     'payload-kv': PayloadKv;
@@ -88,6 +89,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'grant-requests': GrantRequestsSelect<false> | GrantRequestsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -101,13 +103,9 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
-    'home-page': HomePage;
-    'page-content': PageContent;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-    'home-page': HomePageSelect<false> | HomePageSelect<true>;
-    'page-content': PageContentSelect<false> | PageContentSelect<true>;
   };
   locale: null;
   widgets: {
@@ -309,7 +307,7 @@ export interface Project {
    */
   year: number;
   /**
-   * Used to group projects without forcing every story into the same card layout.
+   * Stored as playground, facility, equipment, camp, scholarship, or other. The public Projects & Grants page groups these into the five client categories.
    */
   category: 'playground' | 'facility' | 'equipment' | 'camp' | 'scholarship' | 'other';
   /**
@@ -334,7 +332,7 @@ export interface Project {
   summary: string;
   image?: (number | null) | Media;
   /**
-   * Show this project on the homepage featured strip. Up to four, newest first.
+   * Show this project in Featured projects sections. Up to four, newest first.
    */
   featured?: boolean | null;
   updatedAt: string;
@@ -365,6 +363,387 @@ export interface Organization {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Create a page, then add and reorder the designed sections that make it up. Drag sections to change their order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  /**
+   * Used in the admin list, browser tab, and navigation unless you set a nav label.
+   */
+  title: string;
+  /**
+   * URL path. Use home for the homepage at /. Other pages become /your-slug, such as board-members.
+   */
+  slug: string;
+  /**
+   * Add a section, then drag it to the place it should appear on the public page.
+   */
+  layout?:
+    | (
+        | HeroBlock
+        | MissionBlock
+        | ImpactBlock
+        | OrganizationsBlock
+        | FeaturedProjectsBlock
+        | PhotoRailBlock
+        | UpcomingEventsBlock
+        | DonateCtaBlock
+        | ContactBlock
+        | MastheadBlock
+        | BoardListBlock
+        | EventListBlock
+        | ProjectLedgerBlock
+        | GrantRequestBlock
+      )[]
+    | null;
+  /**
+   * Show this page in the header and footer.
+   */
+  showInNav?: boolean | null;
+  /**
+   * Optional shorter label for the navigation. Defaults to the page title.
+   */
+  navLabel?: string | null;
+  /**
+   * Lower numbers appear first. Home is usually 0.
+   */
+  navOrder?: number | null;
+  /**
+   * Optional browser-tab title. Defaults to the page title.
+   */
+  metaTitle?: string | null;
+  /**
+   * Optional search listing description.
+   */
+  metaDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  /**
+   * Keep it short enough to stay on the first screen with Donate.
+   */
+  heading: string;
+  /**
+   * Add 1 photograph, or 3 for an offset cluster. Two also works.
+   */
+  photos?:
+    | {
+        image: number | Media;
+        /**
+         * CSS object-position, such as center or 30% 40%, so faces stay in crop.
+         */
+        position?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Used only when Photographs is empty.
+   */
+  fallbackImage?: (number | null) | Media;
+  fallbackImagePosition?: string | null;
+  /**
+   * Optional second button beside Donate. Leave blank to hide it.
+   */
+  secondaryLabel?: string | null;
+  secondaryHref?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock".
+ */
+export interface MissionBlock {
+  /**
+   * The large statement on the teal field.
+   */
+  heading: string;
+  /**
+   * Optional phrase in the heading to underline. It must match the heading exactly.
+   */
+  highlight?: string | null;
+  body: string;
+  /**
+   * Optional quieter closing line.
+   */
+  note?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mission';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImpactBlock".
+ */
+export interface ImpactBlock {
+  heading?: string | null;
+  intro?: string | null;
+  /**
+   * Up to three impact stories. Leave empty rather than inventing results.
+   */
+  stories?:
+    | {
+        heading: string;
+        body: string;
+        /**
+         * Optional inscribed proof, such as a year, amount, or recipient.
+         */
+        proofLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'impact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrganizationsBlock".
+ */
+export interface OrganizationsBlock {
+  heading?: string | null;
+  /**
+   * Programs and facilities to show in this section.
+   */
+  organizations?: (number | Organization)[] | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'organizations';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedProjectsBlock".
+ */
+export interface FeaturedProjectsBlock {
+  heading?: string | null;
+  intro?: string | null;
+  emptyMessage?: string | null;
+  allLabel?: string | null;
+  allHref?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredProjects';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PhotoRailBlock".
+ */
+export interface PhotoRailBlock {
+  /**
+   * Screen-reader heading for the photograph slider.
+   */
+  heading?: string | null;
+  /**
+   * Recreation photographs only. Organization logos belong on Organization records.
+   */
+  slides?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'photoRail';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UpcomingEventsBlock".
+ */
+export interface UpcomingEventsBlock {
+  heading?: string | null;
+  /**
+   * How many upcoming events to show. The first is featured.
+   */
+  limit?: number | null;
+  emptyHeading?: string | null;
+  emptyMessage?: string | null;
+  allLabel?: string | null;
+  allHref?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'upcomingEvents';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DonateCtaBlock".
+ */
+export interface DonateCtaBlock {
+  heading?: string | null;
+  body?: string | null;
+  /**
+   * Optional second button beside Donate.
+   */
+  secondaryLabel?: string | null;
+  secondaryHref?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'donateCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  statement?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MastheadBlock".
+ */
+export interface MastheadBlock {
+  heading: string;
+  lede?: string | null;
+  /**
+   * Optional supporting photograph. Leave blank to use a recent public photo.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Which recent public photograph to use when no photo is chosen. 0 is the newest.
+   */
+  photoFallbackIndex?: number | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'masthead';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BoardListBlock".
+ */
+export interface BoardListBlock {
+  heading?: string | null;
+  emptyHeading?: string | null;
+  emptyMessage?: string | null;
+  emptyNote?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'boardList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventListBlock".
+ */
+export interface EventListBlock {
+  upcomingHeading?: string | null;
+  pastHeading?: string | null;
+  emptyHeading?: string | null;
+  emptyMessage: string;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'eventList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectLedgerBlock".
+ */
+export interface ProjectLedgerBlock {
+  /**
+   * Heading above the five project categories.
+   */
+  categoryHeading?: string | null;
+  /**
+   * Optional sentence under the category heading. Leave blank to let the five names speak.
+   */
+  categoryIntro?: string | null;
+  /**
+   * Leave blank to use the funded-year range from published projects.
+   */
+  heading?: string | null;
+  /**
+   * Shown beside the ledger heading. Use this to say the history is pending board confirmation.
+   */
+  confirmationNote?: string | null;
+  emptyHeading?: string | null;
+  emptyMessage?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'projectLedger';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GrantRequestBlock".
+ */
+export interface GrantRequestBlock {
+  kicker?: string | null;
+  statement?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  /**
+   * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
+   */
+  background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'grantRequest';
 }
 /**
  * Questions from the public contact form. Status and internal notes never appear on the website.
@@ -483,6 +862,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'organizations';
         value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null)
     | ({
         relationTo: 'contact-submissions';
@@ -686,6 +1069,241 @@ export interface OrganizationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        hero?: T | HeroBlockSelect<T>;
+        mission?: T | MissionBlockSelect<T>;
+        impact?: T | ImpactBlockSelect<T>;
+        organizations?: T | OrganizationsBlockSelect<T>;
+        featuredProjects?: T | FeaturedProjectsBlockSelect<T>;
+        photoRail?: T | PhotoRailBlockSelect<T>;
+        upcomingEvents?: T | UpcomingEventsBlockSelect<T>;
+        donateCta?: T | DonateCtaBlockSelect<T>;
+        contact?: T | ContactBlockSelect<T>;
+        masthead?: T | MastheadBlockSelect<T>;
+        boardList?: T | BoardListBlockSelect<T>;
+        eventList?: T | EventListBlockSelect<T>;
+        projectLedger?: T | ProjectLedgerBlockSelect<T>;
+        grantRequest?: T | GrantRequestBlockSelect<T>;
+      };
+  showInNav?: T;
+  navLabel?: T;
+  navOrder?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  photos?:
+    | T
+    | {
+        image?: T;
+        position?: T;
+        id?: T;
+      };
+  fallbackImage?: T;
+  fallbackImagePosition?: T;
+  secondaryLabel?: T;
+  secondaryHref?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock_select".
+ */
+export interface MissionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  highlight?: T;
+  body?: T;
+  note?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImpactBlock_select".
+ */
+export interface ImpactBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  stories?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        proofLabel?: T;
+        id?: T;
+      };
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrganizationsBlock_select".
+ */
+export interface OrganizationsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  organizations?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedProjectsBlock_select".
+ */
+export interface FeaturedProjectsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  emptyMessage?: T;
+  allLabel?: T;
+  allHref?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PhotoRailBlock_select".
+ */
+export interface PhotoRailBlockSelect<T extends boolean = true> {
+  heading?: T;
+  slides?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UpcomingEventsBlock_select".
+ */
+export interface UpcomingEventsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  limit?: T;
+  emptyHeading?: T;
+  emptyMessage?: T;
+  allLabel?: T;
+  allHref?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DonateCtaBlock_select".
+ */
+export interface DonateCtaBlockSelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  secondaryLabel?: T;
+  secondaryHref?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  statement?: T;
+  heading?: T;
+  intro?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MastheadBlock_select".
+ */
+export interface MastheadBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  photo?: T;
+  photoFallbackIndex?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BoardListBlock_select".
+ */
+export interface BoardListBlockSelect<T extends boolean = true> {
+  heading?: T;
+  emptyHeading?: T;
+  emptyMessage?: T;
+  emptyNote?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventListBlock_select".
+ */
+export interface EventListBlockSelect<T extends boolean = true> {
+  upcomingHeading?: T;
+  pastHeading?: T;
+  emptyHeading?: T;
+  emptyMessage?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectLedgerBlock_select".
+ */
+export interface ProjectLedgerBlockSelect<T extends boolean = true> {
+  categoryHeading?: T;
+  categoryIntro?: T;
+  heading?: T;
+  confirmationNote?: T;
+  emptyHeading?: T;
+  emptyMessage?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GrantRequestBlock_select".
+ */
+export interface GrantRequestBlockSelect<T extends boolean = true> {
+  kicker?: T;
+  statement?: T;
+  heading?: T;
+  intro?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-submissions_select".
  */
 export interface ContactSubmissionsSelect<T extends boolean = true> {
@@ -806,134 +1424,6 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * Homepage mission, impact, featured projects, donation copy, and contact intro. Editors can update this content.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page".
- */
-export interface HomePage {
-  id: number;
-  /**
-   * Starter wording until the board approves final language. Keep it short enough to stay on the first screen with Donate.
-   */
-  missionHeading: string;
-  /**
-   * One or two sentences explaining the mission in plain language.
-   */
-  missionBody: string;
-  /**
-   * Add 1 photograph, or 3 for an offset cluster. Two also works. These plates sit beside the headline — they are not the photo slider.
-   */
-  heroPhotos?:
-    | {
-        image: number | Media;
-        /**
-         * CSS object-position, such as center or 30% 40%, so faces stay in crop.
-         */
-        position?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Fallback if Hero photographs is empty. Prefer the photographs list above.
-   */
-  heroImage?: (number | null) | Media;
-  /**
-   * Used only with the fallback hero image.
-   */
-  heroImagePosition?: string | null;
-  impactHeading?: string | null;
-  /**
-   * Optional. Keep this to how Friends of Recreation helps, not invented outcomes.
-   */
-  impactIntro?: string | null;
-  /**
-   * Up to three impact stories. They are typeset as a manifesto — a loud heading, named-place proof, and a reading column — not as matching cards. Leave empty rather than inventing results.
-   */
-  impactStories?:
-    | {
-        heading: string;
-        body: string;
-        /**
-         * Optional inscribed proof, such as a year, amount, or recipient. Leave blank if unconfirmed.
-         */
-        proofLabel?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  organizationsHeading?: string | null;
-  /**
-   * Supported programs and facilities to highlight on the homepage.
-   */
-  featuredOrganizations?: (number | Organization)[] | null;
-  photoSliderHeading?: string | null;
-  /**
-   * Homepage photo slider. Add recreation photographs only. Organization logos belong on each Organization record, not here.
-   */
-  photoSlider?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  projectsHeading?: string | null;
-  /**
-   * The homepage now reads the Featured checkbox on each project (newest first, up to four). This relationship is not used for the public homepage.
-   */
-  featuredProjects?: (number | Project)[] | null;
-  donationHeading?: string | null;
-  /**
-   * Short donation reprise. Do not invent a payment processor or URL.
-   */
-  donationBody?: string | null;
-  contactHeading?: string | null;
-  /**
-   * Short intro above the homepage contact form.
-   */
-  contactIntro?: string | null;
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * Intro copy and empty states for Board Members, Events, and Projects & Grants.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page-content".
- */
-export interface PageContent {
-  id: number;
-  board?: {
-    heading?: string | null;
-    /**
-     * Optional introduction. Do not invent board biographies here.
-     */
-    intro?: string | null;
-    emptyMessage?: string | null;
-  };
-  events: {
-    heading?: string | null;
-    intro?: string | null;
-    /**
-     * Shown when there are no upcoming published events. May point people to Facebook.
-     */
-    emptyUpcomingMessage: string;
-  };
-  projects?: {
-    heading?: string | null;
-    intro?: string | null;
-    grantHeading?: string | null;
-    /**
-     * Explains the grant request form. Do not promise an application portal.
-     */
-    grantIntro?: string | null;
-    emptyMessage?: string | null;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -947,85 +1437,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactEmail?: T;
   notificationEmail?: T;
   footerNote?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page_select".
- */
-export interface HomePageSelect<T extends boolean = true> {
-  missionHeading?: T;
-  missionBody?: T;
-  heroPhotos?:
-    | T
-    | {
-        image?: T;
-        position?: T;
-        id?: T;
-      };
-  heroImage?: T;
-  heroImagePosition?: T;
-  impactHeading?: T;
-  impactIntro?: T;
-  impactStories?:
-    | T
-    | {
-        heading?: T;
-        body?: T;
-        proofLabel?: T;
-        id?: T;
-      };
-  organizationsHeading?: T;
-  featuredOrganizations?: T;
-  photoSliderHeading?: T;
-  photoSlider?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
-  projectsHeading?: T;
-  featuredProjects?: T;
-  donationHeading?: T;
-  donationBody?: T;
-  contactHeading?: T;
-  contactIntro?: T;
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page-content_select".
- */
-export interface PageContentSelect<T extends boolean = true> {
-  board?:
-    | T
-    | {
-        heading?: T;
-        intro?: T;
-        emptyMessage?: T;
-      };
-  events?:
-    | T
-    | {
-        heading?: T;
-        intro?: T;
-        emptyUpcomingMessage?: T;
-      };
-  projects?:
-    | T
-    | {
-        heading?: T;
-        intro?: T;
-        grantHeading?: T;
-        grantIntro?: T;
-        emptyMessage?: T;
-      };
-  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
