@@ -7,13 +7,30 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   images: {
     localPatterns: [
       {
         pathname: '/api/media/file/**',
       },
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
+    ],
   },
+  headers: async () => [
+    {
+      source: '/:path*',
+      headers: [
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+      ],
+    },
+  ],
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
@@ -25,6 +42,9 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     root: path.resolve(dirname),
+    resolveAlias: {
+      '@tailwindcss/postcss': path.resolve(dirname, 'node_modules/@tailwindcss/postcss'),
+    },
   },
   agentRules: false,
 }

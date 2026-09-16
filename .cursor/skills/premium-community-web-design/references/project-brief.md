@@ -26,9 +26,11 @@ Suggested hero message: "Building More Opportunities to Play in Saratoga Springs
 
 ## Core content model
 
-Collections: Users, Media, BoardMembers, Events, Projects, Organizations, ContactSubmissions, GrantRequests.
+Collections: Users, Media, BoardMembers, Events, Projects, Organizations, Pages, ContactSubmissions, GrantRequests.
 
-Globals: SiteSettings, HomePage, PageContent.
+Globals: SiteSettings.
+
+Public pages are records in Pages. Editors compose each page from the site's designed section blocks rather than from a generic layout builder.
 
 Public content uses drafts or versions where appropriate. Admins manage users and settings; Editors manage public content and submissions without security access.
 

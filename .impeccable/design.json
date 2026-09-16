@@ -1,0 +1,534 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-14T00:00:00.000Z",
+  "title": "Design System: Friends of Recreation",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "canonical": "#fbf8f2",
+        "tonalRamp": [
+          "oklch(15% 0.008 85)",
+          "oklch(26% 0.008 85)",
+          "oklch(37% 0.008 85)",
+          "oklch(48% 0.008 85)",
+          "oklch(59% 0.008 85)",
+          "oklch(70% 0.008 85)",
+          "oklch(81% 0.008 85)",
+          "oklch(92% 0.008 85)"
+        ]
+      },
+      "paper-tint": {
+        "role": "neutral",
+        "displayName": "Warm Tint",
+        "canonical": "#f1ebdf",
+        "tonalRamp": [
+          "oklch(15% 0.018 85)",
+          "oklch(26% 0.018 85)",
+          "oklch(37% 0.018 85)",
+          "oklch(48% 0.018 85)",
+          "oklch(59% 0.018 85)",
+          "oklch(70% 0.018 85)",
+          "oklch(81% 0.018 85)",
+          "oklch(92% 0.018 85)"
+        ]
+      },
+      "paper-deep": {
+        "role": "neutral",
+        "displayName": "Deep Paper",
+        "canonical": "#e7dfd0",
+        "tonalRamp": [
+          "oklch(15% 0.025 85)",
+          "oklch(26% 0.025 85)",
+          "oklch(37% 0.025 85)",
+          "oklch(48% 0.025 85)",
+          "oklch(59% 0.025 85)",
+          "oklch(70% 0.025 85)",
+          "oklch(81% 0.025 85)",
+          "oklch(92% 0.025 85)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Warm Ink",
+        "canonical": "#17140e",
+        "tonalRamp": [
+          "oklch(15% 0.012 80)",
+          "oklch(26% 0.012 80)",
+          "oklch(37% 0.012 80)",
+          "oklch(48% 0.012 80)",
+          "oklch(59% 0.012 80)",
+          "oklch(70% 0.012 80)",
+          "oklch(81% 0.012 80)",
+          "oklch(92% 0.012 80)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#6a6252",
+        "tonalRamp": [
+          "oklch(15% 0.020 80)",
+          "oklch(26% 0.020 80)",
+          "oklch(37% 0.020 80)",
+          "oklch(48% 0.020 80)",
+          "oklch(59% 0.020 80)",
+          "oklch(70% 0.020 80)",
+          "oklch(81% 0.020 80)",
+          "oklch(92% 0.020 80)"
+        ]
+      },
+      "field": {
+        "role": "secondary",
+        "displayName": "Deep Grass Green",
+        "canonical": "#0e4a2c",
+        "tonalRamp": [
+          "oklch(15% 0.085 155)",
+          "oklch(26% 0.085 155)",
+          "oklch(37% 0.085 155)",
+          "oklch(48% 0.085 155)",
+          "oklch(59% 0.085 155)",
+          "oklch(70% 0.085 155)",
+          "oklch(81% 0.085 155)",
+          "oklch(92% 0.085 155)"
+        ]
+      },
+      "field-ink": {
+        "role": "secondary",
+        "displayName": "Field Off-White",
+        "canonical": "#f4f7ee",
+        "tonalRamp": [
+          "oklch(15% 0.012 130)",
+          "oklch(26% 0.012 130)",
+          "oklch(37% 0.012 130)",
+          "oklch(48% 0.012 130)",
+          "oklch(59% 0.012 130)",
+          "oklch(70% 0.012 130)",
+          "oklch(81% 0.012 130)",
+          "oklch(92% 0.012 130)"
+        ]
+      },
+      "field-ink-soft": {
+        "role": "secondary",
+        "displayName": "Muted Sage",
+        "canonical": "#bfd8c4",
+        "tonalRamp": [
+          "oklch(15% 0.035 150)",
+          "oklch(26% 0.035 150)",
+          "oklch(37% 0.035 150)",
+          "oklch(48% 0.035 150)",
+          "oklch(59% 0.035 150)",
+          "oklch(70% 0.035 150)",
+          "oklch(81% 0.035 150)",
+          "oklch(92% 0.035 150)"
+        ]
+      },
+      "flare": {
+        "role": "primary",
+        "displayName": "Tomato",
+        "canonical": "#c6371c",
+        "tonalRamp": [
+          "oklch(15% 0.190 33)",
+          "oklch(26% 0.190 33)",
+          "oklch(37% 0.190 33)",
+          "oklch(48% 0.190 33)",
+          "oklch(59% 0.190 33)",
+          "oklch(70% 0.190 33)",
+          "oklch(81% 0.190 33)",
+          "oklch(92% 0.190 33)"
+        ]
+      },
+      "flare-deep": {
+        "role": "primary",
+        "displayName": "Deep Tomato",
+        "canonical": "#a72c14",
+        "tonalRamp": [
+          "oklch(15% 0.175 33)",
+          "oklch(26% 0.175 33)",
+          "oklch(37% 0.175 33)",
+          "oklch(48% 0.175 33)",
+          "oklch(59% 0.175 33)",
+          "oklch(70% 0.175 33)",
+          "oklch(81% 0.175 33)",
+          "oklch(92% 0.175 33)"
+        ]
+      },
+      "flare-ink": {
+        "role": "primary",
+        "displayName": "Tomato Off-White",
+        "canonical": "#fff8f2",
+        "tonalRamp": [
+          "oklch(15% 0.010 60)",
+          "oklch(26% 0.010 60)",
+          "oklch(37% 0.010 60)",
+          "oklch(48% 0.010 60)",
+          "oklch(59% 0.010 60)",
+          "oklch(70% 0.010 60)",
+          "oklch(81% 0.010 60)",
+          "oklch(92% 0.010 60)"
+        ]
+      },
+      "gold": {
+        "role": "tertiary",
+        "displayName": "Gold",
+        "canonical": "#f0b429",
+        "tonalRamp": [
+          "oklch(15% 0.145 80)",
+          "oklch(26% 0.145 80)",
+          "oklch(37% 0.145 80)",
+          "oklch(48% 0.145 80)",
+          "oklch(59% 0.145 80)",
+          "oklch(70% 0.145 80)",
+          "oklch(81% 0.145 80)",
+          "oklch(92% 0.145 80)"
+        ]
+      },
+      "alert": {
+        "role": "neutral",
+        "displayName": "Alert Red",
+        "canonical": "#9c2a10",
+        "tonalRamp": [
+          "oklch(15% 0.165 35)",
+          "oklch(26% 0.165 35)",
+          "oklch(37% 0.165 35)",
+          "oklch(48% 0.165 35)",
+          "oklch(59% 0.165 35)",
+          "oklch(70% 0.165 35)",
+          "oklch(81% 0.165 35)",
+          "oklch(92% 0.165 35)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline Rule",
+        "canonical": "color-mix(in srgb, #17140e 14%, transparent)"
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "color-mix(in srgb, #17140e 28%, transparent)"
+      },
+      "rule-field": {
+        "role": "neutral",
+        "displayName": "Field Hairline",
+        "canonical": "color-mix(in srgb, #f4f7ee 22%, transparent)"
+      }
+    },
+    "typographyMeta": {
+      "hero": {
+        "displayName": "Hero",
+        "purpose": "The home mission headline only, capped at 20-24ch, with photo chips woven into its words."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "h1 and inner-route mastheads, capped at 20ch."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "h2 band headings at 22ch and the closing call to action at 20ch."
+      },
+      "statement": {
+        "displayName": "Statement",
+        "purpose": "The mission sentence at 34ch. The one place the display face sets a full sentence, and the only place weight 600 appears."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "h3 — ledger titles, event titles, board names, pending headings; each overrides upward within its own component."
+      },
+      "amount": {
+        "displayName": "Amount",
+        "purpose": "Dollar figures in the ledger. The loudest non-heading element on the page."
+      },
+      "numeral": {
+        "displayName": "Index Numeral",
+        "purpose": "The pillar index numerals, generated as 01, 02, 03."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "One sentence under a headline. 34ch beside a hero, 52ch under a masthead, 46ch as a section lede."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All reading copy, capped at 60ch by default and 54-58ch inside mission and event bodies."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Meta lines, notes, hints, bios, footer copy, and a quiet amount label when a figure is not a plain dollar value."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Buttons, nav links, and form labels (0.95rem in a field label)."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Footer column headings, the cancelled flag, and the caption line inside the next-event card."
+      }
+    },
+    "shadows": [
+      {
+        "name": "resting-lift",
+        "value": "0 1px 2px rgb(23 20 14 / 0.06), 0 2px 8px -2px rgb(23 20 14 / 0.06)",
+        "purpose": "Barely there. Mosaic photos, event photos, board portraits, and the resting tomato button."
+      },
+      {
+        "name": "response-lift",
+        "value": "0 2px 6px rgb(23 20 14 / 0.07), 0 16px 36px -14px rgb(23 20 14 / 0.22)",
+        "purpose": "Any button on hover, a hovered mosaic photo, the mobile nav panel, the masthead photograph, the resting photo chip, and the resting next-event card."
+      },
+      {
+        "name": "hero-lift",
+        "value": "0 34px 70px -28px rgb(23 20 14 / 0.38)",
+        "purpose": "The wide hero photograph, and the hover state of the two elements that float over a photograph."
+      },
+      {
+        "name": "inset-hairline",
+        "value": "inset 0 0 0 1px color-mix(in srgb, #17140e 14%, transparent)",
+        "purpose": "How a flat surface gets an edge: pending panel, form disclaimer, success note, board initials placeholder, empty photo frame."
+      },
+      {
+        "name": "focus-glow",
+        "value": "0 0 0 3px color-mix(in srgb, #f0b429 45%, transparent)",
+        "purpose": "The only coloured glow in the system. Form field focus, paired with a full-ink border."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default exponential deceleration for reveals, lifts, and shadow transitions."
+      },
+      {
+        "name": "ease-emph",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Emphasised deceleration for rotation and scale: photo chips, the next-event card, the logo seal."
+      },
+      {
+        "name": "dur-1",
+        "value": "180ms",
+        "purpose": "Colour-only changes (background, border, text), always linear."
+      },
+      {
+        "name": "dur-2",
+        "value": "320ms",
+        "purpose": "Button lift, nav underline, skip link, date box."
+      },
+      {
+        "name": "dur-3",
+        "value": "620ms",
+        "purpose": "Ledger row slide, photo hover, next-event straighten."
+      },
+      {
+        "name": "dur-4",
+        "value": "900ms",
+        "purpose": "Reveal-on-enter and first-paint entrances."
+      },
+      {
+        "name": "reveal-offset",
+        "value": "translate3d(0, 1.75rem, 0)",
+        "purpose": "The idle state of a revealable element; only exists inside prefers-reduced-motion: no-preference."
+      }
+    ],
+    "breakpoints": [
+      { "name": "logo-full", "value": "34rem" },
+      { "name": "sm", "value": "40rem" },
+      { "name": "md", "value": "52rem" },
+      { "name": "lg", "value": "72rem" },
+      { "name": "container-max", "value": "84rem" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Tomato)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The Donate control and every primary action on a paper ground. Reverses to paper or gold on dark grounds.",
+      "html": "<button class=\"ds-btn-primary\">Donate</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding: 0.8rem 1.5rem; background: var(--flare, #c6371c); color: var(--flare-ink, #fff8f2); border: 2px solid transparent; border-radius: 999px; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 1.02rem; font-weight: 700; font-stretch: 100%; letter-spacing: -0.01em; line-height: 1; cursor: pointer; box-shadow: 0 1px 2px rgb(23 20 14 / 0.06), 0 2px 8px -2px rgb(23 20 14 / 0.06); transition: transform 320ms cubic-bezier(0.16,1,0.3,1), box-shadow 320ms cubic-bezier(0.16,1,0.3,1), background-color 180ms linear, color 180ms linear; } .ds-btn-primary:hover { background: var(--flare-2, #a72c14); transform: translateY(-2px); box-shadow: 0 2px 6px rgb(23 20 14 / 0.07), 0 16px 36px -14px rgb(23 20 14 / 0.22); } .ds-btn-primary:focus-visible { outline: 3px solid var(--ink, #17140e); outline-offset: 3px; } .ds-btn-primary:active { transform: translateY(0); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The quiet companion to Donate — a transparent pill with a hairline edge that darkens on hover.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">See your support in action</a>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding: 0.8rem 1.5rem; background: transparent; color: var(--ink, #17140e); border: 2px solid color-mix(in srgb, #17140e 28%, transparent); border-radius: 999px; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 1.02rem; font-weight: 700; font-stretch: 100%; letter-spacing: -0.01em; line-height: 1; text-decoration: none; cursor: pointer; transition: transform 320ms cubic-bezier(0.16,1,0.3,1), box-shadow 320ms cubic-bezier(0.16,1,0.3,1), background-color 180ms linear, border-color 180ms linear; } .ds-btn-secondary:hover { border-color: var(--ink, #17140e); background: color-mix(in srgb, #17140e 5%, transparent); transform: translateY(-2px); box-shadow: 0 2px 6px rgb(23 20 14 / 0.07), 0 16px 36px -14px rgb(23 20 14 / 0.22); } .ds-btn-secondary:focus-visible { outline: 3px solid var(--ink, #17140e); outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Contact and grant request fields. Display-face label, hairline border, gold focus ring.",
+      "html": "<p class=\"ds-field\"><label for=\"ds-field-name\">Your name</label><input id=\"ds-field-name\" type=\"text\" placeholder=\"Jane Kowalski\" /></p>",
+      "css": ".ds-field { display: grid; gap: 0.5rem; margin: 0; } .ds-field label { font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: -0.01em; color: var(--ink, #17140e); } .ds-field input { width: 100%; min-height: 3rem; padding: 0.75rem 0.9rem; border: 1px solid color-mix(in srgb, #17140e 28%, transparent); border-radius: 10px; background: var(--paper, #fbf8f2); color: var(--ink, #17140e); font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif; font-size: 1.0625rem; transition: border-color 180ms linear, box-shadow 180ms linear; } .ds-field input:hover { border-color: var(--ink-2, #6a6252); } .ds-field input:focus { border-color: var(--ink, #17140e); box-shadow: 0 0 0 3px color-mix(in srgb, #f0b429 45%, transparent); outline: none; }"
+    },
+    {
+      "name": "Primary Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Desktop header links. A 2px tomato underline scales in from the left on hover and stays scaled for the current page.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Primary\"><ul><li><a href=\"#\" aria-current=\"page\">Home</a></li><li><a href=\"#\">Board Members</a></li><li><a href=\"#\">Events</a></li><li><a href=\"#\">Projects &amp; Grants</a></li></ul></nav>",
+      "css": ".ds-nav ul { display: flex; align-items: center; gap: 2rem; list-style: none; margin: 0; padding: 0; } .ds-nav a { position: relative; display: inline-block; padding-block: 0.35rem; font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif; font-size: 0.98rem; font-weight: 700; color: var(--ink, #17140e); text-decoration: none; white-space: nowrap; } .ds-nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--flare, #c6371c); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform 320ms cubic-bezier(0.16,1,0.3,1); } .ds-nav a:hover::after, .ds-nav a[aria-current='page']::after { transform: scaleX(1); } .ds-nav a:focus-visible { outline: 3px solid var(--ink, #17140e); outline-offset: 3px; border-radius: 4px; }"
+    },
+    {
+      "name": "Ledger Row (on the green field)",
+      "kind": "custom",
+      "refersTo": "ledger-amount",
+      "description": "The signature component. One funded project per row: year, object, meta, and a gold tabular amount, separated by hairlines with no container. Slides right and scales its amount on hover or focus.",
+      "html": "<ol class=\"ds-ledger\"><li class=\"ds-ledger-row\"><p class=\"ds-ledger-year\">2019</p><div class=\"ds-ledger-main\"><h3 class=\"ds-ledger-title\">East Side Rec dugouts</h3><p class=\"ds-ledger-meta\"><span>Facilities</span><span>City of Saratoga Springs</span><span>Youth baseball</span></p></div><p class=\"ds-ledger-amount\">$15,430</p></li><li class=\"ds-ledger-row\"><p class=\"ds-ledger-year\">2021</p><div class=\"ds-ledger-main\"><h3 class=\"ds-ledger-title\">Playground bucket seat</h3><p class=\"ds-ledger-meta\"><span>Equipment</span><span>Veterans Memorial Park</span></p></div><p class=\"ds-ledger-amount\">$515</p></li></ol>",
+      "css": ".ds-ledger { list-style: none; display: grid; margin: 0; padding: 1.5rem; background: var(--field, #0e4a2c); border-top: 1px solid color-mix(in srgb, #f4f7ee 22%, transparent); } .ds-ledger-row { display: grid; grid-template-columns: 5rem minmax(0, 1fr) auto; grid-template-areas: 'year main amount'; align-items: baseline; gap: 2rem; padding-block: 1.6rem; border-bottom: 1px solid color-mix(in srgb, #f4f7ee 22%, transparent); transition: transform 620ms cubic-bezier(0.16,1,0.3,1); } .ds-ledger-year { grid-area: year; margin: 0; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 1.1rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; color: var(--field-ink-2, #bfd8c4); } .ds-ledger-main { grid-area: main; display: grid; gap: 0.5rem; min-width: 0; } .ds-ledger-title { margin: 0; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 2rem; font-weight: 700; font-stretch: 92%; letter-spacing: -0.03em; line-height: 1.04; color: var(--field-ink, #f4f7ee); } .ds-ledger-meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin: 0; font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif; font-size: 0.9375rem; color: var(--field-ink-2, #bfd8c4); } .ds-ledger-amount { grid-area: amount; justify-self: end; margin: 0; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 2.9rem; font-weight: 700; font-stretch: 90%; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; line-height: 1; color: var(--gold, #f0b429); white-space: nowrap; transition: transform 620ms cubic-bezier(0.16,1,0.3,1); } .ds-ledger-row:hover, .ds-ledger-row:focus-within { transform: translateX(0.4rem); } .ds-ledger-row:hover .ds-ledger-amount, .ds-ledger-row:focus-within .ds-ledger-amount { transform: scale(1.06); }"
+    },
+    {
+      "name": "Event Row",
+      "kind": "custom",
+      "refersTo": "event-datebox",
+      "description": "A hairline-ruled event record. The ink date box flips to tomato when the row is hovered; a past event flips it to deep paper.",
+      "html": "<ol class=\"ds-events\"><li class=\"ds-event-row\"><time class=\"ds-event-when\" datetime=\"2026-06-13\"><span class=\"ds-event-datebox\"><span class=\"ds-event-month\">Jun</span><span class=\"ds-event-day\">13</span></span></time><div class=\"ds-event-body\"><h3 class=\"ds-event-title\">Rec Fest in the Park</h3><p class=\"ds-event-meta\"><span>Saturday, June 13, 10:00 AM</span><span>Congress Park</span></p><p class=\"ds-event-summary\">Field games, the dunk tank, and a floor hockey demo on the new goals.</p></div></li></ol>",
+      "css": ".ds-events { list-style: none; display: grid; margin: 0; padding: 0; border-top: 1px solid color-mix(in srgb, #17140e 14%, transparent); } .ds-event-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.5rem; align-items: start; padding-block: 1.5rem; border-bottom: 1px solid color-mix(in srgb, #17140e 14%, transparent); } .ds-event-when { display: inline-flex; align-items: center; } .ds-event-datebox { display: grid; justify-items: center; gap: 0.1rem; padding: 0.5rem 0.7rem; min-width: 3.4rem; background: var(--ink, #17140e); color: var(--paper, #fbf8f2); border-radius: 10px; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; transition: background-color 320ms linear; } .ds-event-row:hover .ds-event-datebox { background: var(--flare, #c6371c); color: var(--flare-ink, #fff8f2); } .ds-event-month { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; } .ds-event-day { font-size: 1.5rem; letter-spacing: -0.03em; } .ds-event-body { display: grid; gap: 0.75rem; min-width: 0; } .ds-event-title { margin: 0; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 2.1rem; font-weight: 700; font-stretch: 92%; letter-spacing: -0.03em; line-height: 1.06; color: var(--ink, #17140e); } .ds-event-meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; margin: 0; font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif; font-size: 0.9375rem; color: var(--ink-2, #6a6252); } .ds-event-summary { margin: 0; max-width: 58ch; font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif; font-size: 1.0625rem; line-height: 1.62; color: var(--ink, #17140e); }"
+    },
+    {
+      "name": "Next-Event Card",
+      "kind": "card",
+      "refersTo": "next-event-card",
+      "description": "A tilted paper card riding the lower edge of the hero photograph, carrying a tomato date chip. Straightens and lifts on hover.",
+      "html": "<a class=\"ds-next-event\" href=\"#\"><span class=\"ds-next-event-when\"><span class=\"ds-next-event-month\">Jun</span><span class=\"ds-next-event-day\">13</span></span><span class=\"ds-next-event-copy\"><span class=\"ds-next-event-label\">Next event</span><span class=\"ds-next-event-title\">Rec Fest in the Park</span></span></a>",
+      "css": ".ds-next-event { display: inline-grid; grid-template-columns: auto 1fr; align-items: center; gap: 1rem; padding: 0.75rem 1.5rem 0.75rem 1rem; background: var(--paper, #fbf8f2); border-radius: 18px; box-shadow: 0 2px 6px rgb(23 20 14 / 0.07), 0 16px 36px -14px rgb(23 20 14 / 0.22); text-decoration: none; rotate: -1.2deg; transition: rotate 620ms cubic-bezier(0.22,1,0.36,1), transform 620ms cubic-bezier(0.16,1,0.3,1), box-shadow 620ms cubic-bezier(0.16,1,0.3,1); } .ds-next-event:hover { rotate: 0deg; transform: translateY(-3px); box-shadow: 0 34px 70px -28px rgb(23 20 14 / 0.38); } .ds-next-event:focus-visible { outline: 3px solid var(--ink, #17140e); outline-offset: 3px; } .ds-next-event-when { display: grid; justify-items: center; gap: 0.05rem; padding: 0.4rem 0.65rem; background: var(--flare, #c6371c); color: var(--flare-ink, #fff8f2); border-radius: 10px; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; } .ds-next-event-month { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; } .ds-next-event-day { font-size: 1.45rem; letter-spacing: -0.03em; } .ds-next-event-copy { display: grid; gap: 0.15rem; min-width: 0; } .ds-next-event-label { font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2, #6a6252); } .ds-next-event-title { font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 1.08rem; font-weight: 700; font-stretch: 92%; letter-spacing: -0.025em; line-height: 1.15; color: var(--ink, #17140e); }"
+    },
+    {
+      "name": "Inline Photo Chip",
+      "kind": "chip",
+      "refersTo": "photo-chip",
+      "description": "A small rounded photograph set inside a headline, tilted and baseline-nudged. Counter-rotates and scales on hover. Decorative by construction, so it carries an empty alt. The gradient here stands in for the photograph.",
+      "html": "<h2 class=\"ds-chip-headline\">Neighbours bought <span class=\"ds-chip\" aria-hidden=\"true\"></span> the things kids <span class=\"ds-chip ds-chip-alt\" aria-hidden=\"true\"></span> play on.</h2>",
+      "css": ".ds-chip-headline { margin: 0; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; font-stretch: 88%; line-height: 0.96; letter-spacing: -0.04em; color: var(--ink, #17140e); max-width: 22ch; } .ds-chip { position: relative; display: inline-block; vertical-align: -0.18em; width: clamp(3.6rem, 9.5vw, 8.5rem); aspect-ratio: 5 / 4; margin-inline: 0.22em 0.1em; border-radius: clamp(10px, 1.6vw, 18px); overflow: hidden; background: linear-gradient(135deg, #0e4a2c, #bfd8c4 70%, #f0b429); box-shadow: 0 2px 6px rgb(23 20 14 / 0.07), 0 16px 36px -14px rgb(23 20 14 / 0.22); rotate: -2deg; transition: rotate 620ms cubic-bezier(0.22,1,0.36,1), scale 620ms cubic-bezier(0.22,1,0.36,1), box-shadow 620ms cubic-bezier(0.16,1,0.3,1); } .ds-chip-alt { background: linear-gradient(135deg, #c6371c, #f0b429 80%); rotate: 2.4deg; } .ds-chip:hover { rotate: 3.2deg; scale: 1.06; box-shadow: 0 34px 70px -28px rgb(23 20 14 / 0.38); } .ds-chip-alt:hover { rotate: -3.8deg; }"
+    },
+    {
+      "name": "Pending Panel",
+      "kind": "custom",
+      "refersTo": "pending-panel",
+      "description": "The honest empty state. Launch-dependent content (board roster, calendar, published record) gets a composed tint panel with a real next action instead of invented filler.",
+      "html": "<div class=\"ds-pending\"><h3>The board is confirming its roster</h3><p>Board members are listed once they have approved their own name, photo, and bio, so nothing is guessed at here.</p><div class=\"ds-pending-actions\"><a class=\"ds-btn-secondary\" href=\"#\">Email the board</a></div></div>",
+      "css": ".ds-pending { display: grid; gap: 1.5rem; align-content: start; padding: 3rem 2rem; background: var(--paper-2, #f1ebdf); border-radius: 28px; box-shadow: inset 0 0 0 1px color-mix(in srgb, #17140e 14%, transparent); } .ds-pending h3 { margin: 0; max-width: 24ch; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 2rem; font-weight: 700; font-stretch: 92%; letter-spacing: -0.03em; line-height: 1.06; color: var(--ink, #17140e); } .ds-pending p { margin: 0; max-width: 48ch; font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif; font-size: 1.0625rem; line-height: 1.62; color: var(--ink-2, #6a6252); } .ds-pending-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }"
+    },
+    {
+      "name": "Cancelled Flag",
+      "kind": "chip",
+      "refersTo": "event-flag",
+      "description": "A cancelled event keeps its place in the calendar rather than disappearing: an alert pill above the title, and a 2px line through the title itself.",
+      "html": "<div class=\"ds-flag-demo\"><p class=\"ds-flag\">Cancelled</p><h3 class=\"ds-flag-title\">Winter Rink Opening</h3></div>",
+      "css": ".ds-flag-demo { display: grid; gap: 0.75rem; justify-items: start; } .ds-flag { display: inline-flex; align-items: center; margin: 0; padding: 0.2rem 0.6rem; border-radius: 999px; background: color-mix(in srgb, #9c2a10 12%, #fbf8f2); color: var(--alert, #9c2a10); font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; } .ds-flag-title { margin: 0; font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; font-size: 2.1rem; font-weight: 700; font-stretch: 92%; letter-spacing: -0.03em; line-height: 1.06; color: var(--ink, #17140e); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: color-mix(in srgb, #17140e 28%, transparent); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Community Ledger",
+    "overview": "The organization's whole meaning is that neighbours bought the things kids play on — floor hockey goals for $500, a playground bucket seat for $515, dugouts for $15,430. The site is therefore a ledger: warm editorial type carrying the organization's own photographs, and a deep green field where years, objects, and dollar amounts are set as display type loud enough to be the proof.\n\nThe register is warm, bold, and civic rather than institutional. Everything sits on one of five grounds — warm paper, a warm tint, the deep green field, the tomato field, or the ink footer — and a section's identity comes from which ground it stands on, not from a container drawn around it. Type does the structural work: headings run oversized, mixed case, with the `wdth` axis narrowed as the size grows, while reading copy stays in Atkinson Hyperlegible at a generous 1.62 line height because families and older board members read this. Lists are separated by hairline rules rather than boxed into cards, and photographs are the only elements permitted to look lifted.\n\nDensity is low and deliberate: long vertical bands, wide measures capped in characters rather than pixels, and single-column reading at every width. The layout never fakes evidence — where content is a launch dependency (the board roster, the donation URL, the event calendar) a composed pending panel states the truth instead of filling the space with plausible fiction.",
+    "keyCharacteristics": [
+      "A ledger, not a brochure: years, objects, and dollar amounts carry the argument.",
+      "Five tonal grounds (paper, tint, green field, tomato field, ink footer) instead of decorative containers.",
+      "Oversized Bricolage Grotesque headings, narrowed and tightly tracked; Atkinson Hyperlegible for everything read.",
+      "Amounts are always tabular display figures.",
+      "Every photograph is generously rounded (18–28px) and slightly tilted where it is small.",
+      "Near-flat: depth comes from ground changes, hairline rules, and photographic shadow only.",
+      "Pill controls, hairline fields, no card borders.",
+      "Motion is enhancement only; content is visible without JavaScript and without motion."
+    ],
+    "rules": [
+      {
+        "name": "The Gold-As-Marker Rule",
+        "body": "Gold marks, it never narrates. Its permitted roles are the highlighter stroke, the signpost tick on the green field, the amount figure on the green field, the focus glow, the selection wash, the hover underline, and the Donate fill on dark grounds. It is never a text colour on paper, never a resting surface in a paper band, and never a large flat area at full strength — the ambient washes sit at 24–30%.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ground Decides the Accent Rule",
+        "body": "A section's ground chooses its accent. On paper and tint, amounts and index numerals are tomato and rules are 14% ink. On the green field, amounts are gold and rules are 22% field-ink. On the tomato field and the ink footer, Donate reverses to paper or gold so it stays the loudest thing present.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tomato Is Action Rule",
+        "body": "Tomato means do something or here is the count: Donate, the numerals, the amounts on paper, the nav underline, the role line. It never sets body copy, and the one field it grounds carries at most 46ch of text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Amount Rule",
+        "body": "Every dollar figure is a tabular display figure (Bricolage 700, `font-variant-numeric: tabular-nums`). A value that is not a plain dollar amount drops to quiet Atkinson small instead, so an unverifiable figure never wears the display weight.",
+        "section": "typography"
+      },
+      {
+        "name": "The Narrow-When-Loud Rule",
+        "body": "The larger the type, the narrower the `wdth` axis and the tighter the tracking: 100% at control and label sizes, 94% at statement, 92% at `h1`–`h3`, 90% at amounts, 88% at hero and index numerals, with tracking moving from -0.01em to -0.05em across the same range.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Face Rule",
+        "body": "Bricolage never sets reading copy and Atkinson never sets a heading. Measures are capped in characters, not pixels: 60ch body, 52–56ch notes and summaries, 46ch ledes, 34ch statements and hero leads, 20–24ch headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Band, Not the Box Rule",
+        "body": "Structure comes from full-bleed horizontal bands changing ground colour, each re-centring the same `84rem` column. Never nest a coloured container inside a band to fake a section.",
+        "section": "layout"
+      },
+      {
+        "name": "The Unequal Stagger Rule",
+        "body": "Repeating sequences are never a stack of equal rows. The three pillars indent 0/3/6% at 52rem and 0/6/12% at 72rem, the mosaic promotes its first and sixth cells to double-wide squares, and the mosaic photos alternate a -1.1° / +0.9° rotation.",
+        "section": "layout"
+      },
+      {
+        "name": "The Photograph Earns the Shadow Rule",
+        "body": "Shadows belong to photographs, to elements floating over a photograph, and to hover or focus response. A flat surface that needs definition takes an inset 1px hairline, never a drop shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Warm Shadow Rule",
+        "body": "Every shadow is mixed from warm ink (`rgb(23 20 14 / …)`) at 6–38%. No grey, no black, no coloured glow — with the single exception of the focus glow on a form field, which is a 3px gold ring at 45%.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Rounded Photograph Rule",
+        "body": "Every photograph is rounded — 18px in rails and grids, 28px on wide panels and square portraits, interpolated on inline chips. A square-cornered image is a defect.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Pill Control Rule",
+        "body": "Anything you click is a pill (`999px`). Anything that holds content is gently rounded (10/18/28px). The two vocabularies never trade places.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Rules-Not-Cards Rule",
+        "body": "Every list of records — projects, events, places, footer links — is separated by 1px hairlines and nothing else. No borders, no fills, no boxes per item.",
+        "section": "components"
+      },
+      {
+        "name": "The Motion-Is-Enhancement Rule",
+        "body": "Content is visible by default. Every animation lives inside `@media (prefers-reduced-motion: no-preference)`, reveals fire once when an element crosses 92% of the viewport height, and a `<noscript>` rule forces every revealable element visible. Easing is exponential deceleration only (`cubic-bezier(0.16, 1, 0.3, 1)` and `cubic-bezier(0.22, 1, 0.36, 1)`) across four durations (180/320/620/900ms). Nothing loops, nothing hijacks the scroll.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do stand each section on one of the five grounds (paper #fbf8f2, tint #f1ebdf, green field #0e4a2c, tomato field #c6371c, ink footer #17140e) and let the ground choose the accent — see The Ground Decides the Accent Rule.",
+      "Do set every dollar figure as a tabular Bricolage display figure, and drop non-plain amounts to quiet Atkinson small — see The Tabular Amount Rule.",
+      "Do narrow the `wdth` axis and tighten tracking as type gets larger (100% → 88%, -0.01em → -0.05em).",
+      "Do round every photograph: 18px in grids and rails, 28px on wide panels and square portraits.",
+      "Do separate records with 1px hairlines (14% ink on paper, 22% field-ink on the green field).",
+      "Do keep controls as pills and containers as 10/18/28px rounds.",
+      "Do cap measures in characters: 60ch body, 46ch ledes, 34ch statements, 20–24ch headings.",
+      "Do give launch-dependent content a composed pending panel (tint ground, 28px radius, inset hairline) that states the truth and offers a real next action.",
+      "Do wrap every animation in `prefers-reduced-motion: no-preference` and keep the `<noscript>` visibility guarantee.",
+      "Do stagger repeating sequences so they read as unequal — indents, spans, alternating tilts."
+    ],
+    "donts": [
+      "Don't use flat municipal colour bands.",
+      "Don't set timid, undersized type. The hero reaches 7.5rem and amounts reach 2.9rem for a reason.",
+      "Don't build a 50/50 split hero. The hero body is asymmetric (1.25fr / 0.75fr) with a full-width photograph beneath it.",
+      "Don't present three matching equal impact cards. The pillars are unequal typographic statements with index numerals.",
+      "Don't let metric tiles stand in for evidence. Named objects, years, and amounts are the evidence.",
+      "Don't reach for a generic card grid or the shadcn look.",
+      "Don't use glassmorphism, blobs, or gradient decoration beyond the two clipped gold ambient washes.",
+      "Don't scroll-jack, loop an animation, or gate content behind JavaScript.",
+      "Don't put gold on paper as a text colour or a resting surface — see The Gold-As-Marker Rule.",
+      "Don't draw a card border or nest a coloured container inside a band to fake a section.",
+      "Don't use a grey or black shadow; all shadows are warm ink at 6–38%.",
+      "Don't invent aggregate claims or filler content to make a layout look full."
+    ]
+  }
+}

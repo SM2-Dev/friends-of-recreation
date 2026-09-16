@@ -20,11 +20,11 @@ Use the existing repository as the source of truth. Before editing, inspect its 
 
 ## Content architecture
 
-Use collections for repeating records: Users, Media, BoardMembers, Events, Projects, Organizations, ContactSubmissions, and GrantRequests.
+Use collections for repeating records: Users, Media, BoardMembers, Events, Projects, Organizations, Pages, ContactSubmissions, and GrantRequests.
 
-Use globals for singleton content: SiteSettings, HomePage, and PageContent.
+Use globals for singleton content: SiteSettings.
 
-Keep the four public routes purpose-built. Avoid arbitrary layout-block schemas in v1.
+Public pages live in the Pages collection. Editors create a page, then add and reorder the designed section blocks that already exist on the site (hero, mission, impact, organizations, featured projects, photo rail, events, donate, contact, masthead, board list, event listings, project ledger, grant request). Do not add generic layout-builder primitives such as freeform card grids, nested columns, or themeable feature tiles.
 
 ## Events
 
