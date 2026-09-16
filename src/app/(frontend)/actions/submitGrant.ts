@@ -4,7 +4,7 @@ import { getPayloadClient } from '@/lib/cms'
 import { honeypotFilled } from '@/lib/contact'
 import { readGrantPdf, readGrantValues, validateGrant, validateGrantPdf } from '@/lib/grant'
 import { initialGrantState, type GrantFormState } from '@/lib/grantState'
-import { notifyStaffOfGrantRequest } from '@/lib/notify'
+import { confirmGrantSubmitter, notifyStaffOfGrantRequest } from '@/lib/notify'
 import { verifyTurnstile } from '@/lib/turnstile'
 
 export async function submitGrantRequest(
@@ -62,7 +62,7 @@ export async function submitGrantRequest(
         organizationName: values.organizationName,
         contactName: values.contactName,
         email: values.email,
-        phone: values.phone || null,
+        phone: values.phone,
         website: values.website || null,
         projectTitle: values.projectTitle,
         beneficiaries: values.beneficiaries || null,
@@ -85,6 +85,17 @@ export async function submitGrantRequest(
       request: values.request,
       to: settings.notificationEmail,
     })
+
+    try {
+      await confirmGrantSubmitter({
+        contactName: values.contactName,
+        email: values.email,
+        organizationName: values.organizationName,
+        projectTitle: values.projectTitle,
+      })
+    } catch {
+      // The board already has the request; skip a failed confirmation.
+    }
   } catch {
     return {
       status: 'error',

@@ -5,6 +5,7 @@ import {
   preventPublicInternalWrites,
   stripInternalFieldsForPublic,
 } from '@/hooks/stripInternalSubmissionFields'
+import { submissionStatusField } from '@/lib/submissionStatus'
 
 export const ContactSubmissions: CollectionConfig = {
   slug: 'contact-submissions',
@@ -59,24 +60,7 @@ export const ContactSubmissions: CollectionConfig = {
       minLength: 10,
       maxLength: 5000,
     },
-    {
-      name: 'status',
-      type: 'select',
-      defaultValue: 'new',
-      required: true,
-      options: [
-        { label: 'New', value: 'new' },
-        { label: 'In progress', value: 'in-progress' },
-        { label: 'Closed', value: 'closed' },
-      ],
-      access: {
-        read: staffField,
-        update: staffField,
-      },
-      admin: {
-        description: 'Internal workflow only. Never shown publicly.',
-      },
-    },
+    submissionStatusField(),
     {
       name: 'internalNotes',
       type: 'textarea',

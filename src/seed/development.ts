@@ -402,6 +402,8 @@ export async function seedDevelopmentContent(payload: Payload): Promise<void> {
         heading: 'Ask a question',
         intro:
           'Questions about a project, an event, or how to help out? Send a note and a volunteer will get back to you.',
+        photo: heroImage,
+        photoPosition: 'center',
       },
     ],
   })
@@ -512,6 +514,8 @@ export async function seedDevelopmentContent(payload: Payload): Promise<void> {
           'If a Saratoga Springs project needs a push, we would rather hear about it than miss it.',
         heading: 'Have a Recreation Project We Should Know About?',
         intro: 'Tell us what you are trying to build, fix, or fund. Requests go straight to the volunteer board.',
+        photo: heroImage,
+        photoPosition: 'center',
         background: 'paper',
       },
       {

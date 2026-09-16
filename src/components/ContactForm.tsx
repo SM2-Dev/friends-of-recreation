@@ -87,7 +87,7 @@ export function ContactForm({ heading, headingId, intro }: ContactFormProps) {
         <input aria-hidden="true" autoComplete="off" name="company" tabIndex={-1} />
       </div>
 
-      <div className="form-grid">
+      <div className="form-grid form-grid-2">
         <div className="form-field">
           <label htmlFor={`${formId}-name`}>Name</label>
           <input
@@ -145,20 +145,20 @@ export function ContactForm({ heading, headingId, intro }: ContactFormProps) {
           />
           <FieldError id={`${formId}-subject-error`} message={fieldErrors.subject} />
         </div>
-      </div>
 
-      <div className="form-field">
-        <label htmlFor={`${formId}-message`}>Message</label>
-        <textarea
-          aria-describedby={describedBy('message')}
-          aria-invalid={Boolean(fieldErrors.message)}
-          defaultValue={values.message}
-          id={`${formId}-message`}
-          name="message"
-          required
-          rows={6}
-        />
-        <FieldError id={`${formId}-message-error`} message={fieldErrors.message} />
+        <div className="form-field form-span-2">
+          <label htmlFor={`${formId}-message`}>Message</label>
+          <textarea
+            aria-describedby={describedBy('message')}
+            aria-invalid={Boolean(fieldErrors.message)}
+            defaultValue={values.message}
+            id={`${formId}-message`}
+            name="message"
+            required
+            rows={4}
+          />
+          <FieldError id={`${formId}-message-error`} message={fieldErrors.message} />
+        </div>
       </div>
 
       <TurnstileField resetSignal={state.status} />

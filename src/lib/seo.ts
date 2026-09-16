@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { absoluteUrl, DEFAULT_DESCRIPTION, DEFAULT_TITLE, siteUrl } from '@/lib/site'
+import { absoluteUrl, allowSearchIndexing, DEFAULT_DESCRIPTION, DEFAULT_TITLE, siteUrl } from '@/lib/site'
 import { pageHref } from '@/lib/slug'
 import { isMedia } from '@/lib/utils'
 import type { Page, SiteSetting } from '@/payload-types'
@@ -118,8 +118,8 @@ export function pageMetadata({
       images: [image.url],
     },
     robots: {
-      index: true,
-      follow: true,
+      index: allowSearchIndexing(),
+      follow: allowSearchIndexing(),
     },
   }
 }

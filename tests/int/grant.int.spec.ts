@@ -16,7 +16,7 @@ describe('grant request validation', () => {
       organizationName: 'Camp Saradac',
       contactName: 'Alex Rivera',
       email: 'alex@example.com',
-      phone: '',
+      phone: '518-555-0100',
       website: '',
       amountRequested: '',
       projectTitle: 'Camp scholarships',
@@ -28,6 +28,24 @@ describe('grant request validation', () => {
 
     expect(validateGrant(values)).toEqual({})
     expect(validateGrantPdf(null)).toBeUndefined()
+  })
+
+  it('requires a phone number', () => {
+    const values = {
+      organizationName: 'Camp Saradac',
+      contactName: 'Alex Rivera',
+      email: 'alex@example.com',
+      phone: '',
+      website: '',
+      amountRequested: '',
+      projectTitle: 'Camp scholarships',
+      beneficiaries: '',
+      request: 'We would like help funding camp scholarships for local families.',
+      recreationImpact: '',
+      requestedTimeline: '',
+    }
+
+    expect(validateGrant(values).phone).toBe('Enter a phone number.')
   })
 
   it('rejects non-PDF attachments and oversized files', () => {

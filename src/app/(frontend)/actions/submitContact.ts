@@ -7,7 +7,7 @@ import {
   validateContact,
 } from '@/lib/contact'
 import { initialContactState, type ContactFormState } from '@/lib/contactState'
-import { notifyStaffOfContact } from '@/lib/notify'
+import { confirmContactSubmitter, notifyStaffOfContact } from '@/lib/notify'
 import { verifyTurnstile } from '@/lib/turnstile'
 
 export async function submitContact(
@@ -70,6 +70,16 @@ export async function submitContact(
       message: values.message,
       to: settings.notificationEmail,
     })
+
+    try {
+      await confirmContactSubmitter({
+        name: values.name,
+        email: values.email,
+        subject: values.subject,
+      })
+    } catch {
+      // The board already has the message; skip a failed confirmation.
+    }
   } catch {
     return {
       status: 'error',

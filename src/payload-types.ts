@@ -641,6 +641,14 @@ export interface ContactBlock {
   heading?: string | null;
   intro?: string | null;
   /**
+   * Optional photograph under the statement, beside the form. Leave blank to use a recent public photo.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * CSS object-position, such as center or 30% 40%, so faces stay in crop.
+   */
+  photoPosition?: string | null;
+  /**
    * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
    */
   background?: ('paper' | 'tint' | 'teal' | 'field' | 'flare' | 'navy') | null;
@@ -741,10 +749,17 @@ export interface ProjectLedgerBlock {
  * via the `definition` "GrantRequestBlock".
  */
 export interface GrantRequestBlock {
-  kicker?: string | null;
   statement?: string | null;
   heading?: string | null;
   intro?: string | null;
+  /**
+   * Optional photograph under the statement, beside the form. Leave blank to use a recent public photo.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * CSS object-position, such as center or 30% 40%, so faces stay in crop.
+   */
+  photoPosition?: string | null;
   /**
    * Fill behind this section. Teal, green, flare, and navy switch the type to light ink so it stays readable.
    */
@@ -772,7 +787,7 @@ export interface ContactSubmission {
   /**
    * Internal workflow only. Never shown publicly.
    */
-  status: 'new' | 'in-progress' | 'closed';
+  status: 'new' | 'reviewing' | 'follow-up' | 'approved' | 'declined' | 'closed';
   /**
    * Staff notes. Never returned to the public site or confirmation screens.
    */
@@ -791,7 +806,7 @@ export interface GrantRequest {
   organizationName: string;
   contactName: string;
   email: string;
-  phone?: string | null;
+  phone: string;
   /**
    * Optional public website for the requesting group.
    */
@@ -815,7 +830,7 @@ export interface GrantRequest {
   /**
    * Internal workflow only. Never shown publicly.
    */
-  status: 'new' | 'in-review' | 'awarded' | 'declined' | 'closed';
+  status: 'new' | 'reviewing' | 'follow-up' | 'approved' | 'declined' | 'closed';
   /**
    * Staff notes. Never returned to the public site or confirmation screens.
    */
@@ -1241,6 +1256,8 @@ export interface ContactBlockSelect<T extends boolean = true> {
   statement?: T;
   heading?: T;
   intro?: T;
+  photo?: T;
+  photoPosition?: T;
   background?: T;
   id?: T;
   blockName?: T;
@@ -1304,10 +1321,11 @@ export interface ProjectLedgerBlockSelect<T extends boolean = true> {
  * via the `definition` "GrantRequestBlock_select".
  */
 export interface GrantRequestBlockSelect<T extends boolean = true> {
-  kicker?: T;
   statement?: T;
   heading?: T;
   intro?: T;
+  photo?: T;
+  photoPosition?: T;
   background?: T;
   id?: T;
   blockName?: T;

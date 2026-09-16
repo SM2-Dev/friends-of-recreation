@@ -15,6 +15,10 @@ export function siteUrl(): string {
   return FALLBACK_URL
 }
 
+export function allowSearchIndexing(): boolean {
+  return process.env.SITE_NOINDEX !== 'true'
+}
+
 export function absoluteUrl(path = '/'): string {
   if (/^https?:\/\//i.test(path)) return path
   const base = siteUrl()

@@ -12,6 +12,7 @@ type GrantRequestFormProps = {
   heading: string
   headingId?: string
   intro?: string | null
+  showHeading?: boolean
 }
 
 const DISCLAIMER =
@@ -26,7 +27,12 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   )
 }
 
-export function GrantRequestForm({ heading, headingId, intro }: GrantRequestFormProps) {
+export function GrantRequestForm({
+  heading,
+  headingId,
+  intro,
+  showHeading = true,
+}: GrantRequestFormProps) {
   const [state, action, pending] = useActionState(submitGrantRequest, initialGrantState)
   const generatedId = useId()
   const formId = generatedId.replace(/:/g, '')
@@ -57,7 +63,7 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
   if (state.status === 'success') {
     return (
       <div className="contact-success" ref={successRef} role="status" tabIndex={-1}>
-        <h2 id={titleId}>{heading}</h2>
+        {showHeading ? <h2 id={titleId}>{heading}</h2> : null}
         <p>
           Thank you. Your request was saved for the Friends of Recreation board. A volunteer will
           contact you if more information is needed.
@@ -68,25 +74,31 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
   }
 
   const attachmentHintId = `${formId}-attachment-hint`
+  const disclaimerId = `${formId}-disclaimer`
+  const describedIds = [
+    intro ? `${formId}-intro` : undefined,
+    state.formError ? `${formId}-form-error` : undefined,
+    disclaimerId,
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <form
       action={action}
-      aria-describedby={
-        [intro ? `${formId}-intro` : undefined, state.formError ? `${formId}-form-error` : undefined]
-          .filter(Boolean)
-          .join(' ') || undefined
-      }
+      aria-describedby={describedIds || undefined}
       aria-labelledby={titleId}
       className="grant-form"
       encType="multipart/form-data"
       noValidate
       ref={formRef}
     >
-      <header className="grant-form-intro">
-        <h2 id={titleId}>{heading}</h2>
-        {intro ? <p id={`${formId}-intro`}>{intro}</p> : null}
-      </header>
+      {showHeading || intro ? (
+        <header className="grant-form-intro">
+          {showHeading ? <h2 id={titleId}>{heading}</h2> : null}
+          {intro ? <p id={`${formId}-intro`}>{intro}</p> : null}
+        </header>
+      ) : null}
 
       {state.formError ? (
         <p className="form-error form-error-banner" id={`${formId}-form-error`} role="alert">
@@ -100,7 +112,7 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
 
       <div className="form-grid form-grid-2">
         <div className="form-field">
-          <label htmlFor={`${formId}-organizationName`}>Organization or group name</label>
+          <label htmlFor={`${formId}-organizationName`}>Organization / group name</label>
           <input
             aria-describedby={describedBy('organizationName')}
             aria-invalid={Boolean(fieldErrors.organizationName)}
@@ -143,9 +155,7 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
         </div>
 
         <div className="form-field">
-          <label htmlFor={`${formId}-grant-phone`}>
-            Phone <span className="form-optional">(optional)</span>
-          </label>
+          <label htmlFor={`${formId}-grant-phone`}>Phone</label>
           <input
             aria-describedby={describedBy('phone')}
             aria-invalid={Boolean(fieldErrors.phone)}
@@ -153,6 +163,7 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
             defaultValue={values.phone}
             id={`${formId}-grant-phone`}
             name="phone"
+            required
             type="tel"
           />
           <FieldError id={errorId('phone')} message={fieldErrors.phone} />
@@ -175,9 +186,7 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
         </div>
 
         <div className="form-field">
-          <label htmlFor={`${formId}-amountRequested`}>
-            Amount requested <span className="form-optional">(optional)</span>
-          </label>
+          <label htmlFor={`${formId}-amountRequested`}>Amount requested</label>
           <input
             aria-describedby={describedBy('amountRequested')}
             aria-invalid={Boolean(fieldErrors.amountRequested)}
@@ -189,7 +198,7 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
         </div>
 
         <div className="form-field form-span-2">
-          <label htmlFor={`${formId}-projectTitle`}>Project or program name</label>
+          <label htmlFor={`${formId}-projectTitle`}>Project / program name</label>
           <input
             aria-describedby={describedBy('projectTitle')}
             aria-invalid={Boolean(fieldErrors.projectTitle)}
@@ -200,87 +209,91 @@ export function GrantRequestForm({ heading, headingId, intro }: GrantRequestForm
           />
           <FieldError id={errorId('projectTitle')} message={fieldErrors.projectTitle} />
         </div>
+
+        <div className="form-field form-span-2">
+          <label htmlFor={`${formId}-request`}>Tell us about your request</label>
+          <textarea
+            aria-describedby={describedBy('request')}
+            aria-invalid={Boolean(fieldErrors.request)}
+            defaultValue={values.request}
+            id={`${formId}-request`}
+            name="request"
+            required
+            rows={4}
+          />
+          <FieldError id={errorId('request')} message={fieldErrors.request} />
+        </div>
+
+        <div className="form-field">
+          <label htmlFor={`${formId}-beneficiaries`}>
+            Who will this project benefit? <span className="form-optional">(optional)</span>
+          </label>
+          <textarea
+            aria-describedby={describedBy('beneficiaries')}
+            aria-invalid={Boolean(fieldErrors.beneficiaries)}
+            className="form-textarea-short"
+            defaultValue={values.beneficiaries}
+            id={`${formId}-beneficiaries`}
+            name="beneficiaries"
+            rows={3}
+          />
+          <FieldError id={errorId('beneficiaries')} message={fieldErrors.beneficiaries} />
+        </div>
+
+        <div className="form-field">
+          <label htmlFor={`${formId}-recreationImpact`}>
+            How will this improve recreation in Saratoga Springs?{' '}
+            <span className="form-optional">(optional)</span>
+          </label>
+          <textarea
+            aria-describedby={describedBy('recreationImpact')}
+            aria-invalid={Boolean(fieldErrors.recreationImpact)}
+            className="form-textarea-short"
+            defaultValue={values.recreationImpact}
+            id={`${formId}-recreationImpact`}
+            name="recreationImpact"
+            rows={3}
+          />
+          <FieldError id={errorId('recreationImpact')} message={fieldErrors.recreationImpact} />
+        </div>
+
+        <div className="form-field">
+          <label htmlFor={`${formId}-requestedTimeline`}>
+            Requested funding date / project timeline{' '}
+            <span className="form-optional">(optional)</span>
+          </label>
+          <input
+            aria-describedby={describedBy('requestedTimeline')}
+            aria-invalid={Boolean(fieldErrors.requestedTimeline)}
+            defaultValue={values.requestedTimeline}
+            id={`${formId}-requestedTimeline`}
+            name="requestedTimeline"
+          />
+          <FieldError id={errorId('requestedTimeline')} message={fieldErrors.requestedTimeline} />
+        </div>
+
+        <div className="form-field">
+          <label htmlFor={`${formId}-attachment`}>
+            Supporting document <span className="form-optional">(optional PDF)</span>
+          </label>
+          <input
+            accept="application/pdf,.pdf"
+            aria-describedby={describedBy('attachment', attachmentHintId)}
+            aria-invalid={Boolean(fieldErrors.attachment)}
+            id={`${formId}-attachment`}
+            name="attachment"
+            type="file"
+          />
+          <p className="form-hint" id={attachmentHintId}>
+            PDF only, 8 MB or smaller. The file stays private with the board.
+          </p>
+          <FieldError id={errorId('attachment')} message={fieldErrors.attachment} />
+        </div>
       </div>
 
-      <div className="form-field">
-        <label htmlFor={`${formId}-request`}>Tell us about your request</label>
-        <textarea
-          aria-describedby={describedBy('request')}
-          aria-invalid={Boolean(fieldErrors.request)}
-          defaultValue={values.request}
-          id={`${formId}-request`}
-          name="request"
-          required
-          rows={6}
-        />
-        <FieldError id={errorId('request')} message={fieldErrors.request} />
-      </div>
-
-      <div className="form-field">
-        <label htmlFor={`${formId}-beneficiaries`}>
-          Who will this project benefit? <span className="form-optional">(optional)</span>
-        </label>
-        <textarea
-          aria-describedby={describedBy('beneficiaries')}
-          aria-invalid={Boolean(fieldErrors.beneficiaries)}
-          defaultValue={values.beneficiaries}
-          id={`${formId}-beneficiaries`}
-          name="beneficiaries"
-          rows={3}
-        />
-        <FieldError id={errorId('beneficiaries')} message={fieldErrors.beneficiaries} />
-      </div>
-
-      <div className="form-field">
-        <label htmlFor={`${formId}-recreationImpact`}>
-          How will this improve recreation in Saratoga Springs?{' '}
-          <span className="form-optional">(optional)</span>
-        </label>
-        <textarea
-          aria-describedby={describedBy('recreationImpact')}
-          aria-invalid={Boolean(fieldErrors.recreationImpact)}
-          defaultValue={values.recreationImpact}
-          id={`${formId}-recreationImpact`}
-          name="recreationImpact"
-          rows={3}
-        />
-        <FieldError id={errorId('recreationImpact')} message={fieldErrors.recreationImpact} />
-      </div>
-
-      <div className="form-field">
-        <label htmlFor={`${formId}-requestedTimeline`}>
-          Requested funding date or project timeline{' '}
-          <span className="form-optional">(optional)</span>
-        </label>
-        <input
-          aria-describedby={describedBy('requestedTimeline')}
-          aria-invalid={Boolean(fieldErrors.requestedTimeline)}
-          defaultValue={values.requestedTimeline}
-          id={`${formId}-requestedTimeline`}
-          name="requestedTimeline"
-        />
-        <FieldError id={errorId('requestedTimeline')} message={fieldErrors.requestedTimeline} />
-      </div>
-
-      <div className="form-field">
-        <label htmlFor={`${formId}-attachment`}>
-          Supporting PDF <span className="form-optional">(optional)</span>
-        </label>
-        <input
-          accept="application/pdf,.pdf"
-          aria-describedby={describedBy('attachment', attachmentHintId)}
-          aria-invalid={Boolean(fieldErrors.attachment)}
-          id={`${formId}-attachment`}
-          name="attachment"
-          type="file"
-        />
-        <p className="form-hint" id={attachmentHintId}>
-          PDF only, 8 MB or smaller. The file stays private with the board and is never shown on the website.
-        </p>
-        <FieldError id={errorId('attachment')} message={fieldErrors.attachment} />
-      </div>
-
-      <p className="form-disclaimer">{DISCLAIMER}</p>
+      <p className="form-disclaimer" id={disclaimerId}>
+        {DISCLAIMER}
+      </p>
 
       <TurnstileField resetSignal={state.status} />
 

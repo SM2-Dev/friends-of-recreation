@@ -19,6 +19,27 @@ const photograph: Field[] = [
   },
 ]
 
+const optionalFormPhoto: Field[] = [
+  {
+    name: 'photo',
+    type: 'upload',
+    relationTo: 'media',
+    admin: {
+      description:
+        'Optional photograph under the statement, beside the form. Leave blank to use a recent public photo.',
+    },
+  },
+  {
+    name: 'photoPosition',
+    type: 'text',
+    defaultValue: 'center',
+    admin: {
+      description: 'CSS object-position, such as center or 30% 40%, so faces stay in crop.',
+      condition: (_, siblingData) => Boolean(siblingData?.photo),
+    },
+  },
+]
+
 export const Hero: Block = {
   slug: 'hero',
   labels: { singular: 'Hero', plural: 'Heroes' },
@@ -322,6 +343,7 @@ export const Contact: Block = {
       name: 'intro',
       type: 'textarea',
     },
+    ...optionalFormPhoto,
   ],
 }
 
@@ -474,11 +496,6 @@ export const GrantRequest: Block = {
   interfaceName: 'GrantRequestBlock',
   fields: [
     {
-      name: 'kicker',
-      type: 'text',
-      defaultValue: 'Ask for support',
-    },
-    {
       name: 'statement',
       type: 'textarea',
       defaultValue:
@@ -493,6 +510,7 @@ export const GrantRequest: Block = {
       name: 'intro',
       type: 'textarea',
     },
+    ...optionalFormPhoto,
   ],
 }
 

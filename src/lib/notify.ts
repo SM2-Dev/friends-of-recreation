@@ -101,3 +101,52 @@ export async function notifyStaffOfGrantRequest(input: {
     ].join('\n'),
   })
 }
+
+export async function confirmContactSubmitter(input: {
+  name: string
+  email: string
+  subject: string
+}): Promise<NotificationResult> {
+  const to = input.email.trim()
+  if (!to) return { sent: false, reason: 'missing-recipient' }
+
+  return sendResendEmail({
+    to,
+    subject: 'We received your message — Friends of Recreation',
+    text: [
+      `Hi ${input.name},`,
+      '',
+      'Thanks for writing to Friends of Recreation. We received your message and a volunteer will follow up if a reply is needed.',
+      '',
+      `Subject: ${input.subject}`,
+      '',
+      'Friends of Recreation',
+      'Saratoga Springs, New York',
+    ].join('\n'),
+  })
+}
+
+export async function confirmGrantSubmitter(input: {
+  contactName: string
+  email: string
+  organizationName: string
+  projectTitle: string
+}): Promise<NotificationResult> {
+  const to = input.email.trim()
+  if (!to) return { sent: false, reason: 'missing-recipient' }
+
+  return sendResendEmail({
+    to,
+    subject: 'We received your grant request — Friends of Recreation',
+    text: [
+      `Hi ${input.contactName},`,
+      '',
+      `Thanks for writing to Friends of Recreation. We received the request from ${input.organizationName} for ${input.projectTitle}.`,
+      '',
+      'Submitting a request does not guarantee funding. A member of Friends of Recreation will contact you if additional information is needed.',
+      '',
+      'Friends of Recreation',
+      'Saratoga Springs, New York',
+    ].join('\n'),
+  })
+}
