@@ -52,10 +52,33 @@ export const GrantRequests: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'website',
+      type: 'text',
+      label: 'Organization website',
+      admin: {
+        description: 'Optional public website for the requesting group.',
+      },
+    },
+    {
       name: 'projectTitle',
       type: 'text',
       required: true,
       label: 'Project title',
+    },
+    {
+      name: 'beneficiaries',
+      type: 'textarea',
+      label: 'Who will this project benefit?',
+    },
+    {
+      name: 'recreationImpact',
+      type: 'textarea',
+      label: 'How will this improve recreation in Saratoga Springs?',
+    },
+    {
+      name: 'requestedTimeline',
+      type: 'text',
+      label: 'Requested funding date or project timeline',
     },
     {
       name: 'description',

@@ -24,6 +24,7 @@
     "@payloadcms/richtext-lexical": "3.89.0",
     "@payloadcms/ui": "3.89.0",
     "@tailwindcss/postcss": "4.3.3",
+    "animejs": "3.2.2",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@playwright/test": "1.58.2",
     "@testing-library/react": "16.3.0",
+    "@types/animejs": "3.1.13",
     "@types/node": "22.19.9",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
