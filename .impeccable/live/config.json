@@ -1,0 +1,7 @@
+{
+  "files": ["src/app/(frontend)/layout.tsx"],
+  "exclude": ["src/app/(payload)/**"],
+  "insertBefore": "</body>",
+  "commentSyntax": "jsx",
+  "cspChecked": true
+}
