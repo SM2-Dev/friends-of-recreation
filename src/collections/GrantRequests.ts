@@ -5,6 +5,7 @@ import {
   preventPublicInternalWrites,
   stripInternalFieldsForPublic,
 } from '@/hooks/stripInternalSubmissionFields'
+import { submissionStatusField } from '@/lib/submissionStatus'
 
 export const GrantRequests: CollectionConfig = {
   slug: 'grant-requests',
@@ -34,7 +35,7 @@ export const GrantRequests: CollectionConfig = {
       name: 'organizationName',
       type: 'text',
       required: true,
-      label: 'Organization name',
+      label: 'Organization / group name',
     },
     {
       name: 'contactName',
@@ -50,6 +51,7 @@ export const GrantRequests: CollectionConfig = {
     {
       name: 'phone',
       type: 'text',
+      required: true,
     },
     {
       name: 'website',
@@ -63,7 +65,7 @@ export const GrantRequests: CollectionConfig = {
       name: 'projectTitle',
       type: 'text',
       required: true,
-      label: 'Project title',
+      label: 'Project / program name',
     },
     {
       name: 'beneficiaries',
@@ -111,26 +113,7 @@ export const GrantRequests: CollectionConfig = {
         description: 'Optional PDF only. Stored as an internal file and never shown on the public site.',
       },
     },
-    {
-      name: 'status',
-      type: 'select',
-      defaultValue: 'new',
-      required: true,
-      options: [
-        { label: 'New', value: 'new' },
-        { label: 'In review', value: 'in-review' },
-        { label: 'Awarded', value: 'awarded' },
-        { label: 'Declined', value: 'declined' },
-        { label: 'Closed', value: 'closed' },
-      ],
-      access: {
-        read: staffField,
-        update: staffField,
-      },
-      admin: {
-        description: 'Internal workflow only. Never shown publicly.',
-      },
-    },
+    submissionStatusField(),
     {
       name: 'internalNotes',
       type: 'textarea',

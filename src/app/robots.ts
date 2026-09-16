@@ -1,8 +1,19 @@
 import type { MetadataRoute } from 'next'
 
-import { absoluteUrl } from '@/lib/site'
+import { absoluteUrl, allowSearchIndexing } from '@/lib/site'
 
 export default function robots(): MetadataRoute.Robots {
+  if (!allowSearchIndexing()) {
+    return {
+      rules: [
+        {
+          userAgent: '*',
+          disallow: '/',
+        },
+      ],
+    }
+  }
+
   return {
     rules: [
       {

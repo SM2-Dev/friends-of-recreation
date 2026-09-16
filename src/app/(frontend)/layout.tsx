@@ -9,11 +9,12 @@ import { RevealObserver } from '@/components/RevealObserver'
 import { SkipLink } from '@/components/SkipLink'
 import { getSiteSettings } from '@/lib/cms'
 import { defaultDescription, homeTitle, organizationJsonLd, resolveSocialImage } from '@/lib/seo'
-import { siteUrl } from '@/lib/site'
+import { allowSearchIndexing, siteUrl } from '@/lib/site'
 
 import './globals.css'
 
 export const revalidate = 60
+export const maxDuration = 60
 
 const display = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -56,8 +57,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [image.url],
     },
     robots: {
-      index: true,
-      follow: true,
+      index: allowSearchIndexing(),
+      follow: allowSearchIndexing(),
     },
   }
 }
@@ -94,7 +95,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Footer />
         <RevealObserver />
       {/* impeccable-live-start */}
-<script src="http://localhost:8401/live.js?token=aca59555-2ba8-4680-bdd2-5ad23ba8c52a"></script>
+<script src="http://localhost:8402/live.js?token=531160d6-3029-47a0-82f4-ec31af020c9a"></script>
 {/* impeccable-live-end */}
 </body>
     </html>

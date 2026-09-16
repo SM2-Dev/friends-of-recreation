@@ -65,7 +65,8 @@ export function validateGrant(values: GrantValues): GrantFieldErrors {
     errors.email = 'Enter a valid email address.'
   }
 
-  if (values.phone && values.phone.length > 40) errors.phone = 'Use 40 characters or fewer.'
+  if (!values.phone) errors.phone = 'Enter a phone number.'
+  else if (values.phone.length > 40) errors.phone = 'Use 40 characters or fewer.'
   if (values.website && values.website.length > 300) errors.website = 'Use 300 characters or fewer.'
   if (values.amountRequested.length > 120) errors.amountRequested = 'Use 120 characters or fewer.'
 

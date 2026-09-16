@@ -46,6 +46,20 @@ import type {
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
+function formPhoto(photo: unknown) {
+  return isMedia(photo) && photo.url ? photo : null
+}
+
+async function resolveFormPhoto(chosen: unknown, fallback: HomePhoto['media'] | null) {
+  const selected = formPhoto(chosen) ?? formPhoto(fallback)
+  if (selected) return selected
+
+  const settings = await getSiteSettings()
+  const logoId = isMedia(settings.logo) ? settings.logo.id : undefined
+  const gallery = await getGalleryPhotos(1, logoId)
+  return gallery[0] ?? null
+}
+
 export async function PageLayout({ page }: { page: Page }) {
   const layout = page.layout ?? []
   const nodes: ReactNode[] = []
@@ -130,7 +144,7 @@ function LayoutSection({
     case 'donateCta':
       return <DonateCtaSection block={block} />
     case 'contact':
-      return <ContactSection block={block} />
+      return <ContactSection block={block} fallbackPhoto={fallbackPhoto} />
     case 'masthead':
       return <MastheadSection block={block} />
     case 'boardList':
@@ -140,7 +154,7 @@ function LayoutSection({
     case 'projectLedger':
       return <ProjectLedger block={block} />
     case 'grantRequest':
-      return <GrantRequestSection block={block} />
+      return <GrantRequestSection block={block} fallbackPhoto={fallbackPhoto} />
     default:
       return null
   }
@@ -419,22 +433,28 @@ function DonateCtaSection({ block }: { block: DonateCtaBlock }) {
   )
 }
 
-function ContactSection({ block }: { block: ContactBlock }) {
+async function ContactSection({
+  block,
+  fallbackPhoto,
+}: {
+  block: ContactBlock
+  fallbackPhoto: HomePhoto['media'] | null
+}) {
   const sectionHeadingId = `contact-${block.id}`
   const formHeadingId = `contact-form-${block.id}`
   const labelledBy = block.statement ? sectionHeadingId : formHeadingId
+  const photo = await resolveFormPhoto(block.photo, fallbackPhoto)
+  const hasAside = Boolean(block.statement || photo)
 
   return (
     <section aria-labelledby={labelledBy} className={cn('band sheet-over', surfaceClass(block.background, 'paper'))} id="ask">
       <div className="band-inner">
-        <div className="form-shell form-shell-split">
-          <div data-reveal="idle">
-            {block.statement ? (
-              <h2 className="mission-statement" id={sectionHeadingId}>
-                {block.statement}
-              </h2>
-            ) : null}
-          </div>
+        <div className={cn('form-shell', hasAside && 'form-shell-split')}>
+          {hasAside ? (
+            <div data-reveal="idle">
+              <FormAside heading={block.statement} headingId={sectionHeadingId} photo={photo} photoPosition={block.photoPosition} />
+            </div>
+          ) : null}
           <div data-reveal="idle" style={stagger(120)}>
             <ContactForm heading={block.heading || 'Ask a question'} headingId={formHeadingId} intro={block.intro} />
           </div>
@@ -597,32 +617,66 @@ async function EventListSection({ block }: { block: EventListBlock }) {
   )
 }
 
-function GrantRequestSection({ block }: { block: GrantRequestBlock }) {
-  const sectionHeadingId = `grant-request-${block.id}`
-  const formHeadingId = `grant-form-${block.id}`
-  const labelledBy = block.statement ? sectionHeadingId : formHeadingId
+async function GrantRequestSection({
+  block,
+  fallbackPhoto,
+}: {
+  block: GrantRequestBlock
+  fallbackPhoto: HomePhoto['media'] | null
+}) {
+  const headingId = `grant-request-${block.id}`
+  const heading = block.heading || 'Have a Recreation Project We Should Know About?'
+  const lede = block.intro || block.statement
+  const photo = await resolveFormPhoto(block.photo, fallbackPhoto)
 
   return (
-    <section aria-labelledby={labelledBy} className={cn('band', surfaceClass(block.background, 'paper'))} id="grant-request">
+    <section aria-labelledby={headingId} className={cn('band', surfaceClass(block.background, 'paper'))} id="grant-request">
       <div className="band-inner">
         <div className="form-shell form-shell-split">
           <div data-reveal="idle">
-            {block.kicker ? <p className="label">{block.kicker}</p> : null}
-            {block.statement ? (
-              <h2 className="mission-statement" id={sectionHeadingId}>
-                {block.statement}
-              </h2>
-            ) : null}
+            <FormAside heading={heading} headingId={headingId} lede={lede} photo={photo} photoPosition={block.photoPosition} />
           </div>
           <div data-reveal="idle" style={stagger(120)}>
-            <GrantRequestForm
-              heading={block.heading || 'Have a Recreation Project We Should Know About?'}
-              headingId={formHeadingId}
-              intro={block.intro}
-            />
+            <GrantRequestForm heading={heading} headingId={headingId} showHeading={false} />
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function FormAside({
+  heading,
+  headingId,
+  lede,
+  photo,
+  photoPosition,
+}: {
+  heading?: string | null
+  headingId?: string
+  lede?: string | null
+  photo?: unknown
+  photoPosition?: string | null
+}) {
+  return (
+    <div className="form-aside">
+      {heading ? (
+        <h2 className="mission-statement" id={headingId}>
+          {heading}
+        </h2>
+      ) : null}
+      {lede ? <p className="form-aside-lede">{lede}</p> : null}
+      {photo ? (
+        <div className="form-aside-figure">
+          <SiteImage
+            className="form-aside-photo"
+            hideWhenEmpty
+            media={photo}
+            objectPosition={photoPosition}
+            sizes="(min-width: 52rem) 24rem, 92vw"
+          />
+        </div>
+      ) : null}
+    </div>
   )
 }
