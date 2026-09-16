@@ -48,6 +48,7 @@ function OrgMark({ organization }: { organization: Organization }) {
           hideWhenEmpty
           media={logo}
           sizes="(min-width: 52rem) 12rem, 70vw"
+          decorative
         />
       ) : null}
       <span className={logo ? 'org-mark-name org-mark-caption' : 'org-mark-name'}>

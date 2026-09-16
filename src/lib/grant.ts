@@ -13,7 +13,7 @@ export type GrantField =
 
 export type GrantValues = Record<GrantField, string>
 
-export type GrantFieldErrors = Partial<Record<GrantField, string>>
+export type GrantFieldErrors = Partial<Record<GrantField | 'attachment', string>>
 
 export const emptyGrantValues: GrantValues = {
   organizationName: '',
@@ -80,4 +80,20 @@ export function validateGrant(values: GrantValues): GrantFieldErrors {
   if (values.requestedTimeline.length > 200) errors.requestedTimeline = 'Use 200 characters or fewer.'
 
   return errors
+}
+
+export const GRANT_PDF_MAX_BYTES = 8 * 1024 * 1024
+
+export function readGrantPdf(formData: FormData): File | null {
+  const file = formData.get('attachment')
+  if (!(file instanceof File) || file.size === 0) return null
+  return file
+}
+
+export function validateGrantPdf(file: File | null): string | undefined {
+  if (!file) return undefined
+  const typeOk = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+  if (!typeOk) return 'Attach a PDF only.'
+  if (file.size > GRANT_PDF_MAX_BYTES) return 'Keep the PDF under 8 MB.'
+  return undefined
 }

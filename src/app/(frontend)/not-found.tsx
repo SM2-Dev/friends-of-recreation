@@ -1,7 +1,14 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { Container } from '@/components/Container'
 import { SectionHeading } from '@/components/SectionHeading'
+
+export const metadata: Metadata = {
+  title: 'Page not found',
+  description: 'That page is not on the Friends of Recreation site.',
+  robots: { index: false, follow: false },
+}
 
 export default function NotFound() {
   return (

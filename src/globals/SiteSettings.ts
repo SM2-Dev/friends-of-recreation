@@ -1,6 +1,8 @@
 import type { GlobalConfig } from 'payload'
 
 import { adminOnly, anyone, staffField } from '@/access'
+import { revalidateAfterGlobalChange } from '@/hooks/revalidatePublic'
+import { DEFAULT_DESCRIPTION } from '@/lib/site'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
@@ -12,6 +14,9 @@ export const SiteSettings: GlobalConfig = {
   access: {
     read: anyone,
     update: adminOnly,
+  },
+  hooks: {
+    afterChange: [revalidateAfterGlobalChange],
   },
   fields: [
     {
@@ -81,6 +86,35 @@ export const SiteSettings: GlobalConfig = {
       admin: {
         description: 'Optional footer line, such as volunteer-led in Saratoga Springs, New York.',
       },
+    },
+    {
+      type: 'collapsible',
+      label: 'Search and social',
+      admin: {
+        initCollapsed: true,
+        description: 'Default listing copy and the image used when a page does not set its own share image.',
+      },
+      fields: [
+        {
+          name: 'defaultDescription',
+          type: 'textarea',
+          maxLength: 320,
+          defaultValue: DEFAULT_DESCRIPTION,
+          admin: {
+            description:
+              'Fallback search description for pages that do not set their own. Homepage copy is stored on the Home page.',
+          },
+        },
+        {
+          name: 'defaultSocialImage',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Default Open Graph image for social shares. Use a wide recreation photograph, about 1200×630. Falls back to the logo if empty.',
+          },
+        },
+      ],
     },
   ],
 }

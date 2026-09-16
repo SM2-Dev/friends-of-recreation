@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { publishedOrStaff, staffOnly } from '@/access'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidatePublic'
 import { projectCategories } from '@/lib/projectCategories'
 
 export { projectCategories } from '@/lib/projectCategories'
@@ -26,6 +27,10 @@ export const Projects: CollectionConfig = {
     update: staffOnly,
     delete: staffOnly,
     read: publishedOrStaff,
+  },
+  hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
   },
   fields: [
     {

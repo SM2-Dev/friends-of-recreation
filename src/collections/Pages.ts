@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { publishedOrStaff, staffOnly } from '@/access'
 import { pageLayoutBlocks } from '@/blocks/pageLayout'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidatePublic'
 import { slugify, validatePageSlug } from '@/lib/slug'
 
 export const Pages: CollectionConfig = {
@@ -21,6 +22,8 @@ export const Pages: CollectionConfig = {
     drafts: true,
   },
   hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
     beforeDelete: [
       async ({ id, req }) => {
         const doc = await req.payload.findByID({
@@ -86,7 +89,7 @@ export const Pages: CollectionConfig = {
     },
     {
       type: 'collapsible',
-      label: 'Navigation and search listing',
+      label: 'Navigation',
       admin: {
         initCollapsed: true,
       },
@@ -116,18 +119,39 @@ export const Pages: CollectionConfig = {
             condition: (_, siblingData) => Boolean(siblingData?.showInNav),
           },
         },
+      ],
+    },
+    {
+      type: 'collapsible',
+      label: 'Search and social',
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
         {
           name: 'metaTitle',
           type: 'text',
+          maxLength: 70,
           admin: {
-            description: 'Optional browser-tab title. Defaults to the page title.',
+            description:
+              'Browser tab and search title. Home is used as-is. Other pages append the site name automatically. Defaults to the page title.',
           },
         },
         {
           name: 'metaDescription',
           type: 'textarea',
+          maxLength: 320,
           admin: {
-            description: 'Optional search listing description.',
+            description: 'Unique search listing description. Keep it concrete and specific to this page.',
+          },
+        },
+        {
+          name: 'ogImage',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Optional social share image for this page. Falls back to the default share image in Site settings.',
           },
         },
       ],

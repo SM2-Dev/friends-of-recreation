@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
 import { isStaff, staffOnly } from '@/access'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidatePublic'
+import { validateMediaAlt } from '@/lib/mediaAlt'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -28,14 +30,26 @@ export const Media: CollectionConfig = {
     },
   },
   hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
     beforeChange: [
       ({ data }) => {
         if (data?.mimeType === 'application/pdf') {
           return {
             ...data,
             visibility: 'internal',
+            decorative: false,
+            alt: data.alt || 'Grant request PDF',
           }
         }
+
+        if (data?.decorative) {
+          return {
+            ...data,
+            alt: typeof data.alt === 'string' ? data.alt : '',
+          }
+        }
+
         return data
       },
     ],
@@ -44,9 +58,28 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      required: true,
+      maxLength: 500,
       admin: {
-        description: 'Describe the image for screen readers. Required for every file, including decorative photos.',
+        description:
+          'Required for meaningful photographs. Describe the activity, people, and place. Leave blank only for PDFs or images marked decorative.',
+        condition: (_, siblingData) => siblingData?.mimeType !== 'application/pdf' && !siblingData?.decorative,
+      },
+      validate: (value: unknown, { data, siblingData }) => {
+        const source = { ...data, ...siblingData } as {
+          mimeType?: string | null
+          decorative?: boolean | null
+        }
+        return validateMediaAlt(value, source)
+      },
+    },
+    {
+      name: 'decorative',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Use for logos or purely decorative crops. The public site will use empty alt text so screen readers skip the image.',
+        condition: (_, siblingData) => siblingData?.mimeType !== 'application/pdf',
       },
     },
     {

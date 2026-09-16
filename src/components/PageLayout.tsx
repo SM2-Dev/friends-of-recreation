@@ -420,15 +420,23 @@ function DonateCtaSection({ block }: { block: DonateCtaBlock }) {
 }
 
 function ContactSection({ block }: { block: ContactBlock }) {
+  const sectionHeadingId = `contact-${block.id}`
+  const formHeadingId = `contact-form-${block.id}`
+  const labelledBy = block.statement ? sectionHeadingId : formHeadingId
+
   return (
-    <section aria-labelledby={`contact-${block.id}`} className={cn('band sheet-over', surfaceClass(block.background, 'paper'))} id="ask">
+    <section aria-labelledby={labelledBy} className={cn('band sheet-over', surfaceClass(block.background, 'paper'))} id="ask">
       <div className="band-inner">
         <div className="form-shell form-shell-split">
           <div data-reveal="idle">
-            {block.statement ? <h2 className="mission-statement">{block.statement}</h2> : null}
+            {block.statement ? (
+              <h2 className="mission-statement" id={sectionHeadingId}>
+                {block.statement}
+              </h2>
+            ) : null}
           </div>
           <div data-reveal="idle" style={stagger(120)}>
-            <ContactForm heading={block.heading || 'Ask a question'} intro={block.intro} />
+            <ContactForm heading={block.heading || 'Ask a question'} headingId={formHeadingId} intro={block.intro} />
           </div>
         </div>
       </div>
@@ -590,17 +598,26 @@ async function EventListSection({ block }: { block: EventListBlock }) {
 }
 
 function GrantRequestSection({ block }: { block: GrantRequestBlock }) {
+  const sectionHeadingId = `grant-request-${block.id}`
+  const formHeadingId = `grant-form-${block.id}`
+  const labelledBy = block.statement ? sectionHeadingId : formHeadingId
+
   return (
-    <section aria-labelledby={`grant-request-${block.id}`} className={cn('band', surfaceClass(block.background, 'paper'))} id="grant-request">
+    <section aria-labelledby={labelledBy} className={cn('band', surfaceClass(block.background, 'paper'))} id="grant-request">
       <div className="band-inner">
         <div className="form-shell form-shell-split">
           <div data-reveal="idle">
             {block.kicker ? <p className="label">{block.kicker}</p> : null}
-            {block.statement ? <h2 className="mission-statement">{block.statement}</h2> : null}
+            {block.statement ? (
+              <h2 className="mission-statement" id={sectionHeadingId}>
+                {block.statement}
+              </h2>
+            ) : null}
           </div>
           <div data-reveal="idle" style={stagger(120)}>
             <GrantRequestForm
               heading={block.heading || 'Have a Recreation Project We Should Know About?'}
+              headingId={formHeadingId}
               intro={block.intro}
             />
           </div>

@@ -175,9 +175,13 @@ export interface User {
 export interface Media {
   id: number;
   /**
-   * Describe the image for screen readers. Required for every file, including decorative photos.
+   * Required for meaningful photographs. Describe the activity, people, and place. Leave blank only for PDFs or images marked decorative.
    */
-  alt: string;
+  alt?: string | null;
+  /**
+   * Use for logos or purely decorative crops. The public site will use empty alt text so screen readers skip the image.
+   */
+  decorative?: boolean | null;
   /**
    * Internal files, including grant PDFs, are never returned to the public website.
    */
@@ -414,13 +418,17 @@ export interface Page {
    */
   navOrder?: number | null;
   /**
-   * Optional browser-tab title. Defaults to the page title.
+   * Browser tab and search title. Home is used as-is. Other pages append the site name automatically. Defaults to the page title.
    */
   metaTitle?: string | null;
   /**
-   * Optional search listing description.
+   * Unique search listing description. Keep it concrete and specific to this page.
    */
   metaDescription?: string | null;
+  /**
+   * Optional social share image for this page. Falls back to the default share image in Site settings.
+   */
+  ogImage?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -746,7 +754,7 @@ export interface GrantRequestBlock {
   blockType: 'grantRequest';
 }
 /**
- * Questions from the public contact form. Status and internal notes never appear on the website.
+ * Questions from the public contact form. Status and internal notes never appear on the website. The public form creates records through a server action; the REST API is staff-only.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-submissions".
@@ -773,7 +781,7 @@ export interface ContactSubmission {
   createdAt: string;
 }
 /**
- * Grant requests from the public form. Attachments must be PDF. Status and notes are staff-only.
+ * Grant requests from the public form. Attachments must be PDF. Status and notes are staff-only. The public form creates records through a server action; the REST API is staff-only.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "grant-requests".
@@ -946,6 +954,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  decorative?: T;
   visibility?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1097,6 +1106,7 @@ export interface PagesSelect<T extends boolean = true> {
   navOrder?: T;
   metaTitle?: T;
   metaDescription?: T;
+  ogImage?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1420,6 +1430,14 @@ export interface SiteSetting {
    * Optional footer line, such as volunteer-led in Saratoga Springs, New York.
    */
   footerNote?: string | null;
+  /**
+   * Fallback search description for pages that do not set their own. Homepage copy is stored on the Home page.
+   */
+  defaultDescription?: string | null;
+  /**
+   * Default Open Graph image for social shares. Use a wide recreation photograph, about 1200×630. Falls back to the logo if empty.
+   */
+  defaultSocialImage?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1437,6 +1455,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactEmail?: T;
   notificationEmail?: T;
   footerNote?: T;
+  defaultDescription?: T;
+  defaultSocialImage?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -296,6 +296,8 @@ export async function seedDevelopmentContent(payload: Payload): Promise<void> {
       siteName: 'Friends of Recreation',
       tagline: 'Saratoga Springs, NY',
       donationLabel: 'Support Friends of Recreation',
+      defaultDescription:
+        'Saratoga Springs Friends of Recreation supports local youth programs, playgrounds, recreational facilities, equipment, camps, and community recreation projects.',
       footerNote:
         'A volunteer-led organization raising funds for playgrounds, athletic facilities, youth equipment, camps, and community recreation projects in Saratoga Springs, New York.',
     },
@@ -311,6 +313,7 @@ export async function seedDevelopmentContent(payload: Payload): Promise<void> {
     showInNav: true,
     navLabel: 'Home',
     navOrder: 0,
+    metaTitle: 'Friends of Recreation | Saratoga Springs, NY',
     metaDescription:
       'Saratoga Springs Friends of Recreation supports local youth programs, playgrounds, recreational facilities, equipment, camps, and community recreation projects.',
     _status: 'published',

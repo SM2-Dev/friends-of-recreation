@@ -8,6 +8,7 @@ import {
 } from '@/lib/contact'
 import { initialContactState, type ContactFormState } from '@/lib/contactState'
 import { notifyStaffOfContact } from '@/lib/notify'
+import { verifyTurnstile } from '@/lib/turnstile'
 
 export async function submitContact(
   _previous: ContactFormState,
@@ -32,10 +33,21 @@ export async function submitContact(
     }
   }
 
+  const spamCheck = await verifyTurnstile(formData)
+  if (spamCheck !== true) {
+    return {
+      status: 'error',
+      values,
+      fieldErrors: {},
+      formError: spamCheck,
+    }
+  }
+
   try {
     const payload = await getPayloadClient()
     await payload.create({
       collection: 'contact-submissions',
+      overrideAccess: true,
       data: {
         name: values.name,
         email: values.email,
@@ -55,6 +67,7 @@ export async function submitContact(
       name: values.name,
       email: values.email,
       subject: values.subject,
+      message: values.message,
       to: settings.notificationEmail,
     })
   } catch {

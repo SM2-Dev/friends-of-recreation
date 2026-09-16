@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { publishedOrStaff, staffOnly } from '@/access'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidatePublic'
 
 export const BoardMembers: CollectionConfig = {
   slug: 'board-members',
@@ -22,6 +23,10 @@ export const BoardMembers: CollectionConfig = {
     update: staffOnly,
     delete: staffOnly,
     read: publishedOrStaff,
+  },
+  hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
   },
   fields: [
     {

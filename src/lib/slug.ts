@@ -8,6 +8,8 @@ const RESERVED_SLUGS = new Set([
   'media',
   'login',
   'create-first-user',
+  'robots-txt',
+  'sitemap-xml',
 ])
 
 export function slugify(value: string): string {

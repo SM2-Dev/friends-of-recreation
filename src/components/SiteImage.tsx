@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
 import type { Media } from '@/payload-types'
+import { imageAltText } from '@/lib/mediaAlt'
 import { cn, isMedia } from '@/lib/utils'
 
 type SiteImageProps = {
@@ -14,6 +15,8 @@ type SiteImageProps = {
   /** Decorative slots render nothing rather than an apology when no photo exists. */
   hideWhenEmpty?: boolean
   emptyLabel?: string
+  /** Force empty alt when adjacent text already names the image, such as organization logos. */
+  decorative?: boolean
 }
 
 const DEFAULT_EMPTY = 'Photography pending. Authentic Saratoga Springs recreation photos appear here.'
@@ -27,6 +30,7 @@ export function SiteImage({
   fit = 'cover',
   hideWhenEmpty,
   emptyLabel = DEFAULT_EMPTY,
+  decorative = false,
 }: SiteImageProps) {
   const image = isMedia(media) && media.url ? (media as Media) : null
 
@@ -42,7 +46,7 @@ export function SiteImage({
   return (
     <div className={cn('site-image-frame', fit === 'contain' && 'site-image-frame-contain', className)}>
       <Image
-        alt={image.alt || ''}
+        alt={imageAltText(image, decorative)}
         className={cn('site-image', fit === 'contain' && 'site-image-contain')}
         fill
         priority={priority}

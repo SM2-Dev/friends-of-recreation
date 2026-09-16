@@ -8,6 +8,7 @@ import { NoAutoScroll } from '@/components/NoAutoScroll'
 import { RevealObserver } from '@/components/RevealObserver'
 import { SkipLink } from '@/components/SkipLink'
 import { getSiteSettings } from '@/lib/cms'
+import { defaultDescription, homeTitle, organizationJsonLd, resolveSocialImage } from '@/lib/seo'
 import { siteUrl } from '@/lib/site'
 
 import './globals.css'
@@ -28,43 +29,42 @@ const body = Atkinson_Hyperlegible({
   display: 'swap',
 })
 
-const DESCRIPTION =
-  'Saratoga Springs Friends of Recreation supports local youth programs, playgrounds, recreational facilities, equipment, camps, and community recreation projects.'
-
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
+  const description = defaultDescription(settings)
+  const image = resolveSocialImage(null, settings)
 
   return {
     metadataBase: new URL(siteUrl()),
     title: {
-      default: `${settings.siteName} | Saratoga Springs, NY`,
+      default: homeTitle(null, settings),
       template: `%s · ${settings.siteName}`,
     },
-    description: DESCRIPTION,
-    alternates: { canonical: '/' },
+    description,
+    applicationName: settings.siteName,
+    icons: {
+      icon: '/logo.png',
+    },
     openGraph: {
       type: 'website',
       siteName: settings.siteName,
       locale: 'en_US',
-      title: `${settings.siteName} | Saratoga Springs, NY`,
-      description: DESCRIPTION,
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: [image.url],
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   }
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const settings = await getSiteSettings()
-  const facebookUrl = 'facebookUrl' in settings ? settings.facebookUrl : null
-
-  const organizationSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'NGO',
-    name: settings.siteName,
-    description: DESCRIPTION,
-    url: siteUrl(),
-    areaServed: 'Saratoga Springs, New York',
-    ...(facebookUrl ? { sameAs: [facebookUrl] } : {}),
-  }
+  const organizationSchema = organizationJsonLd(settings)
 
   return (
     <html className={`${display.variable} ${body.variable}`} lang="en">
@@ -88,7 +88,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <NoAutoScroll />
         <SkipLink />
         <Header />
-        <main id="main-content">{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
         <RevealObserver />
       {/* impeccable-live-start */}

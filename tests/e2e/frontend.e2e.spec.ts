@@ -4,7 +4,7 @@ test.describe('Frontend', () => {
   test('shows the public foundation shell', async ({ page }) => {
     await page.goto('http://localhost:3000')
 
-    await expect(page).toHaveTitle(/Friends of Recreation/)
+    await expect(page).toHaveTitle('Friends of Recreation | Saratoga Springs, NY')
     await expect(page.getByRole('link', { name: 'Skip to content' })).toBeAttached()
     await expect(page.getByRole('navigation', { name: 'Primary' })).toBeVisible()
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
@@ -12,5 +12,17 @@ test.describe('Frontend', () => {
     await expect(page.getByLabel('Email')).toBeVisible()
     await expect(page.getByRole('button', { name: 'Send message' })).toBeVisible()
     await expect(page.getByRole('contentinfo')).toBeVisible()
+  })
+
+  test('uses unique titles on primary pages', async ({ page }) => {
+    await page.goto('http://localhost:3000/events')
+    await expect(page).toHaveTitle('Events · Friends of Recreation')
+
+    await page.goto('http://localhost:3000/board-members')
+    await expect(page).toHaveTitle('Board members · Friends of Recreation')
+
+    await page.goto('http://localhost:3000/projects-grants')
+    await expect(page).toHaveTitle('Projects and grants · Friends of Recreation')
+    await expect(page.getByLabel(/Supporting PDF/)).toBeVisible()
   })
 })
