@@ -16,7 +16,12 @@ export const Users: CollectionConfig = {
     group: 'Admin',
     hidden: ({ user }) => !isAdmin(user),
   },
-  auth: true,
+  auth: {
+    cookies: {
+      sameSite: 'Lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
+  },
   access: {
     admin: ({ req: { user } }) => Boolean(user),
     create: async ({ req }) => {
