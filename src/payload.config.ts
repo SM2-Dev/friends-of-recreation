@@ -31,6 +31,10 @@ function postgresConnectionString(): string {
     // SCRAM-SHA-256-PLUS, so every login fails until that param is removed.
     url.searchParams.delete('channel_binding')
     if (!url.searchParams.has('sslmode')) url.searchParams.set('sslmode', 'require')
+    // The pooler cannot run Payload's schema push. Use the direct host on Neon.
+    if (url.hostname.includes('-pooler.')) {
+      url.hostname = url.hostname.replace('-pooler.', '.')
+    }
     return url.toString()
   } catch {
     return raw
@@ -92,15 +96,19 @@ export default buildConfig({
     }),
   ],
   onInit: async (payload) => {
-    const pages = await payload.find({
-      collection: 'pages',
-      limit: 1,
-      overrideAccess: true,
-      pagination: false,
-    })
+    try {
+      const pages = await payload.find({
+        collection: 'pages',
+        limit: 1,
+        overrideAccess: true,
+        pagination: false,
+      })
 
-    if (pages.docs.length === 0) {
-      await seedDevelopmentContent(payload)
+      if (pages.docs.length === 0) {
+        await seedDevelopmentContent(payload)
+      }
+    } catch (error) {
+      payload.logger.error({ err: error }, 'Starter content was not created during startup')
     }
   },
 })

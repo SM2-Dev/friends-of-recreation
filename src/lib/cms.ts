@@ -17,9 +17,34 @@ import type { NavItem } from '@/components/navItems'
 import { primaryNav } from '@/components/navItems'
 import { DEFAULT_DESCRIPTION } from '@/lib/site'
 import { pageHref } from '@/lib/slug'
+import { seedDevelopmentContent } from '@/seed/development'
+
+let starterContent: Promise<void> | null = null
+
+async function ensureStarterContent(payload: Awaited<ReturnType<typeof getPayload>>) {
+  const pages = await payload.find({
+    collection: 'pages',
+    limit: 1,
+    overrideAccess: true,
+    pagination: false,
+  })
+
+  if (pages.docs.length === 0) {
+    await seedDevelopmentContent(payload)
+  }
+}
 
 export const getPayloadClient = cache(async () => {
-  return getPayload({ config })
+  const payload = await getPayload({ config })
+
+  if (!starterContent) {
+    starterContent = ensureStarterContent(payload).catch((error) => {
+      payload.logger.error({ err: error }, 'Starter content was not created')
+    })
+  }
+
+  await starterContent
+  return payload
 })
 
 /** Public Local API reads honor collection access so drafts and staff-only fields stay private. */

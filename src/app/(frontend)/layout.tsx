@@ -13,7 +13,7 @@ import { allowSearchIndexing, siteUrl } from '@/lib/site'
 
 import './globals.css'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
 const display = Bricolage_Grotesque({
