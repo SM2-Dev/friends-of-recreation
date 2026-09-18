@@ -40,11 +40,9 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        '@tailwindcss/postcss': path.resolve(dirname, 'node_modules/@tailwindcss/postcss'),
-      },
+  turbopack: {
+    resolveAlias: {
+      '@tailwindcss/postcss': path.resolve(dirname, 'node_modules/@tailwindcss/postcss'),
     },
   },
 }
