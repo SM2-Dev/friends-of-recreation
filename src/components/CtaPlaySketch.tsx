@@ -4,8 +4,13 @@ import { useEffect, useId, useRef } from 'react'
 
 type Point = [number, number]
 type Vec3 = [number, number, number]
-type AnimeEngine = typeof import('animejs')
-type AnimeTimeline = ReturnType<AnimeEngine['timeline']>
+type AnimeTimeline = {
+  add: (params: object, offset?: number | string) => AnimeTimeline
+  pause: () => void
+}
+type AnimeEngine = {
+  timeline: (params?: object) => AnimeTimeline
+}
 
 const CX = 100
 const CY = 100
@@ -223,12 +228,10 @@ function buildSoccerBall() {
 }
 
 function resolveAnime(module: unknown): AnimeEngine {
-  const candidate = module as { default?: AnimeEngine; timeline?: AnimeEngine['timeline'] }
-  if (typeof candidate === 'function' && typeof candidate.timeline === 'function') {
-    return candidate as AnimeEngine
-  }
-  if (candidate.default && typeof candidate.default.timeline === 'function') {
-    return candidate.default
+  const record = module as { default?: { timeline?: unknown }; timeline?: unknown }
+  const engine = record.default ?? record
+  if (typeof engine.timeline === 'function') {
+    return engine as AnimeEngine
   }
   throw new Error('animejs failed to load')
 }
