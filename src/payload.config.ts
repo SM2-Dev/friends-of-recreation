@@ -23,27 +23,48 @@ import { seedDevelopmentContent } from './seed/development'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-function postgresConnectionString(): string {
-  const raw = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
-  if (!raw) return ''
+function isLocalDatabaseHost(hostname: string) {
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
+}
+
+function rawPostgresUrl() {
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
+  }
+
+  return process.env.DATABASE_URL || process.env.POSTGRES_URL || ''
+}
+
+function postgresPoolConfig() {
+  const raw = rawPostgresUrl()
+  if (!raw) return { connectionString: '' }
 
   try {
     const url = new URL(raw)
     // Neon adds channel_binding=require. Payload's pg driver cannot do
     // SCRAM-SHA-256-PLUS, so every login fails until that param is removed.
     url.searchParams.delete('channel_binding')
+
+    if (isLocalDatabaseHost(url.hostname)) {
+      url.searchParams.delete('sslmode')
+      return { connectionString: url.toString(), ssl: false as const }
+    }
+
     if (!url.searchParams.has('sslmode')) url.searchParams.set('sslmode', 'require')
     // The pooler cannot run Payload's schema push. Use the direct host on Neon.
     if (url.hostname.includes('-pooler.')) {
       url.hostname = url.hostname.replace('-pooler.', '.')
     }
-    return url.toString()
+    return {
+      connectionString: url.toString(),
+      ssl: { rejectUnauthorized: false },
+    }
   } catch {
-    return raw
+    return { connectionString: raw }
   }
 }
 
-const databaseUrl = postgresConnectionString()
+const { connectionString: databaseUrl, ssl: postgresSsl } = postgresPoolConfig()
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const publicServerUrl = (process.env.NEXT_PUBLIC_SERVER_URL || process.env.PAYLOAD_PUBLIC_SERVER_URL || '').replace(
   /\/$/,
@@ -81,6 +102,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: databaseUrl,
+      ...(postgresSsl === undefined ? {} : { ssl: postgresSsl }),
     },
     // Adapter push is ignored when NODE_ENV=production (Vercel). onInit pushes instead.
     push: false,
