@@ -40,13 +40,13 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
-  turbopack: {
-    root: path.resolve(dirname),
-    resolveAlias: {
-      '@tailwindcss/postcss': path.resolve(dirname, 'node_modules/@tailwindcss/postcss'),
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        '@tailwindcss/postcss': path.resolve(dirname, 'node_modules/@tailwindcss/postcss'),
+      },
     },
   },
-  agentRules: false,
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
