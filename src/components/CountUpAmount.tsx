@@ -59,7 +59,7 @@ export function CountUpAmount({ value }: CountUpAmountProps) {
           if (host.getAttribute('data-reveal') === 'in') run()
         })
       : null
-    mutations?.observe(host, { attributes: true, attributeFilter: ['data-reveal'] })
+    if (host) mutations?.observe(host, { attributes: true, attributeFilter: ['data-reveal'] })
 
     return () => {
       mutations?.disconnect()
