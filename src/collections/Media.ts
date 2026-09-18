@@ -64,7 +64,10 @@ export const Media: CollectionConfig = {
           'Required for meaningful photographs. Describe the activity, people, and place. Leave blank only for PDFs or images marked decorative.',
         condition: (_, siblingData) => siblingData?.mimeType !== 'application/pdf' && !siblingData?.decorative,
       },
-      validate: (value: unknown, { data, siblingData }) => {
+      validate: (
+        value: unknown,
+        { data, siblingData }: { data?: Record<string, unknown>; siblingData?: Record<string, unknown> },
+      ) => {
         const source = { ...data, ...siblingData } as {
           mimeType?: string | null
           decorative?: boolean | null

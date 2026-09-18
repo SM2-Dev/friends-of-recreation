@@ -86,7 +86,7 @@ export async function PageLayout({ page }: { page: Page }) {
       nodes.push(
         <div className="cta-consume" key={keyFor(block, index)}>
           <DonateCtaSection block={block} />
-          <ContactSection block={next} />
+          <ContactSection block={next} fallbackPhoto={fallbackPhotoFrom(layout)} />
         </div>,
       )
       index += 1

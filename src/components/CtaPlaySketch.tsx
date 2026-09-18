@@ -4,7 +4,7 @@ import { useEffect, useId, useRef } from 'react'
 
 type Point = [number, number]
 type Vec3 = [number, number, number]
-type AnimeEngine = typeof import('animejs')['default']
+type AnimeEngine = typeof import('animejs')
 type AnimeTimeline = ReturnType<AnimeEngine['timeline']>
 
 const CX = 100
