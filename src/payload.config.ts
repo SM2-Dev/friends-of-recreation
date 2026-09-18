@@ -20,7 +20,24 @@ import { seedDevelopmentContent } from './seed/development'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const databaseUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
+
+function postgresConnectionString(): string {
+  const raw = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
+  if (!raw) return ''
+
+  try {
+    const url = new URL(raw)
+    // Neon adds channel_binding=require. Payload's pg driver cannot do
+    // SCRAM-SHA-256-PLUS, so every login fails until that param is removed.
+    url.searchParams.delete('channel_binding')
+    if (!url.searchParams.has('sslmode')) url.searchParams.set('sslmode', 'require')
+    return url.toString()
+  } catch {
+    return raw
+  }
+}
+
+const databaseUrl = postgresConnectionString()
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const publicServerUrl = (process.env.NEXT_PUBLIC_SERVER_URL || process.env.PAYLOAD_PUBLIC_SERVER_URL || '').replace(
   /\/$/,
