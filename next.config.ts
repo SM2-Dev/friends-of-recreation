@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
-const payloadClientConfig = path.resolve(dirname, 'src/payload/getClientConfig.ts')
+const payloadClientConfig = './src/payload/getClientConfig.ts'
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -40,7 +40,7 @@ const nextConfig: NextConfig = {
     }
     webpackConfig.resolve.alias = {
       ...webpackConfig.resolve.alias,
-      '@payloadcms/ui/utilities/getClientConfig': payloadClientConfig,
+      '@payloadcms/ui/utilities/getClientConfig': path.resolve(dirname, 'src/payload/getClientConfig.ts'),
     }
 
     return webpackConfig
