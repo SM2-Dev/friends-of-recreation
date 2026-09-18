@@ -1,6 +1,8 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { pushDevSchema } from '@payloadcms/drizzle'
+import type { DrizzleAdapter } from '@payloadcms/drizzle'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -80,9 +82,8 @@ export default buildConfig({
     pool: {
       connectionString: databaseUrl,
     },
-    // No migrations are checked in yet. Keep schema push on for the client preview,
-    // then switch to migrations before the real launch.
-    push: process.env.PAYLOAD_PUSH_SCHEMA !== 'false',
+    // Adapter push is ignored when NODE_ENV=production (Vercel). onInit pushes instead.
+    push: false,
   }),
   sharp,
   plugins: [
@@ -96,6 +97,14 @@ export default buildConfig({
     }),
   ],
   onInit: async (payload) => {
+    try {
+      if (process.env.PAYLOAD_PUSH_SCHEMA !== 'false') {
+        await pushDevSchema(payload.db as unknown as DrizzleAdapter)
+      }
+    } catch (error) {
+      payload.logger.error({ err: error }, 'Database schema was not created')
+    }
+
     try {
       const pages = await payload.find({
         collection: 'pages',
