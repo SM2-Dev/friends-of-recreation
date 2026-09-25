@@ -128,7 +128,6 @@ export default buildConfig({
       },
       token: blobToken,
       clientUploads: true,
-      addRandomSuffix: true,
     }),
   ],
   onInit: async (payload) => {
