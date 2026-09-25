@@ -7,7 +7,7 @@ import { validateMediaAlt } from '@/lib/mediaAlt'
 function vercelBlobUrl(filename?: string | null) {
   if (!filename) return null
   const fromEnv = process.env.STORAGE_VERCEL_BLOB_BASE_URL?.replace(/\/$/, '')
-  const storeId = process.env.BLOB_READ_WRITE_TOKEN?.match(
+  const storeId = process.env['BLOB_READ_WRITE_TOKEN']?.match(
     /^vercel_blob_rw_([a-z\d]+)_[a-z\d]+$/i,
   )?.[1]?.toLowerCase()
   const origin = fromEnv || (storeId ? `https://${storeId}.public.blob.vercel-storage.com` : '')
