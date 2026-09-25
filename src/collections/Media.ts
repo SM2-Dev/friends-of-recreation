@@ -4,6 +4,17 @@ import { isStaff, staffOnly } from '@/access'
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidatePublic'
 import { validateMediaAlt } from '@/lib/mediaAlt'
 
+function vercelBlobUrl(filename?: string | null) {
+  if (!filename) return null
+  const fromEnv = process.env.STORAGE_VERCEL_BLOB_BASE_URL?.replace(/\/$/, '')
+  const storeId = process.env.BLOB_READ_WRITE_TOKEN?.match(
+    /^vercel_blob_rw_([a-z\d]+)_[a-z\d]+$/i,
+  )?.[1]?.toLowerCase()
+  const origin = fromEnv || (storeId ? `https://${storeId}.public.blob.vercel-storage.com` : '')
+  if (!origin) return null
+  return `${origin}/${encodeURIComponent(filename)}`
+}
+
 export const Media: CollectionConfig = {
   slug: 'media',
   labels: {
@@ -100,10 +111,20 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    disableLocalStorage: Boolean(process.env.VERCEL),
     mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'],
     focalPoint: true,
-    adminThumbnail: 'thumbnail',
+    adminThumbnail: ({ doc }) => {
+      const sizes = doc?.sizes
+      const thumbnailFilename =
+        sizes && typeof sizes === 'object' && 'thumbnail' in sizes
+          ? (sizes.thumbnail as { filename?: string | null } | null)?.filename
+          : null
+      return (
+        vercelBlobUrl(thumbnailFilename) ||
+        (typeof doc?.url === 'string' && doc.url.startsWith('http') ? doc.url : null) ||
+        vercelBlobUrl(typeof doc?.filename === 'string' ? doc.filename : null)
+      )
+    },
     imageSizes: [
       {
         name: 'thumbnail',
