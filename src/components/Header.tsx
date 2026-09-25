@@ -14,28 +14,25 @@ export async function Header() {
 
   return (
     <header className="site-header">
-      <div className="site-header-inner">
-        <Link className="site-logo" href="/">
-          {/*
-            The circular seal is the brand mark on its own. Payload logo files vary
-            in dimension, which is why this is a plain img rather than next/image.
-            The site name stays in the accessible name of the home link.
-          */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="site-logo-image" src={logo?.url || '/logo.png'} />
-          <span className="visually-hidden">{settings.siteName}</span>
-        </Link>
+      <Link className="site-logo" href="/">
+        {/*
+          The circular seal is the brand mark on its own. Payload logo files vary
+          in dimension, which is why this is a plain img rather than next/image.
+          The site name stays in the accessible name of the home link.
+        */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img alt="" className="site-logo-image" src={logo?.url || '/logo.png'} />
+        <span className="visually-hidden">{settings.siteName}</span>
+      </Link>
+      <div className="site-header-bar">
+        <div className="site-header-inner">
+          <span aria-hidden="true" className="site-logo-spacer" />
+          <NavLinks items={nav} />
 
-        <NavLinks items={nav} />
-
-        <div className="site-header-actions">
-          <DonateControl
-            describedById="donate-pending-header"
-            label={donateLabel}
-            pendingLabel="Support us"
-            url={donateUrl}
-          />
-          <MobileNav items={nav} />
+          <div className="site-header-actions">
+            <DonateControl label={donateLabel} pendingLabel="Support us" url={donateUrl} />
+            <MobileNav items={nav} />
+          </div>
         </div>
       </div>
     </header>

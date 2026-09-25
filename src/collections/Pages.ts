@@ -16,7 +16,7 @@ export const Pages: CollectionConfig = {
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     description:
       'Create a page, then add and reorder the designed sections that make it up. Drag sections to change their order.',
-    group: 'Pages',
+    group: 'Website',
   },
   versions: {
     drafts: true,
@@ -84,7 +84,10 @@ export const Pages: CollectionConfig = {
       blocks: pageLayoutBlocks,
       admin: {
         description: 'Add a section, then drag it to the place it should appear on the public page.',
-        initCollapsed: false,
+        // Expanding every section on load makes the editor render and hydrate
+        // hundreds of inputs before the form becomes editable, and it buries
+        // the drag handles. Collapsed rows keep reordering and editing quick.
+        initCollapsed: true,
       },
     },
     {

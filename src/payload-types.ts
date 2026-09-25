@@ -67,15 +67,15 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
-    media: Media;
-    'board-members': BoardMember;
+    pages: Page;
     events: Event;
     projects: Project;
     organizations: Organization;
-    pages: Page;
+    'board-members': BoardMember;
+    media: Media;
     'contact-submissions': ContactSubmission;
     'grant-requests': GrantRequest;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -83,15 +83,15 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
-    'board-members': BoardMembersSelect<false> | BoardMembersSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
+    'board-members': BoardMembersSelect<false> | BoardMembersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'grant-requests': GrantRequestsSelect<false> | GrantRequestsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -134,239 +134,6 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
-}
-/**
- * Admin accounts can manage users and site settings. Editors manage public content and submissions.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  /**
-   * Admins manage users and settings. Editors manage public content and form submissions.
-   */
-  role: 'admin' | 'editor';
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
-}
-/**
- * Photographs and files for the public site. Grant PDFs are stored as internal files and are never shown publicly. Production should use object storage via S3 environment variables.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Required for meaningful photographs. Describe the activity, people, and place. Leave blank only for PDFs or images marked decorative.
-   */
-  alt?: string | null;
-  /**
-   * Use for logos or purely decorative crops. The public site will use empty alt text so screen readers skip the image.
-   */
-  decorative?: boolean | null;
-  /**
-   * Internal files, including grant PDFs, are never returned to the public website.
-   */
-  visibility: 'public' | 'internal';
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    feature?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * Current volunteer board members. Leave fields empty rather than inventing titles or bios.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "board-members".
- */
-export interface BoardMember {
-  id: number;
-  name: string;
-  /**
-   * Board role, such as President or Member. Optional.
-   */
-  title?: string | null;
-  /**
-   * Optional headshot. The public site works without a photo.
-   */
-  photo?: (number | null) | Media;
-  /**
-   * Short optional biography. Do not invent personal details.
-   */
-  bio?: string | null;
-  /**
-   * Optional public link.
-   */
-  website?: string | null;
-  /**
-   * Lower numbers appear first.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * Upcoming versus past is determined by end date, or start date when no end date exists. Upcoming sorts soonest first; past sorts newest first.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events".
- */
-export interface Event {
-  id: number;
-  title: string;
-  /**
-   * Start of the event. Used to decide upcoming versus past when there is no end date.
-   */
-  startDate: string;
-  /**
-   * Optional. When present, this date decides whether the event is still upcoming.
-   */
-  endDate?: string | null;
-  location?: string | null;
-  summary?: string | null;
-  image?: (number | null) | Media;
-  /**
-   * Optional link for tickets, Facebook, or more information. Opens as an external link on the site.
-   */
-  externalUrl?: string | null;
-  /**
-   * Cancelled events still appear, clearly marked, instead of disappearing.
-   */
-  cancelled?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * Funded projects and grants. Record year, amount or funding detail, recipient, and who benefited. Do not invent amounts or outcomes.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects".
- */
-export interface Project {
-  id: number;
-  title: string;
-  /**
-   * The year this project was funded or completed.
-   */
-  year: number;
-  /**
-   * Stored as playground, facility, equipment, camp, scholarship, or other. The public Projects & Grants page groups these into the five client categories.
-   */
-  category: 'playground' | 'facility' | 'equipment' | 'camp' | 'scholarship' | 'other';
-  /**
-   * Public funding detail, such as $5,000 or in-kind equipment. Leave blank if the amount is not confirmed.
-   */
-  amountLabel?: string | null;
-  /**
-   * Who received the funds or equipment.
-   */
-  recipient?: string | null;
-  /**
-   * Optional link to a supported organization or facility.
-   */
-  organization?: (number | null) | Organization;
-  /**
-   * Who benefited, in plain language.
-   */
-  beneficiaries?: string | null;
-  /**
-   * Short public description. Be specific and do not invent outcomes.
-   */
-  summary: string;
-  image?: (number | null) | Media;
-  /**
-   * Show this project in Featured projects sections. Up to four, newest first.
-   */
-  featured?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * Recreation programs, facilities, and partners that Friends of Recreation supports. Do not invent partners.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organizations".
- */
-export interface Organization {
-  id: number;
-  name: string;
-  /**
-   * Optional public website.
-   */
-  website?: string | null;
-  /**
-   * Optional logo. Keep organization logos secondary to photography on the public site.
-   */
-  logo?: (number | null) | Media;
-  /**
-   * One or two sentences about this program or facility.
-   */
-  summary?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * Create a page, then add and reorder the designed sections that make it up. Drag sections to change their order.
@@ -474,6 +241,72 @@ export interface HeroBlock {
   blockType: 'hero';
 }
 /**
+ * Photographs and files for the public site. Grant PDFs are stored as internal files and are never shown publicly. Production stores files in Vercel Blob.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Required for meaningful photographs. Describe the activity, people, and place. Leave blank only for PDFs or images marked decorative.
+   */
+  alt?: string | null;
+  /**
+   * Use for logos or purely decorative crops. The public site will use empty alt text so screen readers skip the image.
+   */
+  decorative?: boolean | null;
+  /**
+   * Internal files, including grant PDFs, are never returned to the public website.
+   */
+  visibility: 'public' | 'internal';
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    feature?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MissionBlock".
  */
@@ -545,6 +378,31 @@ export interface OrganizationsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'organizations';
+}
+/**
+ * Recreation programs, facilities, and partners that Friends of Recreation supports. Do not invent partners.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations".
+ */
+export interface Organization {
+  id: number;
+  name: string;
+  /**
+   * Optional public website.
+   */
+  website?: string | null;
+  /**
+   * Optional logo. Keep organization logos secondary to photography on the public site.
+   */
+  logo?: (number | null) | Media;
+  /**
+   * One or two sentences about this program or facility.
+   */
+  summary?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -769,6 +627,117 @@ export interface GrantRequestBlock {
   blockType: 'grantRequest';
 }
 /**
+ * Upcoming versus past is determined by end date, or start date when no end date exists. Upcoming sorts soonest first; past sorts newest first.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  /**
+   * Start of the event. Used to decide upcoming versus past when there is no end date.
+   */
+  startDate: string;
+  /**
+   * Optional. When present, this date decides whether the event is still upcoming.
+   */
+  endDate?: string | null;
+  location?: string | null;
+  summary?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * Optional link for tickets, Facebook, or more information. Opens as an external link on the site.
+   */
+  externalUrl?: string | null;
+  /**
+   * Cancelled events still appear, clearly marked, instead of disappearing.
+   */
+  cancelled?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Funded projects and grants. Record year, amount or funding detail, recipient, and who benefited. Do not invent amounts or outcomes.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  /**
+   * The year this project was funded or completed.
+   */
+  year: number;
+  /**
+   * Stored as playground, facility, equipment, camp, scholarship, or other. The public Projects & Grants page groups these into the five client categories.
+   */
+  category: 'playground' | 'facility' | 'equipment' | 'camp' | 'scholarship' | 'other';
+  /**
+   * Public funding detail, such as $5,000 or in-kind equipment. Leave blank if the amount is not confirmed.
+   */
+  amountLabel?: string | null;
+  /**
+   * Who received the funds or equipment.
+   */
+  recipient?: string | null;
+  /**
+   * Optional link to a supported organization or facility.
+   */
+  organization?: (number | null) | Organization;
+  /**
+   * Who benefited, in plain language.
+   */
+  beneficiaries?: string | null;
+  /**
+   * Short public description. Be specific and do not invent outcomes.
+   */
+  summary: string;
+  image?: (number | null) | Media;
+  /**
+   * Show this project in Featured projects sections. Up to four, newest first.
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Current volunteer board members. Leave fields empty rather than inventing titles or bios.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "board-members".
+ */
+export interface BoardMember {
+  id: number;
+  name: string;
+  /**
+   * Board role, such as President or Member. Optional.
+   */
+  title?: string | null;
+  /**
+   * Optional headshot. The public site works without a photo.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Short optional biography. Do not invent personal details.
+   */
+  bio?: string | null;
+  /**
+   * Optional public link.
+   */
+  website?: string | null;
+  /**
+   * Lower numbers appear first.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * Questions from the public contact form. Status and internal notes never appear on the website. The public form creates records through a server action; the REST API is staff-only.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -787,7 +756,7 @@ export interface ContactSubmission {
   /**
    * Internal workflow only. Never shown publicly.
    */
-  status: 'new' | 'in-progress' | 'closed';
+  status: 'new' | 'reviewing' | 'follow-up' | 'approved' | 'declined' | 'closed';
   /**
    * Staff notes. Never returned to the public site or confirmation screens.
    */
@@ -806,7 +775,7 @@ export interface GrantRequest {
   organizationName: string;
   contactName: string;
   email: string;
-  phone?: string | null;
+  phone: string;
   /**
    * Optional public website for the requesting group.
    */
@@ -830,13 +799,44 @@ export interface GrantRequest {
   /**
    * Internal workflow only. Never shown publicly.
    */
-  status: 'new' | 'in-review' | 'awarded' | 'declined' | 'closed';
+  status: 'new' | 'reviewing' | 'follow-up' | 'approved' | 'declined' | 'closed';
   /**
    * Staff notes. Never returned to the public site or confirmation screens.
    */
   internalNotes?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Admin accounts can manage users and site settings. Editors manage public content and submissions.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  /**
+   * Admins manage users and settings. Editors manage public content and form submissions.
+   */
+  role: 'admin' | 'editor';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -863,16 +863,8 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
-      } | null)
-    | ({
-        relationTo: 'media';
-        value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'board-members';
-        value: number | BoardMember;
+        relationTo: 'pages';
+        value: number | Page;
       } | null)
     | ({
         relationTo: 'events';
@@ -887,8 +879,12 @@ export interface PayloadLockedDocument {
         value: number | Organization;
       } | null)
     | ({
-        relationTo: 'pages';
-        value: number | Page;
+        relationTo: 'board-members';
+        value: number | BoardMember;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
       } | null)
     | ({
         relationTo: 'contact-submissions';
@@ -897,6 +893,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'grant-requests';
         value: number | GrantRequest;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -939,157 +939,6 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  role?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  decorative?: T;
-  visibility?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-  sizes?:
-    | T
-    | {
-        thumbnail?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        card?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        feature?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        hero?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "board-members_select".
- */
-export interface BoardMembersSelect<T extends boolean = true> {
-  name?: T;
-  title?: T;
-  photo?: T;
-  bio?: T;
-  website?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events_select".
- */
-export interface EventsSelect<T extends boolean = true> {
-  title?: T;
-  startDate?: T;
-  endDate?: T;
-  location?: T;
-  summary?: T;
-  image?: T;
-  externalUrl?: T;
-  cancelled?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects_select".
- */
-export interface ProjectsSelect<T extends boolean = true> {
-  title?: T;
-  year?: T;
-  category?: T;
-  amountLabel?: T;
-  recipient?: T;
-  organization?: T;
-  beneficiaries?: T;
-  summary?: T;
-  image?: T;
-  featured?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organizations_select".
- */
-export interface OrganizationsSelect<T extends boolean = true> {
-  name?: T;
-  website?: T;
-  logo?: T;
-  summary?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1332,6 +1181,134 @@ export interface GrantRequestBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  startDate?: T;
+  endDate?: T;
+  location?: T;
+  summary?: T;
+  image?: T;
+  externalUrl?: T;
+  cancelled?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  year?: T;
+  category?: T;
+  amountLabel?: T;
+  recipient?: T;
+  organization?: T;
+  beneficiaries?: T;
+  summary?: T;
+  image?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations_select".
+ */
+export interface OrganizationsSelect<T extends boolean = true> {
+  name?: T;
+  website?: T;
+  logo?: T;
+  summary?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "board-members_select".
+ */
+export interface BoardMembersSelect<T extends boolean = true> {
+  name?: T;
+  title?: T;
+  photo?: T;
+  bio?: T;
+  website?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  decorative?: T;
+  visibility?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        feature?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-submissions_select".
  */
 export interface ContactSubmissionsSelect<T extends boolean = true> {
@@ -1366,6 +1343,29 @@ export interface GrantRequestsSelect<T extends boolean = true> {
   internalNotes?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

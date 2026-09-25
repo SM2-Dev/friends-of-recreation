@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import type { Media } from '@/payload-types'
 import { imageAltText } from '@/lib/mediaAlt'
-import { cn, isMedia } from '@/lib/utils'
+import { cn, isMedia, toNextImageSrc } from '@/lib/utils'
 
 type SiteImageProps = {
   media: unknown
@@ -51,7 +51,7 @@ export function SiteImage({
         fill
         priority={priority}
         sizes={sizes}
-        src={image.url}
+        src={toNextImageSrc(image.url)}
         style={objectPosition ? { objectPosition } : undefined}
       />
     </div>

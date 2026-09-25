@@ -17,7 +17,7 @@ export const GrantRequests: CollectionConfig = {
     useAsTitle: 'organizationName',
     defaultColumns: ['organizationName', 'contactName', 'status', 'createdAt'],
     description: 'Grant requests from the public form. Attachments must be PDF. Status and notes are staff-only. The public form creates records through a server action; the REST API is staff-only.',
-    group: 'Submissions',
+    group: 'Form submissions',
   },
   timestamps: true,
   access: {

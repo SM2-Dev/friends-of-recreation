@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
+const payloadClientConfig = './src/payload/getClientConfig.ts'
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -18,6 +19,16 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.public.blob.vercel-storage.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/api/media/file/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        pathname: '/api/media/file/**',
       },
     ],
   },
@@ -37,6 +48,10 @@ const nextConfig: NextConfig = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
     }
+    webpackConfig.resolve.alias = {
+      ...webpackConfig.resolve.alias,
+      '@payloadcms/ui/utilities/getClientConfig': path.resolve(dirname, 'src/payload/getClientConfig.ts'),
+    }
 
     return webpackConfig
   },
@@ -44,6 +59,7 @@ const nextConfig: NextConfig = {
     root: path.resolve(dirname),
     resolveAlias: {
       '@tailwindcss/postcss': path.resolve(dirname, 'node_modules/@tailwindcss/postcss'),
+      '@payloadcms/ui/utilities/getClientConfig': payloadClientConfig,
     },
   },
   agentRules: false,
