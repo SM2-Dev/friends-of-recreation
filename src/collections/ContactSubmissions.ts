@@ -17,7 +17,7 @@ export const ContactSubmissions: CollectionConfig = {
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'subject', 'status', 'createdAt'],
     description: 'Questions from the public contact form. Status and internal notes never appear on the website. The public form creates records through a server action; the REST API is staff-only.',
-    group: 'Submissions',
+    group: 'Form submissions',
   },
   timestamps: true,
   access: {

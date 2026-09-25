@@ -57,12 +57,7 @@ export async function Footer() {
 
         <div className="site-footer-actions">
           <p className="site-footer-heading">Support recreation</p>
-          <DonateControl
-            describedById="donate-pending-footer"
-            label={settings.donationLabel || 'Donate'}
-            pendingVisible
-            url={donateUrl}
-          />
+          <DonateControl label={settings.donationLabel || 'Donate'} url={donateUrl} />
         </div>
 
         <div className="site-footer-base">

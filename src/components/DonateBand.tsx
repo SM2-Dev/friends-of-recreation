@@ -34,12 +34,7 @@ export async function DonateBand({
         <div className="cta-copy" data-reveal="idle" style={stagger(120)}>
           {body ? <p>{body}</p> : null}
           <div className="cta-actions">
-            <DonateControl
-              describedById={`${headingId}-pending`}
-              label={settings.donationLabel || 'Donate'}
-              pendingVisible
-              url={donateUrl}
-            />
+            <DonateControl label={settings.donationLabel || 'Donate'} url={donateUrl} />
             {secondary?.href && secondary.label ? (
               <Link className="button button-secondary" href={secondary.href}>
                 {secondary.label}

@@ -19,6 +19,8 @@
   --flare: #c6371c;
   --flare-2: #a72c14;
   --flare-ink: #fff8f2;
+  --ground-texture: url('/textures/grass.jpg');
+  --ground-texture-size: 32rem;
   --gold: #f0b429;
   --alert: #9c2a10;
 
@@ -90,7 +92,7 @@
   --dur-3: 620ms;
   --dur-4: 900ms;
 
-  --header-h: 4.6rem;
+  --header-h: 5rem;
 }
 
 @theme inline {
@@ -574,43 +576,6 @@ select {
   outline-color: var(--focus-on-dark);
 }
 
-.donate-control {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--s2);
-}
-
-.donate-pending {
-  margin: 0;
-  max-width: 26ch;
-  font-size: var(--t-small);
-  color: var(--ink-2);
-}
-
-/* In an action row the note would otherwise wedge between the two controls, so
-   it is flattened out of its wrapper and dropped onto a line of its own.
-   A grid row does this reliably: under flex, the note's own max-width clamped its
-   hypothetical size back under 100%, so flex-basis never forced the break and the
-   note landed beside the buttons — on the hero that put it over the photograph. */
-.hero-actions .donate-control,
-.cta-actions .donate-control {
-  display: contents;
-}
-
-.hero-actions .donate-pending,
-.cta-actions .donate-pending {
-  /* Sorts after both controls, so the two buttons share the first row rather than
-     being split apart by the note's full-width row. */
-  order: 1;
-  grid-column: 1 / -1;
-  max-width: 46ch;
-}
-
-.on-field .donate-pending {
-  color: var(--field-ink-2);
-}
-
 /* Quiet text link with a sliding arrow */
 .arrow-link {
   display: inline-flex;
@@ -699,7 +664,9 @@ select {
   z-index: 60;
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
+}
+
+.site-header-bar {
   background: color-mix(in srgb, var(--paper) 88%, transparent);
   backdrop-filter: saturate(140%) blur(14px);
   border-bottom: 1px solid var(--rule);
@@ -716,13 +683,20 @@ select {
   margin-inline: auto;
 }
 
+.site-logo-spacer {
+  flex: none;
+  width: 4.62rem;
+  height: 1px;
+}
+
 .site-logo {
   display: inline-flex;
   align-items: center;
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  left: max(var(--inset), calc((100% - var(--wide)) / 2 + var(--inset)));
+  top: 0.45rem;
+  z-index: 2;
   text-decoration: none;
-  min-width: 0;
 }
 
 .site-logo:focus-visible {
@@ -731,17 +705,19 @@ select {
 
 .site-logo:focus-visible .site-logo-image {
   outline: 3px solid var(--focus);
-  outline-offset: 3px;
+  outline-offset: calc(0.5rem + 3px);
 }
 
 .site-logo-image {
-  width: 3.85rem;
-  height: 3.85rem;
+  width: 4.62rem;
+  height: 4.62rem;
   flex: none;
   object-fit: contain;
   border-radius: 50%;
   background: var(--paper);
-  box-shadow: var(--sh1);
+  /* Same fill as the bar, so the hanging seal reads as the nav wrapping
+     around the mark instead of a disc dropped on top of it. */
+  box-shadow: 0 0 0 0.5rem var(--paper);
   rotate: -8deg;
 }
 
@@ -749,15 +725,13 @@ select {
   .site-logo-image {
     transition:
       rotate var(--dur-3) var(--ease-emph),
-      transform var(--dur-3) var(--ease-emph),
-      box-shadow var(--dur-3) var(--ease-out);
+      transform var(--dur-3) var(--ease-emph);
   }
 
   .site-logo:hover .site-logo-image,
   .site-logo:focus-visible .site-logo-image {
     rotate: 5deg;
-    transform: scale(1.06);
-    box-shadow: var(--sh2);
+    transform: scale(1.04);
   }
 }
 
@@ -867,7 +841,8 @@ select {
 
 .band-teal {
   --plate-fill: var(--teal);
-  background: var(--teal);
+  --ground-texture-active: var(--ground-texture);
+  background-color: var(--teal);
   color: var(--teal-ink);
 }
 
@@ -888,7 +863,8 @@ select {
 
 .band-field {
   --plate-fill: var(--field);
-  background: var(--field);
+  --ground-texture-active: var(--ground-texture);
+  background-color: var(--field);
   color: var(--field-ink);
 }
 
@@ -902,7 +878,7 @@ select {
   --surface: var(--paper);
   --surface-ink: var(--ink);
   --surface-ink-2: var(--ink-2);
-  --surface-amount: var(--flare);
+  --surface-amount: var(--field);
   --surface-year: var(--field);
   --surface-rule: var(--rule);
   --plate-fill: var(--paper);
@@ -914,7 +890,7 @@ select {
   --surface: var(--paper-2);
   --surface-ink: var(--ink);
   --surface-ink-2: var(--ink-2);
-  --surface-amount: var(--flare);
+  --surface-amount: var(--field);
   --surface-year: var(--field);
   --surface-rule: var(--rule);
   --plate-fill: var(--paper-2);
@@ -930,7 +906,8 @@ select {
   --surface-year: var(--teal-ink);
   --surface-rule: color-mix(in srgb, var(--teal-ink) 22%, transparent);
   --plate-fill: var(--teal);
-  background: var(--teal);
+  --ground-texture-active: var(--ground-texture);
+  background-color: var(--teal);
   color: var(--teal-ink);
 }
 
@@ -942,7 +919,8 @@ select {
   --surface-year: var(--field-ink);
   --surface-rule: var(--rule-field);
   --plate-fill: var(--field);
-  background: var(--field);
+  --ground-texture-active: var(--ground-texture);
+  background-color: var(--field);
   color: var(--field-ink);
 }
 
@@ -954,7 +932,8 @@ select {
   --surface-year: var(--flare-ink);
   --surface-rule: color-mix(in srgb, var(--flare-ink) 22%, transparent);
   --plate-fill: var(--flare);
-  background: var(--flare);
+  --ground-texture-active: var(--ground-texture);
+  background-color: var(--flare);
   color: var(--flare-ink);
 }
 
@@ -998,6 +977,17 @@ select {
 [data-plate].surface-navy {
   --plate-fill: var(--navy);
   background: transparent;
+}
+
+.surface-field:not([data-plate]),
+.surface-flare:not([data-plate]),
+.surface-teal:not([data-plate]),
+.band-field:not([data-plate]),
+.band-teal:not([data-plate]) {
+  background-image: var(--ground-texture);
+  background-size: var(--ground-texture-size);
+  background-repeat: repeat;
+  background-blend-mode: luminosity;
 }
 
 .surface-dark .arrow-link {
@@ -1050,7 +1040,11 @@ select {
   inset: calc((1 - var(--plate-open)) * var(--plate-inset-max));
   z-index: 0;
   border-radius: calc((1 - var(--plate-open)) * var(--plate-radius-max));
-  background: var(--plate-fill, var(--field));
+  background-color: var(--plate-fill, var(--field));
+  background-image: var(--ground-texture-active, none);
+  background-size: var(--ground-texture-size);
+  background-repeat: repeat;
+  background-blend-mode: luminosity;
   pointer-events: none;
 }
 
@@ -1490,7 +1484,7 @@ a.org-mark:focus-visible {
 
 a.org-mark:hover .org-mark-name,
 a.org-mark:focus-visible .org-mark-name {
-  color: var(--flare);
+  color: var(--field);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1576,7 +1570,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-stretch: 100%;
   letter-spacing: -0.015em;
   line-height: 1.28;
-  color: var(--flare);
+  color: var(--field);
 }
 
 .pillar-proof li::before {
@@ -1711,7 +1705,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   line-height: 1;
-  color: var(--surface-amount, var(--flare));
+  color: var(--surface-amount, var(--field));
   white-space: nowrap;
   transition: transform var(--dur-3) var(--ease-out);
 }
@@ -1811,7 +1805,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-stretch: 100%;
   letter-spacing: -0.015em;
   line-height: 1.28;
-  color: var(--flare);
+  color: var(--field);
 }
 
 .fund-item p::before {
@@ -1987,7 +1981,7 @@ a.org-mark:focus-visible .org-mark-name {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   line-height: 1;
-  color: var(--surface-amount, var(--flare));
+  color: var(--surface-amount, var(--field));
   transition: transform var(--dur-3) var(--ease-out);
 }
 
@@ -2077,7 +2071,7 @@ a.place-row {
 
 a.place-row:hover .place-title,
 a.place-row:focus-visible .place-title {
-  color: var(--flare);
+  color: var(--field);
 }
 
 /* Photo rail — peek slider on paper, after the ledger */
@@ -2532,7 +2526,11 @@ a.next-event-card:focus-visible {
   position: relative;
   z-index: 1;
   overflow: visible;
-  background: var(--surface, var(--flare));
+  background-color: var(--surface, var(--flare));
+  background-image: var(--ground-texture-active, none);
+  background-size: var(--ground-texture-size);
+  background-repeat: repeat;
+  background-blend-mode: luminosity;
   color: var(--surface-ink, var(--flare-ink));
   padding-top: clamp(4rem, 8vw, 6.5rem);
   padding-bottom: clamp(4.25rem, 8vw, 6.75rem);
@@ -2673,10 +2671,6 @@ a.next-event-card:focus-visible {
 .cta.surface-dark .button:disabled {
   background: color-mix(in srgb, var(--surface-ink) 28%, transparent);
   color: var(--surface-ink);
-}
-
-.cta.surface-dark .donate-pending {
-  color: color-mix(in srgb, var(--surface-ink) 82%, transparent);
 }
 
 .cta.surface-dark .button-secondary {
@@ -2823,7 +2817,7 @@ a.next-event-card:focus-visible {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--flare);
+  color: var(--field);
 }
 
 .board-bio {
@@ -3150,12 +3144,17 @@ a.next-event-card:focus-visible {
 .site-footer-actions {
   display: grid;
   justify-items: start;
+  align-content: start;
   gap: var(--s4);
+  min-width: 0;
 }
 
 .site-footer .donate-button {
   background: var(--gold);
   color: var(--ink);
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
 }
 
 .site-footer .donate-button:hover {
@@ -3165,10 +3164,6 @@ a.next-event-card:focus-visible {
 .site-footer .button:disabled {
   background: color-mix(in srgb, var(--paper) 24%, transparent);
   color: var(--paper);
-}
-
-.site-footer .donate-pending {
-  color: color-mix(in srgb, var(--paper) 66%, transparent);
 }
 
 .site-footer-base {
@@ -3246,13 +3241,20 @@ a.next-event-card:focus-visible {
 
 @media (min-width: 52rem) {
   :root {
-    --header-h: 5.15rem;
+    --header-h: 5.5rem;
   }
 
   .site-logo-image {
-    width: 5.5rem;
-    height: 5.5rem;
-    margin-bottom: -0.85rem;
+    width: 6.6rem;
+    height: 6.6rem;
+  }
+
+  .site-logo-spacer {
+    width: 6.6rem;
+  }
+
+  .site-logo {
+    top: 0.35rem;
   }
 
   .desktop-nav {
@@ -3569,7 +3571,7 @@ a.next-event-card:focus-visible {
   }
 
   .site-footer-inner {
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr 1fr minmax(max-content, 1fr);
     gap: var(--s6);
   }
 

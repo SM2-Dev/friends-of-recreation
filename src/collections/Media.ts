@@ -12,7 +12,7 @@ export const Media: CollectionConfig = {
   },
   admin: {
     description:
-      'Photographs and files for the public site. Grant PDFs are stored as internal files and are never shown publicly. Production should use object storage via S3 environment variables.',
+      'Photographs and files for the public site. Grant PDFs are stored as internal files and are never shown publicly. Production stores files in Vercel Blob.',
     group: 'Content',
     defaultColumns: ['filename', 'alt', 'visibility', 'mimeType'],
   },
@@ -100,6 +100,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
+    disableLocalStorage: Boolean(process.env.VERCEL),
     mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'],
     focalPoint: true,
     adminThumbnail: 'thumbnail',
@@ -109,24 +110,28 @@ export const Media: CollectionConfig = {
         width: 400,
         height: 300,
         position: 'centre',
+        withoutEnlargement: true,
       },
       {
         name: 'card',
         width: 900,
         height: 675,
         position: 'centre',
+        withoutEnlargement: true,
       },
       {
         name: 'feature',
         width: 1600,
         height: 1200,
         position: 'centre',
+        withoutEnlargement: true,
       },
       {
         name: 'hero',
         width: 2400,
         height: 1600,
         position: 'centre',
+        withoutEnlargement: true,
       },
     ],
   },

@@ -1,0 +1,968 @@
+/* ==========================================================================
+   Friends of Recreation — Payload admin theme
+
+   Payload ships its own styles inside the `payload-default` cascade layer.
+   Everything here is unlayered, so it wins without needing `!important`.
+
+   The admin borrows the public site's palette and type, but it is a working
+   tool rather than a marketing page: one deep green rail for navigation,
+   a warm paper workspace, and green for the action that saves work.
+   ========================================================================== */
+
+:root {
+  /* Brand constants, mirrored from the public site palette. */
+  --fo-paper: #fbf8f2;
+  --fo-paper-2: #f1ebdf;
+  --fo-paper-3: #e7dfd0;
+  --fo-ink: #17140e;
+  --fo-field: #0e4a2c;
+  --fo-field-2: #14603a;
+  --fo-field-ink: #f4f7ee;
+  --fo-flare: #c6371c;
+  --fo-gold: #f0b429;
+  --fo-brass: #d8a73c;
+  --fo-teal: #2a6f6b;
+  --fo-alert: #9c2a10;
+
+  /* The navigation rail sits a step deeper than the site's field green so the
+     paper workspace beside it reads as the brighter surface. */
+  --fo-rail: #0c3d23;
+
+  --fo-font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --fo-font-body: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+
+  /* Fixed endpoints for the accent ramps below. Unlike the tokens above these
+     never change with the theme, because Payload's dark mode re-reads the same
+     ramp in reverse and would invert if the endpoints moved. */
+  --fo-tint: #fbf8f2;
+  --fo-shade: #17140e;
+
+  /* Warm neutral ramp. Payload maps every surface, border, and text colour
+     from these twenty-one steps, so recolouring them rebrands most of the UI. */
+  --color-base-0: #fffdf9;
+  --color-base-50: #faf6ed;
+  --color-base-100: #f3eee2;
+  --color-base-150: #ebe4d5;
+  --color-base-200: #e0d8c7;
+  --color-base-250: #d2c9b6;
+  --color-base-300: #c2b7a2;
+  --color-base-350: #a2977e;
+  --color-base-400: #7a6f59;
+  --color-base-450: #6d634f;
+  --color-base-500: #615848;
+  --color-base-550: #554d3f;
+  --color-base-600: #4a4236;
+  --color-base-650: #3f382e;
+  --color-base-700: #353026;
+  --color-base-750: #2c271f;
+  --color-base-800: #252019;
+  --color-base-850: #1c1813;
+  --color-base-900: #17140e;
+  --color-base-950: #100e09;
+  --color-base-1000: #0a0806;
+
+  /* Payload treats "success" as its accent hue: selection, published status,
+     and confirmation toasts. Field green carries all three. */
+  --color-success-50: color-mix(in oklab, var(--fo-field-2) 8%, var(--fo-tint));
+  --color-success-100: color-mix(in oklab, var(--fo-field-2) 14%, var(--fo-tint));
+  --color-success-150: color-mix(in oklab, var(--fo-field-2) 22%, var(--fo-tint));
+  --color-success-200: color-mix(in oklab, var(--fo-field-2) 30%, var(--fo-tint));
+  --color-success-250: color-mix(in oklab, var(--fo-field-2) 40%, var(--fo-tint));
+  --color-success-300: color-mix(in oklab, var(--fo-field-2) 52%, var(--fo-tint));
+  --color-success-350: color-mix(in oklab, var(--fo-field-2) 64%, var(--fo-tint));
+  --color-success-400: color-mix(in oklab, var(--fo-field-2) 78%, var(--fo-tint));
+  --color-success-450: color-mix(in oklab, var(--fo-field-2) 90%, var(--fo-tint));
+  --color-success-500: var(--fo-field-2);
+  --color-success-550: color-mix(in oklab, var(--fo-field-2) 92%, var(--fo-shade));
+  --color-success-600: color-mix(in oklab, var(--fo-field-2) 84%, var(--fo-shade));
+  --color-success-650: color-mix(in oklab, var(--fo-field-2) 76%, var(--fo-shade));
+  --color-success-700: color-mix(in oklab, var(--fo-field-2) 68%, var(--fo-shade));
+  --color-success-750: color-mix(in oklab, var(--fo-field-2) 60%, var(--fo-shade));
+  --color-success-800: color-mix(in oklab, var(--fo-field-2) 52%, var(--fo-shade));
+  --color-success-850: color-mix(in oklab, var(--fo-field-2) 44%, var(--fo-shade));
+  --color-success-900: color-mix(in oklab, var(--fo-field-2) 34%, var(--fo-shade));
+  --color-success-950: color-mix(in oklab, var(--fo-field-2) 24%, var(--fo-shade));
+
+  --color-error-50: color-mix(in oklab, var(--fo-alert) 8%, var(--fo-tint));
+  --color-error-100: color-mix(in oklab, var(--fo-alert) 14%, var(--fo-tint));
+  --color-error-150: color-mix(in oklab, var(--fo-alert) 22%, var(--fo-tint));
+  --color-error-200: color-mix(in oklab, var(--fo-alert) 30%, var(--fo-tint));
+  --color-error-250: color-mix(in oklab, var(--fo-alert) 40%, var(--fo-tint));
+  --color-error-300: color-mix(in oklab, var(--fo-alert) 52%, var(--fo-tint));
+  --color-error-350: color-mix(in oklab, var(--fo-alert) 64%, var(--fo-tint));
+  --color-error-400: color-mix(in oklab, var(--fo-alert) 78%, var(--fo-tint));
+  --color-error-450: color-mix(in oklab, var(--fo-alert) 90%, var(--fo-tint));
+  --color-error-500: var(--fo-alert);
+  --color-error-550: color-mix(in oklab, var(--fo-alert) 92%, var(--fo-shade));
+  --color-error-600: color-mix(in oklab, var(--fo-alert) 84%, var(--fo-shade));
+  --color-error-650: color-mix(in oklab, var(--fo-alert) 76%, var(--fo-shade));
+  --color-error-700: color-mix(in oklab, var(--fo-alert) 68%, var(--fo-shade));
+  --color-error-750: color-mix(in oklab, var(--fo-alert) 60%, var(--fo-shade));
+  --color-error-800: color-mix(in oklab, var(--fo-alert) 52%, var(--fo-shade));
+  --color-error-850: color-mix(in oklab, var(--fo-alert) 44%, var(--fo-shade));
+  --color-error-900: color-mix(in oklab, var(--fo-alert) 34%, var(--fo-shade));
+  --color-error-950: color-mix(in oklab, var(--fo-alert) 24%, var(--fo-shade));
+
+  --color-warning-50: color-mix(in oklab, var(--fo-brass) 10%, var(--fo-tint));
+  --color-warning-100: color-mix(in oklab, var(--fo-brass) 18%, var(--fo-tint));
+  --color-warning-150: color-mix(in oklab, var(--fo-brass) 28%, var(--fo-tint));
+  --color-warning-200: color-mix(in oklab, var(--fo-brass) 38%, var(--fo-tint));
+  --color-warning-250: color-mix(in oklab, var(--fo-brass) 48%, var(--fo-tint));
+  --color-warning-300: color-mix(in oklab, var(--fo-brass) 60%, var(--fo-tint));
+  --color-warning-350: color-mix(in oklab, var(--fo-brass) 72%, var(--fo-tint));
+  --color-warning-400: color-mix(in oklab, var(--fo-brass) 84%, var(--fo-tint));
+  --color-warning-450: color-mix(in oklab, var(--fo-brass) 94%, var(--fo-tint));
+  --color-warning-500: var(--fo-brass);
+  --color-warning-550: color-mix(in oklab, var(--fo-brass) 92%, var(--fo-shade));
+  --color-warning-600: color-mix(in oklab, var(--fo-brass) 84%, var(--fo-shade));
+  --color-warning-650: color-mix(in oklab, var(--fo-brass) 76%, var(--fo-shade));
+  --color-warning-700: color-mix(in oklab, var(--fo-brass) 68%, var(--fo-shade));
+  --color-warning-750: color-mix(in oklab, var(--fo-brass) 60%, var(--fo-shade));
+  --color-warning-800: color-mix(in oklab, var(--fo-brass) 50%, var(--fo-shade));
+  --color-warning-850: color-mix(in oklab, var(--fo-brass) 42%, var(--fo-shade));
+  --color-warning-900: color-mix(in oklab, var(--fo-brass) 32%, var(--fo-shade));
+  --color-warning-950: color-mix(in oklab, var(--fo-brass) 22%, var(--fo-shade));
+
+  /* Paper is the workspace; elevation-0 stays a shade brighter for inputs,
+     cards, and popovers so containers separate without borders everywhere. */
+  --theme-bg: var(--fo-paper);
+  --theme-input-bg: var(--color-base-0);
+  --theme-border-color: var(--color-base-200);
+  --theme-overlay: rgb(23 20 14 / 0.42);
+
+  --font-body: var(--fo-font-body);
+  --font-serif: var(--fo-font-display);
+
+  /* Radius scale from the site: 4 / 10 / 18. */
+  --style-radius-s: 4px;
+  --style-radius-m: 10px;
+  --style-radius-l: 18px;
+
+  --accessibility-outline: 2px solid var(--fo-field);
+  --accessibility-outline-offset: 2px;
+
+  --nav-width: 286px;
+  --app-header-height: calc(var(--base) * 3);
+  --doc-controls-height: calc(var(--base) * 3);
+}
+
+/* Dark mode changes theme tokens only. The brand constants stay put, because
+   the seal is black artwork that always needs a light disc behind it. */
+html[data-theme='dark'] {
+  --fo-rail: #0a3520;
+
+  /* Payload mirrors the error ramp in dark mode, but its midpoint stays put.
+     The brick alert is nearly black there, so required marks and error borders
+     re-anchor on a lighter tint of the same hue. */
+  --fo-alert: color-mix(in oklab, var(--fo-flare) 65%, var(--fo-tint));
+
+  --color-base-0: #ffffff;
+  --color-base-50: #faf6ed;
+  --color-base-100: #f1ece1;
+  --color-base-150: #e2dbcc;
+  --color-base-200: #cdc4b2;
+  --color-base-250: #b6ab96;
+  --color-base-300: #9e937d;
+  --color-base-350: #887d68;
+  --color-base-400: #746a57;
+  --color-base-450: #635a49;
+  --color-base-500: #554d3e;
+  --color-base-550: #494235;
+  --color-base-600: #3e382c;
+  --color-base-650: #353025;
+  --color-base-700: #2d281f;
+  --color-base-750: #262119;
+  --color-base-800: #1f1b14;
+  --color-base-850: #1a1610;
+  --color-base-900: #16120d;
+  --color-base-950: #100d09;
+  --color-base-1000: #0a0806;
+
+  --theme-bg: #16120d;
+  --theme-input-bg: #221d15;
+  --theme-border-color: var(--color-base-700);
+  --theme-overlay: rgb(8 6 4 / 0.7);
+
+  /* Payload's dark ramp skips this step, which leaves secondary labels and
+     field descriptions nearly unreadable. */
+  --theme-elevation-500: #8a7f69;
+
+  --accessibility-outline: 2px solid var(--fo-gold);
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+body {
+  font-family: var(--fo-font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.list-header__title,
+.card__title,
+.doc-controls__value,
+.step-nav,
+.btn,
+.pill,
+.field-label:not(.unstyled),
+.collapsible__toggle-wrap .row-label,
+.nav__link,
+.nav-group__toggle,
+.tabs-field__tab-button {
+  font-family: var(--fo-font-display);
+}
+
+h1,
+.list-header__title {
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: -0.02em;
+}
+
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  font-stretch: 94%;
+  letter-spacing: -0.01em;
+}
+
+.field-label:not(.unstyled) {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--theme-elevation-750);
+}
+
+.field-description {
+  color: var(--theme-elevation-500);
+  max-width: 68ch;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Navigation rail
+
+   The rail re-points Payload's elevation ramp at a dark green scale, so every
+   link, chevron, and icon Payload draws from those tokens stays legible
+   without chasing individual selectors.
+   ========================================================================== */
+
+.nav {
+  --theme-elevation-0: var(--fo-rail);
+  --theme-elevation-50: color-mix(in oklab, var(--fo-field-ink) 5%, var(--fo-rail));
+  --theme-elevation-100: color-mix(in oklab, var(--fo-field-ink) 11%, var(--fo-rail));
+  --theme-elevation-150: color-mix(in oklab, var(--fo-field-ink) 17%, var(--fo-rail));
+  --theme-elevation-200: color-mix(in oklab, var(--fo-field-ink) 30%, var(--fo-rail));
+  --theme-elevation-250: color-mix(in oklab, var(--fo-field-ink) 38%, var(--fo-rail));
+  --theme-elevation-300: color-mix(in oklab, var(--fo-field-ink) 46%, var(--fo-rail));
+  --theme-elevation-350: color-mix(in oklab, var(--fo-field-ink) 54%, var(--fo-rail));
+  --theme-elevation-400: color-mix(in oklab, var(--fo-field-ink) 66%, var(--fo-rail));
+  --theme-elevation-450: color-mix(in oklab, var(--fo-field-ink) 72%, var(--fo-rail));
+  --theme-elevation-500: color-mix(in oklab, var(--fo-field-ink) 78%, var(--fo-rail));
+  --theme-elevation-550: color-mix(in oklab, var(--fo-field-ink) 82%, var(--fo-rail));
+  --theme-elevation-600: color-mix(in oklab, var(--fo-field-ink) 86%, var(--fo-rail));
+  --theme-elevation-650: color-mix(in oklab, var(--fo-field-ink) 89%, var(--fo-rail));
+  --theme-elevation-700: color-mix(in oklab, var(--fo-field-ink) 92%, var(--fo-rail));
+  --theme-elevation-750: color-mix(in oklab, var(--fo-field-ink) 96%, var(--fo-rail));
+  --theme-elevation-800: var(--fo-field-ink);
+  --theme-elevation-850: var(--fo-field-ink);
+  --theme-elevation-900: #ffffff;
+  --theme-elevation-950: #ffffff;
+  --theme-elevation-1000: #ffffff;
+  --theme-text: var(--fo-field-ink);
+  --theme-bg: var(--fo-rail);
+  --theme-border-color: color-mix(in oklab, var(--fo-field-ink) 20%, var(--fo-rail));
+  --accessibility-outline: 2px solid var(--fo-gold);
+
+  background: var(--fo-rail);
+  color: var(--fo-field-ink);
+  border-inline-end: 0;
+  border-inline-start: 0;
+}
+
+/* Payload floats its nav-close control over the top-left of the rail, so nav
+   content has to start below that strip. Keep the stock top offset and let the
+   brand block line up with the first row of the workspace instead. */
+.nav__scroll {
+  padding-inline: calc(var(--base) * 0.9);
+}
+
+.nav__wrap {
+  gap: calc(var(--base) * 0.3);
+}
+
+/* Group headings read as quiet section labels rather than another link. */
+.nav-group {
+  width: 100%;
+  margin-bottom: calc(var(--base) * 0.45);
+}
+
+.nav-group__toggle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--fo-field-ink) 72%, var(--fo-rail));
+  padding-inline: calc(var(--base) * 0.55);
+  padding-block: calc(var(--base) * 0.25);
+  border-radius: var(--style-radius-s);
+}
+
+.nav-group__toggle:hover,
+.nav-group__toggle:focus-visible {
+  color: var(--fo-gold);
+}
+
+.nav-group__indicator svg .stroke {
+  stroke: color-mix(in oklab, var(--fo-field-ink) 52%, var(--fo-rail));
+}
+
+.nav__link {
+  position: relative;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: color-mix(in oklab, var(--fo-field-ink) 88%, var(--fo-rail));
+  padding-block: calc(var(--base) * 0.36);
+  padding-inline: calc(var(--base) * 0.55);
+  border-radius: var(--style-radius-m);
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.nav a.nav__link:hover,
+.nav a.nav__link:focus-visible {
+  background: color-mix(in oklab, var(--fo-field-ink) 10%, var(--fo-rail));
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.nav__link.active,
+.nav__link:has(.nav__link-indicator) {
+  background: color-mix(in oklab, var(--fo-field-ink) 15%, var(--fo-rail));
+  color: #ffffff;
+  padding-inline-start: calc(var(--base) * 0.55);
+  font-weight: 700;
+}
+
+/* Payload's active marker sits outside the link; pull it onto the pill edge. */
+.nav__link-indicator {
+  inset-inline-start: 0;
+  top: 50%;
+  height: 18px;
+  width: 3px;
+  transform: translateY(-50%);
+  border-radius: 0 3px 3px 0;
+  background: var(--fo-gold);
+}
+
+.nav__controls {
+  gap: calc(var(--base) * 0.4);
+  padding-top: calc(var(--base) * 0.8);
+  border-top: 1px solid color-mix(in oklab, var(--fo-field-ink) 16%, var(--fo-rail));
+}
+
+.nav__controls > :first-child {
+  margin-top: 0;
+}
+
+.nav__controls a,
+.nav__controls button {
+  border-radius: var(--style-radius-m);
+}
+
+.nav__mobile-close {
+  color: var(--fo-field-ink);
+}
+
+/* Payload's collapse control is styled for a light rail and renders outside
+   .nav, so it misses the rail's token overrides. While the rail is open the
+   control floats on top of it and has to carry the green itself. */
+.template-default__nav-toggler.nav-toggler--is-open .hamburger,
+.nav__mobile-close .hamburger {
+  background: var(--fo-rail);
+  border: 1px solid color-mix(in oklab, var(--fo-field-ink) 30%, transparent);
+}
+
+.template-default__nav-toggler.nav-toggler--is-open .icon .stroke,
+.nav__mobile-close .icon .stroke {
+  stroke: var(--fo-field-ink);
+}
+
+/* ==========================================================================
+   Nav brand block
+   ========================================================================== */
+
+.fo-navbrand {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: calc(var(--base) * 0.55);
+  margin-bottom: calc(var(--base) * 1.1);
+  padding-inline: calc(var(--base) * 0.55);
+  text-decoration: none;
+  color: inherit;
+}
+
+.fo-navbrand:hover,
+.fo-navbrand:focus-visible {
+  text-decoration: none;
+}
+
+.fo-navbrand__seal {
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--fo-paper);
+  object-fit: contain;
+  rotate: -8deg;
+  box-shadow: 0 2px 10px -2px rgb(0 0 0 / 0.5);
+  transition: rotate 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fo-navbrand:hover .fo-navbrand__seal,
+.fo-navbrand:focus-visible .fo-navbrand__seal {
+  rotate: 4deg;
+}
+
+.fo-navbrand__text {
+  min-width: 0;
+}
+
+.fo-navbrand__name {
+  display: block;
+  font-family: var(--fo-font-display);
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.fo-navbrand__role {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--fo-font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fo-gold);
+}
+
+.fo-navlink-external {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: calc(var(--base) * 0.5);
+  margin-inline: calc(var(--base) * 0.55);
+  font-family: var(--fo-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklab, var(--fo-field-ink) 76%, var(--fo-rail));
+  text-decoration: none;
+}
+
+.fo-navlink-external:hover,
+.fo-navlink-external:focus-visible {
+  color: var(--fo-gold);
+  text-decoration: underline;
+}
+
+.fo-navlink-external svg {
+  flex: none;
+}
+
+/* ==========================================================================
+   App header and breadcrumbs
+   ========================================================================== */
+
+.app-header {
+  border-bottom: 1px solid var(--theme-elevation-100);
+}
+
+.app-header__bg {
+  background: var(--theme-bg);
+}
+
+.step-nav {
+  font-size: 13px;
+}
+
+.step-nav a {
+  font-weight: 700;
+  color: var(--theme-elevation-600);
+}
+
+.step-nav a:hover {
+  color: var(--theme-elevation-900);
+}
+
+.step-nav__last {
+  font-weight: 700;
+  color: var(--theme-text);
+}
+
+.step-nav__home {
+  width: 22px;
+  height: 22px;
+}
+
+/* Payload wraps the home icon in an unsized span, so percentage heights
+   collapse. The seal needs its own dimensions. */
+.fo-mark {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: var(--fo-paper);
+}
+
+html[data-theme='dark'] .fo-mark {
+  background: var(--fo-paper-2);
+}
+
+/* ==========================================================================
+   Buttons
+
+   Green is reserved for the action that commits work, which keeps Save
+   findable on long documents.
+   ========================================================================== */
+
+.btn--style-primary {
+  --bg-color: var(--fo-field);
+  --color: var(--fo-field-ink);
+  --hover-bg: var(--fo-field-2);
+  --hover-color: var(--fo-field-ink);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-radius: var(--style-radius-m);
+}
+
+/* The field green nearly disappears against the dark canvas, so the primary
+   action steps up a shade to keep its presence. */
+html[data-theme='dark'] .btn--style-primary {
+  --bg-color: var(--fo-field-2);
+  --hover-bg: #176c40;
+}
+
+.btn--style-primary.btn--disabled {
+  --bg-color: var(--theme-elevation-150);
+  --color: var(--theme-elevation-450);
+  --hover-bg: var(--theme-elevation-150);
+  --hover-color: var(--theme-elevation-450);
+}
+
+.btn--style-secondary,
+.btn--style-subtle,
+.btn--style-pill {
+  font-weight: 700;
+  border-radius: var(--style-radius-m);
+}
+
+.btn--style-secondary {
+  --btn-border: 1px solid var(--theme-elevation-300);
+  --hover-btn-border: 1px solid var(--fo-field);
+  --hover-color: var(--fo-field);
+  --hover-bg: color-mix(in oklab, var(--fo-field) 6%, transparent);
+}
+
+html[data-theme='dark'] .btn--style-secondary {
+  --hover-color: var(--fo-field-ink);
+  --hover-bg: color-mix(in oklab, var(--fo-field-2) 40%, transparent);
+  --hover-btn-border: 1px solid var(--fo-field-2);
+}
+
+/* ==========================================================================
+   Dashboard
+   ========================================================================== */
+
+.fo-welcome {
+  position: relative;
+  overflow: hidden;
+  margin-block: calc(var(--base) * 1.2) calc(var(--base) * 2);
+  padding: calc(var(--base) * 1.6) calc(var(--base) * 1.8);
+  border-radius: var(--style-radius-l);
+  background: var(--fo-field);
+  color: var(--fo-field-ink);
+}
+
+/* One quiet brand gesture: the seal's ring echoed off the panel's edge. */
+.fo-welcome::after {
+  content: '';
+  position: absolute;
+  inset-block-start: -35%;
+  inset-inline-end: -4%;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--fo-gold) 34%, transparent);
+  pointer-events: none;
+}
+
+.fo-welcome__eyebrow {
+  margin: 0;
+  font-family: var(--fo-font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fo-gold);
+}
+
+.fo-welcome__title {
+  margin: calc(var(--base) * 0.4) 0 0;
+  max-width: 22ch;
+  font-family: var(--fo-font-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  font-stretch: 90%;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--fo-field-ink);
+}
+
+.fo-welcome__body {
+  margin: calc(var(--base) * 0.5) 0 0;
+  max-width: 56ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in oklab, var(--fo-field-ink) 82%, var(--fo-field));
+}
+
+.fo-welcome__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--base) * 0.5);
+  margin-top: calc(var(--base) * 1);
+  position: relative;
+}
+
+.fo-welcome__action {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  border-radius: var(--style-radius-m);
+  background: var(--fo-gold);
+  color: var(--fo-ink);
+  font-family: var(--fo-font-display);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.fo-welcome__action:hover,
+.fo-welcome__action:focus-visible {
+  background: #ffffff;
+  text-decoration: none;
+}
+
+.fo-welcome__action--quiet {
+  background: transparent;
+  color: var(--fo-field-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--fo-field-ink) 34%, transparent);
+}
+
+.fo-welcome__action--quiet:hover,
+.fo-welcome__action--quiet:focus-visible {
+  background: color-mix(in oklab, var(--fo-field-ink) 12%, transparent);
+  color: var(--fo-field-ink);
+}
+
+.fo-welcome__action:focus-visible {
+  outline: 2px solid var(--fo-field-ink);
+  outline-offset: 2px;
+}
+
+.dashboard .card {
+  background: var(--theme-elevation-0);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 120ms ease;
+}
+
+.dashboard .card__title {
+  font-family: var(--fo-font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--theme-elevation-850);
+}
+
+.dashboard .card--has-onclick:hover {
+  background: var(--theme-elevation-0);
+  border-color: var(--fo-field);
+  box-shadow: 0 10px 22px -14px rgb(23 20 14 / 0.45);
+  transform: translateY(-1px);
+}
+
+/* In dark mode elevation-0 is the canvas itself, so cards need the next step
+   up to stay distinguishable. */
+html[data-theme='dark'] .dashboard .card,
+html[data-theme='dark'] .dashboard .card--has-onclick:hover {
+  background: var(--theme-elevation-50);
+}
+
+html[data-theme='dark'] .dashboard .card--has-onclick:hover {
+  border-color: var(--fo-brass);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard .card,
+  .dashboard .card--has-onclick:hover,
+  .fo-navbrand__seal,
+  .fo-navbrand:hover .fo-navbrand__seal {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   List views
+   ========================================================================== */
+
+.list-header__title {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.1;
+}
+
+.collection-list .table thead th,
+.table thead th {
+  font-family: var(--fo-font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-600);
+  background: var(--theme-elevation-50);
+}
+
+.table tbody tr:hover {
+  background: color-mix(in oklab, var(--fo-field) 4%, transparent);
+}
+
+html[data-theme='dark'] .table tbody tr:hover {
+  background: color-mix(in oklab, var(--fo-field-ink) 5%, transparent);
+}
+
+/* ==========================================================================
+   Document editing
+   ========================================================================== */
+
+.doc-controls {
+  border-bottom: 0;
+}
+
+.doc-controls__value {
+  font-family: var(--fo-font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.doc-controls__label,
+.status__label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+.status__value {
+  font-family: var(--fo-font-display);
+  font-weight: 700;
+}
+
+.collapsible__toggle-wrap {
+  background: var(--theme-elevation-50);
+  border-radius: var(--style-radius-m);
+  border: 1px solid var(--theme-elevation-150);
+}
+
+.collapsible__toggle-wrap .row-label {
+  font-family: var(--fo-font-display);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+textarea,
+.rs__control {
+  border-radius: var(--style-radius-m);
+  border-color: var(--theme-elevation-200);
+  background: var(--theme-input-bg);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+.rs__control--is-focused {
+  outline: 2px solid var(--fo-field);
+  outline-offset: 1px;
+  border-color: var(--fo-field);
+}
+
+html[data-theme='dark'] input:focus-visible,
+html[data-theme='dark'] textarea:focus-visible,
+html[data-theme='dark'] .rs__control--is-focused {
+  outline-color: var(--fo-gold);
+  border-color: var(--fo-gold);
+}
+
+/* ==========================================================================
+   Status pills
+   ========================================================================== */
+
+.pill {
+  font-family: var(--fo-font-display);
+  font-weight: 700;
+  border-radius: var(--style-radius-s);
+}
+
+/* Only the workflow pills get the label treatment. Pills also carry filenames,
+   relationship titles, and block names, which must keep their own casing. */
+.pill--style-success,
+.pill--style-warning,
+.pill--style-error {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pill--style-success {
+  background: color-mix(in oklab, var(--fo-field) 16%, var(--fo-paper));
+  color: color-mix(in oklab, var(--fo-field) 88%, var(--fo-ink));
+}
+
+html[data-theme='dark'] .pill--style-success {
+  background: color-mix(in oklab, var(--fo-field-2) 45%, transparent);
+  color: var(--fo-field-ink);
+}
+
+/* ==========================================================================
+   Login and first-user views
+   ========================================================================== */
+
+.template-minimal {
+  background: var(--fo-paper);
+}
+
+html[data-theme='dark'] .template-minimal {
+  background: var(--theme-bg);
+}
+
+.login__brand {
+  margin-bottom: calc(var(--base) * 1.2);
+}
+
+.fo-login-brand {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: calc(var(--base) * 0.6);
+}
+
+.fo-login-brand__seal {
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: var(--color-base-0);
+  box-shadow: 0 18px 40px -22px rgb(23 20 14 / 0.55);
+  rotate: -6deg;
+}
+
+html[data-theme='dark'] .fo-login-brand__seal {
+  background: var(--fo-paper-2);
+}
+
+.fo-login-brand__role {
+  font-family: var(--fo-font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+.fo-login-note {
+  margin: 0 0 calc(var(--base) * 1) 0;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--theme-elevation-500);
+}
+
+/* ==========================================================================
+   Small screens
+   ========================================================================== */
+
+/* Payload steps these down at its own breakpoints. Overriding them at :root
+   above wins everywhere, so the responsive steps have to be restated. */
+@media (max-width: 1024px) {
+  :root {
+    --app-header-height: calc(var(--base) * 2.6);
+    --doc-controls-height: calc(var(--base) * 2.6);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-width: 100vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .fo-welcome {
+    padding: calc(var(--base) * 1.2);
+    margin-block: var(--base) calc(var(--base) * 1.5);
+  }
+
+  .fo-welcome::after {
+    display: none;
+  }
+
+  .fo-welcome__actions {
+    gap: calc(var(--base) * 0.4);
+  }
+
+  .fo-welcome__action {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .nav__link {
+    padding-block: calc(var(--base) * 0.5);
+    font-size: 16px;
+  }
+
+  .fo-navbrand__seal {
+    width: 54px;
+    height: 54px;
+  }
+}

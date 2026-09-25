@@ -65,14 +65,12 @@ function postgresPoolConfig() {
 }
 
 const { connectionString: databaseUrl, ssl: postgresSsl } = postgresPoolConfig()
-const blobToken = process.env.BLOB_READ_WRITE_TOKEN
-const publicServerUrl = (process.env.NEXT_PUBLIC_SERVER_URL || process.env.PAYLOAD_PUBLIC_SERVER_URL || '').replace(
-  /\/$/,
-  '',
-)
+const blobToken = process.env['BLOB_READ_WRITE_TOKEN']
 
 export default buildConfig({
-  ...(publicServerUrl ? { serverURL: publicServerUrl } : {}),
+  // Leave serverURL unset so Blob client uploads POST to this deployment.
+  // An absolute NEXT_PUBLIC_SERVER_URL (custom domain, another preview, or
+  // leftover localhost) makes the browser send the file to the wrong origin.
   admin: {
     user: Users.slug,
     importMap: {
@@ -80,18 +78,32 @@ export default buildConfig({
     },
     meta: {
       titleSuffix: ' · Friends of Recreation',
+      icons: [{ rel: 'icon', type: 'image/png', url: '/logo.png' }],
+    },
+    components: {
+      graphics: {
+        Icon: '@/components/admin/BrandIcon#BrandIcon',
+        Logo: '@/components/admin/BrandLogo#BrandLogo',
+      },
+      beforeLogin: ['@/components/admin/LoginNote#LoginNote'],
+      beforeNavLinks: ['@/components/admin/NavBrand#NavBrand'],
+      afterNavLinks: ['@/components/admin/ViewSiteLink#ViewSiteLink'],
+      beforeDashboard: ['@/components/admin/DashboardWelcome#DashboardWelcome'],
     },
   },
+  // Sidebar groups follow the order a collection first names them, so this
+  // order is also the order editors see: pages and settings, then the content
+  // they change most, then form inboxes, then account administration.
   collections: [
-    Users,
-    Media,
-    BoardMembers,
+    Pages,
     Events,
     Projects,
     Organizations,
-    Pages,
+    BoardMembers,
+    Media,
     ContactSubmissions,
     GrantRequests,
+    Users,
   ],
   globals: [SiteSettings],
   editor: lexicalEditor(),
@@ -116,6 +128,7 @@ export default buildConfig({
       },
       token: blobToken,
       clientUploads: true,
+      addRandomSuffix: true,
     }),
   ],
   onInit: async (payload) => {

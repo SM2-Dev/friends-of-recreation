@@ -9,7 +9,7 @@ export const SiteSettings: GlobalConfig = {
   label: 'Site settings',
   admin: {
     description: 'Site-wide name, donation link, and contact details. Admins manage these settings.',
-    group: 'Settings',
+    group: 'Website',
   },
   access: {
     read: anyone,

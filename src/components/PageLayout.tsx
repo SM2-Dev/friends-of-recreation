@@ -174,13 +174,7 @@ async function HeroSection({ block }: { block: HeroBlock }) {
         <div className="hero-copy">
           <h1 className="hero-title">{block.heading}</h1>
           <div className="hero-actions">
-            <DonateControl
-              describedById={`donate-pending-hero-${block.id}`}
-              label={donateLabel}
-              pendingLabel={donateLabel}
-              pendingVisible
-              url={donateUrl}
-            />
+            <DonateControl label={donateLabel} url={donateUrl} />
             {secondaryHref && secondaryLabel ? (
               <Link className="button button-secondary" href={secondaryHref}>
                 {secondaryLabel}

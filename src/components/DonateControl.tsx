@@ -7,17 +7,13 @@ type DonateControlProps = {
   label: string
   pendingLabel?: string
   pendingHref?: string
-  pendingVisible?: boolean
-  describedById: string
 }
 
 export function DonateControl({
   url,
   label,
-  pendingLabel = 'Ask how to give',
+  pendingLabel,
   pendingHref = '/#ask',
-  pendingVisible = false,
-  describedById,
 }: DonateControlProps) {
   if (url) {
     return (
@@ -27,21 +23,11 @@ export function DonateControl({
     )
   }
 
-  // The board has not confirmed a payment URL yet, and the site will not invent
-  // one. Until then the loudest control routes to the volunteers rather than
-  // sitting on the page as a dead button.
+  // Until the board confirms a payment URL, the control still leads somewhere
+  // useful: the contact form, using the same donate label.
   return (
-    <span className="donate-control">
-      <Link
-        aria-describedby={describedById}
-        className="button button-primary donate-button"
-        href={pendingHref}
-      >
-        {pendingLabel}
-      </Link>
-      <span className={pendingVisible ? 'donate-pending' : 'visually-hidden'} id={describedById}>
-        Online giving is not live yet. Send a note and a volunteer will help you give.
-      </span>
-    </span>
+    <Link className="button button-primary donate-button" href={pendingHref}>
+      {pendingLabel || label}
+    </Link>
   )
 }

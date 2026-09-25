@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '*.public.blob.vercel-storage.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/api/media/file/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        pathname: '/api/media/file/**',
+      },
     ],
   },
   headers: async () => [
