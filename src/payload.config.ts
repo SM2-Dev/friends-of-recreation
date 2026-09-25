@@ -65,13 +65,7 @@ function postgresPoolConfig() {
 }
 
 const { connectionString: databaseUrl, ssl: postgresSsl } = postgresPoolConfig()
-const blobToken = process.env.BLOB_READ_WRITE_TOKEN
-
-if (process.env.VERCEL && !blobToken) {
-  throw new Error(
-    'BLOB_READ_WRITE_TOKEN is required on Vercel. Connect a Blob store to this project for Production and Preview.',
-  )
-}
+const blobToken = process.env['BLOB_READ_WRITE_TOKEN']
 
 export default buildConfig({
   // Leave serverURL unset so Blob client uploads POST to this deployment.
